@@ -1,7 +1,7 @@
 {
     "id": "E5535D09",
-    "path": "~/git/nauka/ncn-foreigners/software/blocking/R/block_for_reclin.R",
-    "project_path": "R/block_for_reclin.R",
+    "path": "~/git/nauka/ncn-foreigners/software/blocking/R/blocking.R",
+    "project_path": "R/blocking.R",
     "type": "r_source",
     "hash": "0",
     "contents": "",
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "14,44",
-        "scrollLine": "0"
+        "cursorPosition": "29,35",
+        "scrollLine": "17"
     },
     "folds": "",
-    "lastKnownWriteTime": 1698319722,
+    "lastKnownWriteTime": 1698352920,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1698319722645,
+    "last_content_update": 1698352920,
     "read_only": false,
     "read_only_alternatives": []
 }

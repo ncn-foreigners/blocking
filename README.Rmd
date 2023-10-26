@@ -1,0 +1,33 @@
+---
+output: github_document
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Overview
+
+## Description
+
+A small package that is used for blocking of records for record linkage (data deduplication, entity resolution) based on approximate nearest neighbours alborithms and graphs.
+
+Currently only supports: `RcppHNSW`.
+
+## Funding
+
+Work on this package is supported by the the National Science Centre, OPUS 22 grant no. 2020/39/B/HS4/00941.
+
+## Installation
+
+You can install the development version of `blocking` from GitHub with:
+
+```{r, eval=FALSE}
+# install.packages("remotes")
+remotes::install_github("ncn-foreigners/blocking")

@@ -20,5 +20,6 @@ Imports:
   text2vec,
   tokenizers,
   RcppHNSW,
+  mlpack,
   igraph
 Suggests: tinytest

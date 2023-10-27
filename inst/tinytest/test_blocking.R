@@ -17,7 +17,7 @@ df_example <- data.frame(txt = c(
 # check arguments ---------------------------------------------------------
 
 expect_silent(
-  blocking(x = df_example$txt, verbose = F)
+  blocking(x = df_example$txt, verbose = F, ann = "hnsw")
 )
 
 
@@ -25,7 +25,12 @@ expect_silent(
 
 
 expect_equal(
-  as.numeric(blocking(x = df_example$txt)),
+  as.numeric(blocking(x = df_example$txt, ann = "hnsw")),
+  c(1, 1, 1, 1, 2, 2, 2, 2)
+)
+
+expect_equal(
+  as.numeric(blocking(x = df_example$txt, ann = "lsh")),
   c(1, 1, 1, 1, 2, 2, 2, 2)
 )
 

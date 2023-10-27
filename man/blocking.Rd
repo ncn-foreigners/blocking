@@ -8,6 +8,7 @@ blocking(
   x,
   y = NULL,
   deduplication = FALSE,
+  ann = c("hnsw", "lsh"),
   verbose = T,
   progress = "bar",
   n_threads = 1,
@@ -21,6 +22,8 @@ blocking(
 \item{y}{input text or matrix data (default NULL),}
 
 \item{deduplication}{generate pairs from only \code{x},}
+
+\item{ann}{algorithm to be used for searching for ann,}
 
 \item{verbose}{whether progress should be provided,}
 
@@ -46,7 +49,7 @@ Imports
 df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
-blocking(x = df_example$txt,
+blocking(x = df_example$txt, ann = "hnsw",
          control_ann = controls_ann(hsnw_M = 5, hnsw_ef = 10))
 
 

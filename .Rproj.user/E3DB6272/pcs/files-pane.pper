@@ -2,8 +2,8 @@
     "sortOrder": [
         {
             "columnIndex": 2,
-            "ascending": true
+            "ascending": false
         }
     ],
-    "path": "~/git/nauka/ncn-foreigners/software/blocking/inst/tinytest"
+    "path": "~/git/nauka/ncn-foreigners/software/blocking"
 }

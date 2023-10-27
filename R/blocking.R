@@ -19,6 +19,7 @@
 #' @param x input text or matrix data,
 #' @param y input text or matrix data (default NULL),
 #' @param deduplication generate pairs from only \code{x},
+#' @param ann algorithm to be used for searching for ann,
 #' @param verbose whether progress should be provided,
 #' @param progress how the progress should be presented,
 #' @param n_threads number of threads used for the ann,
@@ -31,7 +32,7 @@
 #' df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 #' "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 #'
-#' blocking(x = df_example$txt,
+#' blocking(x = df_example$txt, ann = "hnsw",
 #'          control_ann = controls_ann(hsnw_M = 5, hnsw_ef = 10))
 #'
 #'
@@ -39,6 +40,7 @@
 blocking <- function(x,
                      y = NULL,
                      deduplication = FALSE,
+                     ann = c("hnsw", "lsh"),
                      verbose = T,
                      progress = "bar",
                      n_threads = 1,
@@ -57,34 +59,43 @@ blocking <- function(x,
 
   l_dtm <- base::as.matrix(l_dtm) ## unfortunately we need to convert to dense matrix
 
-  l_ind <- RcppHNSW::hnsw_build(X = l_dtm,
-                                distance = control_ann$distance,
-                                M = control_ann$hsnw_M,
-                                ef = control_ann$hnsw_ef,
+  ## switch with separate functions for each package?
+  if (ann == "hnsw") {
+    l_ind <- RcppHNSW::hnsw_build(X = l_dtm,
+                                  distance = control_ann$distance,
+                                  M = control_ann$hsnw_M,
+                                  ef = control_ann$hnsw_ef,
+                                  verbose = verbose,
+                                  progress = progress,
+                                  n_threads = n_threads)
+
+    l_1nn <- RcppHNSW::hnsw_search(X = l_dtm,
+                                   ann = l_ind,
+                                   k = control_ann$k,
+                                   ef = control_ann$hnsw_ef,
+                                   verbose = verbose,
+                                   progress = progress,
+                                   n_threads = n_threads)
+
+    l_df <- base::as.data.frame(l_1nn$idx)
+    l_df$id <- 1:NROW(l_df)
+  }
+
+  if (ann == "lsh") {
+    ## parameters should be provided in the controls
+    l_lhs_result <- mlpack::lsh(bucket_size = 500,
+                                hash_width = 10,
+                                projections = 10,
+                                tables = 30,
+                                k = control_ann$k,
+                                query = l_dtm,
+                                reference = l_dtm,
                                 verbose = verbose,
-                                progress = progress,
-                                n_threads = n_threads)
+                                seed = 0)
+    l_df <- base::as.data.frame(l_lhs_result$neighbors) + 1
+    l_df$id <- 1:NROW(l_df)
+  }
 
-  l_1nn <- RcppHNSW::hnsw_search(X = l_dtm,
-                                 ann = l_ind,
-                                 k = control_ann$k,
-                                 ef = control_ann$hnsw_ef,
-                                 verbose = verbose,
-                                 progress = progress,
-                                 n_threads = n_threads)
-
-  l_df <- base::as.data.frame(l_1nn$idx)
-  l_df$id <- 1:NROW(l_df)
-
-  # l_df_to_graph <- data.table::merge.data.table(x = l_df[, list(V1, V2)],
-  #                                               y = l_df[, list(V1, V2)],
-  #                                               by = "V2",
-  #                                               allow.cartesian = TRUE)
-  #
-  # l_m_sp <- Matrix::sparseMatrix(i = l_df_to_graph$V1.x,
-  #                                j = l_df_to_graph$V1.y,
-  #                                x = 1)
-  #l_gr <- igraph::graph_from_adjacency_matrix(l_m_sp, mode = "undirected")
 
   l_gr <- igraph::graph_from_data_frame(l_df[, c(3,2)], directed = F)
   l_clust <- igraph::components(l_gr, "weak")

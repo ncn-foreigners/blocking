@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 A small package that is used for blocking of records for record linkage (data deduplication, entity resolution) based on approximate nearest neighbours alborithms and graphs.
 
-Currently only supports: `RcppHNSW`.
+Currently supports only: `RcppHNSW`.
 
 ## Funding
 

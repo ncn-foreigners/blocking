@@ -33,7 +33,7 @@
 #' "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 #'
 #' blocking(x = df_example$txt, ann = "hnsw",
-#'          control_ann = controls_ann(hsnw_M = 5, hnsw_ef = 10))
+#'          control_ann = controls_ann(hnsw=list(M = 5, ef_b = 10, ef_s = 10), distance = "cosine"))
 #'
 #'
 #' @export
@@ -63,8 +63,8 @@ blocking <- function(x,
   if (ann == "hnsw") {
     l_ind <- RcppHNSW::hnsw_build(X = l_dtm,
                                   distance = control_ann$distance,
-                                  M = control_ann$hsnw_M,
-                                  ef = control_ann$hnsw_ef,
+                                  M = control_ann$hnsw$M,
+                                  ef = control_ann$hnsw$ef_s,
                                   verbose = verbose,
                                   progress = progress,
                                   n_threads = n_threads)
@@ -72,7 +72,7 @@ blocking <- function(x,
     l_1nn <- RcppHNSW::hnsw_search(X = l_dtm,
                                    ann = l_ind,
                                    k = control_ann$k,
-                                   ef = control_ann$hnsw_ef,
+                                   ef = control_ann$hnsw$ef_s,
                                    verbose = verbose,
                                    progress = progress,
                                    n_threads = n_threads)

@@ -50,7 +50,7 @@ df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
 blocking(x = df_example$txt, ann = "hnsw",
-         control_ann = controls_ann(hsnw_M = 5, hnsw_ef = 10))
+         control_ann = controls_ann(hnsw=list(M = 5, ef_b = 10, ef_s = 10), distance = "cosine"))
 
 
 }

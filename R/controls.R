@@ -7,22 +7,29 @@
 #'
 #' @param k k nearest neighbours
 #' @param distance distance metric for \code{RcppHNSW}
-#' @param hsnw_M see \code{RcppHNSW}
-#' @param hnsw_ef see \code{RcppHNSW}
+#' @param seed seed for the algorithms
+#' @param hnsw parameters for \code{RcppHNSW}
+#' @param lsh parameters for \code{mlpack::lsh} (not yet supported)
+#' @param annoy parameters for \code{RcppAnnoy} (not yet supported)
 #'
 #' @returns Returns a list with parameters
 #'
 #' @export
 controls_ann <- function(
     k = 2L,
-    distance = "cosine",
-    hsnw_M = 25,
-    hnsw_ef = 200) {
+    distance = c("cosine", "euclidean", "l2", "ip"), ## manhattan, angular, hamming
+    seed = 2023,
+    hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
+    lsh = list(),
+    annoy = list()
+    ) {
 
-   list(distance = distance,
-        hsnw_M = hsnw_M,
-        hnsw_ef = hnsw_ef,
-        k = k)
+   list(k = k,
+        distance = distance,
+        seed = seed,
+        hnsw = hnsw,
+        lsh = lsh,
+        annoy = annoy)
 }
 
 #' @title Controls for text data

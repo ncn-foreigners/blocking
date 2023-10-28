@@ -4,16 +4,27 @@
 \alias{controls_ann}
 \title{Controls for approximate nearest neighbours algoritms}
 \usage{
-controls_ann(k = 2L, distance = "cosine", hsnw_M = 25, hnsw_ef = 200)
+controls_ann(
+  k = 2L,
+  distance = c("cosine", "euclidean", "l2", "ip"),
+  seed = 2023,
+  hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
+  lsh = list(),
+  annoy = list()
+)
 }
 \arguments{
 \item{k}{k nearest neighbours}
 
 \item{distance}{distance metric for \code{RcppHNSW}}
 
-\item{hsnw_M}{see \code{RcppHNSW}}
+\item{seed}{seed for the algorithms}
 
-\item{hnsw_ef}{see \code{RcppHNSW}}
+\item{hnsw}{parameters for \code{RcppHNSW}}
+
+\item{lsh}{parameters for \code{mlpack::lsh} (not yet supported)}
+
+\item{annoy}{parameters for \code{RcppAnnoy} (not yet supported)}
 }
 \value{
 Returns a list with parameters

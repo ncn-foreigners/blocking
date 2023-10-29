@@ -8,7 +8,7 @@ blocking(
   x,
   y = NULL,
   deduplication = FALSE,
-  ann = c("hnsw", "lsh"),
+  ann = c("hnsw", "lsh", "annoy", "kd"),
   verbose = T,
   progress = "bar",
   n_threads = 1,
@@ -23,7 +23,7 @@ blocking(
 
 \item{deduplication}{generate pairs from only \code{x},}
 
-\item{ann}{algorithm to be used for searching for ann,}
+\item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy")}, default \code{"hnsw"}),}
 
 \item{verbose}{whether progress should be provided,}
 
@@ -50,7 +50,7 @@ df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
 blocking(x = df_example$txt, ann = "hnsw",
-         control_ann = controls_ann(hnsw=list(M = 5, ef_b = 10, ef_s = 10), distance = "cosine"))
+         control_ann = controls_ann(hnsw=list(M = 5, ef_b = 10, ef_s = 10)))
 
 
 }

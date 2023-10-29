@@ -6,30 +6,35 @@
 #' Controls for ANN algorithms used in the package
 #'
 #' @param k k nearest neighbours
-#' @param distance distance metric for \code{RcppHNSW}
+#' @param distance distance metric (default \code{cosine})
 #' @param seed seed for the algorithms
 #' @param hnsw parameters for \code{RcppHNSW}
 #' @param lsh parameters for \code{mlpack::lsh} (not yet supported)
-#' @param annoy parameters for \code{RcppAnnoy} (not yet supported)
+#' @param annoy parameters for \code{RcppAnnoy}
+#' @param kd parameters for \code{RANN}
 #'
 #' @returns Returns a list with parameters
 #'
 #' @export
 controls_ann <- function(
     k = 2L,
-    distance = c("cosine", "euclidean", "l2", "ip"), ## manhattan, angular, hamming
+    distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
     seed = 2023,
     hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
     lsh = list(),
-    annoy = list()
+    annoy = list(n_trees = 50),
+    kd = list(eps = 0)
     ) {
+
+   if (missing(distance)) distance <- "cosine"
 
    list(k = k,
         distance = distance,
         seed = seed,
         hnsw = hnsw,
         lsh = lsh,
-        annoy = annoy)
+        annoy = annoy,
+        kd = kd)
 }
 
 #' @title Controls for text data

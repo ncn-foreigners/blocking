@@ -20,6 +20,9 @@ Imports:
   text2vec,
   tokenizers,
   RcppHNSW,
+  RcppAnnoy,
   mlpack,
-  igraph
+  igraph,
+  methods,
+  RANN
 Suggests: tinytest

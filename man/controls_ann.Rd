@@ -6,17 +6,18 @@
 \usage{
 controls_ann(
   k = 2L,
-  distance = c("cosine", "euclidean", "l2", "ip"),
+  distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
   seed = 2023,
   hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
   lsh = list(),
-  annoy = list()
+  annoy = list(n_trees = 50),
+  kd = list(eps = 0)
 )
 }
 \arguments{
 \item{k}{k nearest neighbours}
 
-\item{distance}{distance metric for \code{RcppHNSW}}
+\item{distance}{distance metric (default \code{cosine})}
 
 \item{seed}{seed for the algorithms}
 
@@ -24,7 +25,9 @@ controls_ann(
 
 \item{lsh}{parameters for \code{mlpack::lsh} (not yet supported)}
 
-\item{annoy}{parameters for \code{RcppAnnoy} (not yet supported)}
+\item{annoy}{parameters for \code{RcppAnnoy}}
+
+\item{kd}{parameters for \code{RANN}}
 }
 \value{
 Returns a list with parameters

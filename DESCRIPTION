@@ -23,6 +23,5 @@ Imports:
   RcppAnnoy,
   mlpack,
   igraph,
-  methods,
-  RANN
+  methods
 Suggests: tinytest

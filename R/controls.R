@@ -22,7 +22,7 @@ controls_ann <- function(
     seed = 2023,
     hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
     lsh = list(),
-    annoy = list(n_trees = 50),
+    annoy = list(n_trees = 250),
     kd = list(eps = 0)
     ) {
 

@@ -3,7 +3,6 @@
 export(blocking)
 export(controls_ann)
 export(controls_txt)
-importFrom(RANN,nn2)
 importFrom(RcppAnnoy,AnnoyAngular)
 importFrom(RcppAnnoy,AnnoyEuclidean)
 importFrom(RcppAnnoy,AnnoyHamming)

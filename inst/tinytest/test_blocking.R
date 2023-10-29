@@ -45,7 +45,8 @@ expect_equal(
 ## RcppAnnoy ----------------------------------------------------------------
 
 expect_equal(
-  as.numeric(blocking(x = df_example$txt, verbose = F, ann = "annoy")),
+  as.numeric(blocking(x = df_example$txt, verbose = F, ann = "annoy",
+                      control_ann = controls_ann(distance = "euclidean"))),
   c(1, 1, 1, 1, 2, 2, 2, 2)
 )
 

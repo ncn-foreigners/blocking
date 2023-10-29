@@ -7,11 +7,11 @@
 blocking(
   x,
   y = NULL,
-  deduplication = FALSE,
   ann = c("hnsw", "lsh", "annoy", "kd"),
-  verbose = T,
-  progress = "bar",
+  distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
+  verbose = c(0, 1, 2),
   n_threads = 1,
+  seed = 2023,
   control_txt = controls_txt(),
   control_ann = controls_ann()
 )
@@ -21,22 +21,23 @@ blocking(
 
 \item{y}{input text or matrix data (default NULL),}
 
-\item{deduplication}{generate pairs from only \code{x},}
+\item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
+default \code{"hnsw"}),}
 
-\item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy")}, default \code{"hnsw"}),}
+\item{distance}{distance metric (default \code{cosine}),}
 
-\item{verbose}{whether progress should be provided,}
-
-\item{progress}{how the progress should be presented,}
+\item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),}
 
 \item{n_threads}{number of threads used for the ann,}
+
+\item{seed}{seed for the algorithms,}
 
 \item{control_txt}{list of controls for text data,}
 
 \item{control_ann}{list of controls for ann algorithms.}
 }
 \value{
-Returns vector with cluster indicators.
+Returns list with cluster indicators for x, y, ann method and colnames of the dtm
 }
 \description{
 Function that creates shingles (strings with 2 characters), applies approximate nearest neibhour search using
@@ -49,9 +50,9 @@ Imports
 df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
-blocking(x = df_example$txt,
-         ann = "hnsw",
-         control_ann = controls_ann(hnsw = list(M = 5, ef_b = 10, ef_s = 10)))
+result <- blocking(x = df_example$txt,
+                   ann = "hnsw",
+                   control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
 
 
 }

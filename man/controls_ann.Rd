@@ -5,25 +5,18 @@
 \title{Controls for approximate nearest neighbours algoritms}
 \usage{
 controls_ann(
-  k = 2L,
-  distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
-  seed = 2023,
   hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
-  lsh = list(),
+  lsh = list(bucket_size = 500, hash_width = 10, num_probes = 0, projections = 10, tables
+    = 30),
   annoy = list(n_trees = 250),
-  kd = list(eps = 0)
+  kd = list(algorithm = "dual_tree", epsilon = 0, leaf_size = 20, random_basis = FALSE,
+    rho = 0.7, tau = 0, tree_type = "kd")
 )
 }
 \arguments{
-\item{k}{k nearest neighbours}
-
-\item{distance}{distance metric (default \code{cosine})}
-
-\item{seed}{seed for the algorithms}
-
 \item{hnsw}{parameters for \code{RcppHNSW}}
 
-\item{lsh}{parameters for \code{mlpack::lsh} (not yet supported)}
+\item{lsh}{parameters for \code{mlpack::lsh}}
 
 \item{annoy}{parameters for \code{RcppAnnoy}}
 

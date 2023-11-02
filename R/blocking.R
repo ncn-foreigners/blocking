@@ -48,6 +48,8 @@
 #' }
 #'
 #' @examples
+#'
+#' ## general example
 #' df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 #' "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 #'
@@ -56,6 +58,8 @@
 #'                    control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
 #'
 #' result
+#'
+#' ## an example with true blocks
 #'
 #' @export
 blocking <- function(x,

@@ -2,8 +2,8 @@
     "sortOrder": [
         {
             "columnIndex": 2,
-            "ascending": false
+            "ascending": true
         }
     ],
-    "path": "~/git/nauka/ncn-foreigners/software/blocking/R"
+    "path": "~/git/nauka/ncn-foreigners/software/blocking"
 }

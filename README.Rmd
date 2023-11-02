@@ -16,9 +16,14 @@ knitr::opts_chunk$set(
 
 ## Description
 
-A small package that is used for blocking of records for record linkage (data deduplication, entity resolution) based on approximate nearest neighbours alborithms and graphs.
+A small package used to block records for data deduplication and record linkage (entity resolution) based on [approximate nearest neighbours algorithms (ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search) and graphs (via `igraph`).
 
-Currently supports only: `RcppHNSW`.
+Currently supports:
+
++ `RcppHNSW`, 
++ `RcppAnnoy`,
++ `mlpack` (`mlpack::lsh` and `mlpack::knn`).
+
 
 ## Funding
 
@@ -29,5 +34,7 @@ Work on this package is supported by the the National Science Centre, OPUS 22 gr
 You can install the development version of `blocking` from GitHub with:
 
 ```{r, eval=FALSE}
-# install.packages("remotes")
+# install.packages("remotes") # uncomment if needed
 remotes::install_github("ncn-foreigners/blocking")
+```
+

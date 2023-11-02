@@ -3,11 +3,16 @@
 
 ## Description
 
-A small package that is used for blocking of records for record linkage
-(data deduplication, entity resolution) based on approximate nearest
-neighbours alborithms and graphs.
+A small package used to block records for data deduplication and record
+linkage (entity resolution) based on [approximate nearest neighbours
+algorithms (ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search)
+and graphs (via `igraph`).
 
-Currently only supports: `RcppHNSW`.
+Currently supports:
+
+- `RcppHNSW`,
+- `RcppAnnoy`,
+- `mlpack` (`mlpack::lsh` and `mlpack::knn`).
 
 ## Funding
 
@@ -19,6 +24,6 @@ OPUS 22 grant no. 2020/39/B/HS4/00941.
 You can install the development version of `blocking` from GitHub with:
 
 ``` r
-# install.packages("remotes")
+# install.packages("remotes") # uncomment if needed
 remotes::install_github("ncn-foreigners/blocking")
 ```

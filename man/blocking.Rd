@@ -7,6 +7,7 @@
 blocking(
   x,
   y = NULL,
+  deduplication = TRUE,
   ann = c("hnsw", "lsh", "annoy", "kd"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
   verbose = c(0, 1, 2),
@@ -20,6 +21,8 @@ blocking(
 \item{x}{input text or matrix data,}
 
 \item{y}{input text or matrix data (default NULL),}
+
+\item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
 \item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
 default \code{"hnsw"}),}

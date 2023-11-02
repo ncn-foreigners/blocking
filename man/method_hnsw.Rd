@@ -4,12 +4,25 @@
 \alias{method_hnsw}
 \title{Internal function of hnsw via RcppHNSW}
 \usage{
-method_hnsw(x, y = NULL, k, distance, M, ef_c, ef_s, verbose = 0, n_threads)
+method_hnsw(
+  x,
+  y,
+  deduplication,
+  k,
+  distance,
+  M,
+  ef_c,
+  ef_s,
+  verbose = 0,
+  n_threads
+)
 }
 \arguments{
 \item{x}{x}
 
 \item{y}{y}
+
+\item{deduplication}{deduplication}
 
 \item{k}{k}
 

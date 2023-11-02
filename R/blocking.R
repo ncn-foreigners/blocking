@@ -24,6 +24,7 @@
 #'
 #' @param x input text or matrix data,
 #' @param y input text or matrix data (default NULL),
+#' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
 #' default \code{"hnsw"}),
 #' @param distance distance metric (default \code{cosine}),
@@ -47,6 +48,7 @@
 #' @export
 blocking <- function(x,
                      y = NULL,
+                     deduplication = TRUE,
                      ann = c("hnsw", "lsh", "annoy", "kd"),
                      distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
                      verbose = c(0, 1, 2),
@@ -59,41 +61,60 @@ blocking <- function(x,
   if (missing(verbose)) verbose <- 0
   if (missing(ann)) ann <- "hnsw"
   if (missing(distance)) distance <- "cosine"
+  if (!is.null(y)) deduplication <- FALSE
+  k <- 1L
 
-  if (verbose %in% 1:2) cat("===== creating tokens =====\n")
-
-  k <- 2L
-  x_rows <- 1:NROW(x)
-
-  ## now I only concatanate vectors but it is not efficient if two large datasets are present
-  ## I should create two separate dtm matrices and then use intersect of names
-  if (!is.null(y)) {
-    y_rows <- (NROW(x)+1):(NROW(x) + NROW(y))
-    x <- c(x, y)
+  if (is.null(y)) {
+    y <- x
+    k <- 2L
   }
 
-  l_tokens <- text2vec::itoken_parallel(
-    iterable = x,
-    tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
-    n_chunks = control_txt$n_chunks,
-    progressbar = verbose)
 
-  l_voc <- text2vec::create_vocabulary(l_tokens)
-  l_vec <- text2vec::vocab_vectorizer(l_voc)
-  l_dtm <- text2vec::create_dtm(l_tokens, l_vec)
+  if (!is.matrix(x) & !is.matrix(y)) {
+    if (verbose %in% 1:2) cat("===== creating tokens =====\n")
 
-  l_dtm <- base::as.matrix(l_dtm) ## unfortunately we need to convert to dense matrix
+    ## tokens for x
+    l_tokens <- text2vec::itoken_parallel(
+      iterable = x,
+      tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+      n_chunks = control_txt$n_chunks,
+      progressbar = verbose)
 
-  if (verbose %in% 1:2) cat(sprintf("===== starting search (%s, %d, %d) =====\n", ann, nrow(l_dtm), ncol(l_dtm)))
+    l_voc <- text2vec::create_vocabulary(l_tokens)
+    l_vec <- text2vec::vocab_vectorizer(l_voc)
+    l_dtm <- text2vec::create_dtm(l_tokens, l_vec)
+    l_dtm <- base::as.matrix(l_dtm)
+
+    ## tokens for y (check history to avoid copying)
+    l_tokens_y <- text2vec::itoken_parallel(
+      iterable = y,
+      tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+      n_chunks = control_txt$n_chunks,
+      progressbar = verbose)
+
+    l_voc_y <- text2vec::create_vocabulary(l_tokens_y)
+    l_vec_y <- text2vec::vocab_vectorizer(l_voc_y)
+    l_dtm_y <- text2vec::create_dtm(l_tokens_y, l_vec_y)
+    l_dtm_y <- base::as.matrix(l_dtm_y)
+  }
+
+  colnames_xy <- intersect(colnames(l_dtm), colnames(l_dtm_y))
+
+
+  if (verbose %in% 1:2) {
+    cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
+                ann, nrow(l_dtm), nrow(l_dtm_y), length(colnames_xy)))
+  }
 
   ## switch with separate functions for each package?
   if (ann == "hnsw") {
-    if (verbose == 2) verbose <- TRUE
-    l_df <- method_hnsw(x = l_dtm,
-                        y = NULL,
+
+    l_df <- method_hnsw(x = l_dtm[, colnames_xy],
+                        y = l_dtm_y[, colnames_xy],
+                        deduplication = deduplication,
                         k = k,
                         distance = distance,
-                        verbose = verbose,
+                        verbose = if (verbose == 2) TRUE else FALSE,
                         n_threads = n_threads,
                         M = control_ann$hnsw$M,
                         ef_c = control_ann$hnsw$ef_c,
@@ -101,13 +122,11 @@ blocking <- function(x,
   }
 
   if (ann == "lsh") {
-    ## parameters should be provided in the controls
-    if (verbose == 2) verbose <- TRUE
 
     l_lhs_result <- mlpack::lsh(k = k,
-                                query = l_dtm,
-                                reference = l_dtm,
-                                verbose = verbose,
+                                query = l_dtm_y[, colnames_xy],
+                                reference = l_dtm[, colnames_xy],
+                                verbose = if (verbose == 2) TRUE else FALSE,
                                 seed = seed,
                                 bucket_size = control_ann$lsh$bucket_size,
                                 hash_width = control_ann$lsh$hash_width,
@@ -115,17 +134,17 @@ blocking <- function(x,
                                 projections = control_ann$lsh$projections,
                                 tables = control_ann$lsh$tables)
 
-    l_df <- base::as.data.frame(l_lhs_result$neighbors) + 1
-    l_df$id <- 1:NROW(l_df)
+    l_df <- base::data.frame(y = 1:NROW(y),
+                             x = l_lhs_result$neighbors[, k] + 1)
+
   }
 
   if (ann == "kd") {
 
-    if (verbose == 2) verbose <- TRUE
     l_knn_result <- mlpack::knn(k = k,
-                                query = l_dtm,
-                                reference = l_dtm,
-                                verbose = verbose,
+                                query = l_dtm_y[, colnames_xy],
+                                reference = l_dtm[, colnames_xy],
+                                verbose = if (verbose == 2) TRUE else FALSE,
                                 seed = seed,
                                 algorithm = control_ann$kd$algorithm,
                                 leaf_size = control_ann$kd$leaf_size,
@@ -135,8 +154,9 @@ blocking <- function(x,
                                 tau = control_ann$kd$tau,
                                 random_basis = control_ann$kd$random_basis)
 
-    l_df <- base::as.data.frame(l_knn_result$neighbors) + 1
-    l_df$id <- 1:NROW(l_df)
+    l_df <- base::data.frame(y = 1:NROW(y),
+                             x = l_knn_result$neighbors[, k] + 1)
+
   }
 
   if (ann == "annoy") {
@@ -144,38 +164,49 @@ blocking <- function(x,
     stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
                 distance %in% c("euclidean", "manhatan", "hamming", "angular"))
 
+    colnames_xy_n <- length(colnames_xy)
     l_ind <- switch(distance,
-                    "euclidean" = methods::new(RcppAnnoy::AnnoyManhattan, ncol(l_dtm)),
-                    "manhatan"  = methods::new(RcppAnnoy::AnnoyManhattan, ncol(l_dtm)),
-                    "hamming"   = methods::new(RcppAnnoy::AnnoyHamming,   ncol(l_dtm)),
-                    "angular"   = methods::new(RcppAnnoy::AnnoyAngular,   ncol(l_dtm))
+                    "euclidean" = methods::new(RcppAnnoy::AnnoyManhattan, colnames_xy_n),
+                    "manhatan"  = methods::new(RcppAnnoy::AnnoyManhattan, colnames_xy_n),
+                    "hamming"   = methods::new(RcppAnnoy::AnnoyHamming,   colnames_xy_n),
+                    "angular"   = methods::new(RcppAnnoy::AnnoyAngular,   colnames_xy_n)
                     )
 
     l_ind$setSeed(seed)
 
     if (verbose == 2) l_ind$setVerbose(1)
 
-    for (i in 1:nrow(l_dtm)) l_ind$addItem(i - 1, l_dtm[i,])
-
+    ## index
+    for (i in 1:nrow(l_dtm)) l_ind$addItem(i - 1, l_dtm[i, colnames_xy])
     l_ind$build(control_ann$annoy$n_trees)
-    l_ind_nns <- matrix(0, ncol=2, nrow = nrow(l_dtm))
+    l_ind_nns <- numeric(length = nrow(l_dtm_y))
 
-    ## can be parallized
-    for (i in 1:nrow(l_dtm)) l_ind_nns[i, ] <- l_ind$getNNsByVector(l_dtm[i,], 2)
+    ## query
+    for (i in 1:nrow(l_dtm_y)) l_ind_nns[i] <- l_ind$getNNsByVector(l_dtm_y[i, colnames_xy], k)[k]
 
-    l_df <- base::as.data.frame(l_ind_nns + 1)
-    l_df$id <- 1:NROW(l_ind_nns)
+    l_df <- base::data.frame(y = 1:NROW(y),
+                             x = l_ind_nns + 1)
+
   }
 
   if (verbose %in% 1:2) cat("===== creating graph =====\n")
 
-  l_gr <- igraph::graph_from_data_frame(l_df[, c(3,2)], directed = F)
-  l_clust <- igraph::components(l_gr, "weak")$membership
+  if (deduplication) {
+    l_df$query_g <- paste0("q", l_df$y)
+    l_df$index_g <- paste0("q", l_df$x)
+  } else {
+    l_df$query_g <- paste0("q", l_df$y)
+    l_df$index_g <- paste0("i", l_df$x)
+  }
+
+  ## wybor kolumn powinien zalezec od tego czy jest tylko x czy x, y
+  l_gr <- igraph::graph_from_data_frame(l_df[, c("query_g", "index_g")], directed = F)
+  l_block <- igraph::components(l_gr, "weak")$membership
+  l_df$block <- l_block[names(l_block) %in% l_df$query_g]
 
   list(
-    x = unname(l_clust[x_rows]),
-    y = if (!is.null(y)) unname(l_clust[y_rows]) else NULL,
+    result = l_df[, c("x", "y", "block")],
     method = ann,
-    colnames = colnames(l_dtm)
+    colnames = colnames_xy
    )
 }

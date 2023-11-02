@@ -2,7 +2,7 @@
 % Please edit documentation in R/method_hnsw.R
 \name{method_hnsw}
 \alias{method_hnsw}
-\title{Internal function of hnsw via RcppHNSW}
+\title{An internal function to use hnsw algorithm via RcppHNSW.}
 \usage{
 method_hnsw(
   x,
@@ -14,32 +14,35 @@ method_hnsw(
   ef_c,
   ef_s,
   verbose = 0,
-  n_threads
+  n_threads,
+  grain_size
 )
 }
 \arguments{
-\item{x}{x}
+\item{x}{Deduplication or reference data.}
 
-\item{y}{y}
+\item{y}{Query data.}
 
 \item{deduplication}{deduplication}
 
-\item{k}{k}
+\item{k}{Number of neighbors to return.}
 
-\item{distance}{distance}
+\item{distance}{Type of distance to calculate.}
 
-\item{M}{m}
+\item{M}{Controls the number of bi-directional links created for each element during index construction.}
 
-\item{ef_c}{ef}
+\item{ef_c}{Size of the dynamic list used during construction.}
 
-\item{ef_s}{ef}
+\item{ef_s}{Size of the dynamic list used during search.}
 
-\item{verbose}{ver}
+\item{verbose}{If TRUE, log messages to the console.}
 
-\item{n_threads}{trh}
+\item{n_threads}{Maximum number of threads to use.}
+
+\item{grain_size}{Minimum amount of work to do (rows in X to add) per thread.}
 }
 \description{
-Tu bedzie opis
+See details of \link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build} and \link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search}
 }
 \author{
 Maciej Beręsewicz

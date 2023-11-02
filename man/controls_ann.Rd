@@ -14,13 +14,13 @@ controls_ann(
 )
 }
 \arguments{
-\item{hnsw}{parameters for \code{RcppHNSW}}
+\item{hnsw}{parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}}.}
 
-\item{lsh}{parameters for \code{mlpack::lsh}}
+\item{lsh}{parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}}.}
 
-\item{annoy}{parameters for \code{RcppAnnoy}}
+\item{annoy}{parameters for \link{RcppAnnoy} package.}
 
-\item{kd}{parameters for \code{RANN}}
+\item{kd}{parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function.}
 }
 \value{
 Returns a list with parameters

@@ -2,22 +2,23 @@
 #' @importFrom RcppHNSW hnsw_build
 #' @importFrom RcppHNSW hnsw_search
 #'
-#' @description
-#' Tu bedzie opis
-#'
-#' @title Internal function of hnsw via RcppHNSW
+#' @title An internal function to use hnsw algorithm via RcppHNSW.
 #' @author Maciej Beręsewicz
 #'
-#' @param x x
-#' @param y y
+#' @param x Deduplication or reference data.
+#' @param y Query data.
 #' @param deduplication deduplication
-#' @param k k
-#' @param distance distance
-#' @param M m
-#' @param ef_c ef
-#' @param ef_s ef
-#' @param verbose ver
-#' @param n_threads trh
+#' @param k Number of neighbors to return.
+#' @param distance 	Type of distance to calculate.
+#' @param M Controls the number of bi-directional links created for each element during index construction.
+#' @param ef_c Size of the dynamic list used during construction.
+#' @param ef_s Size of the dynamic list used during search.
+#' @param verbose If TRUE, log messages to the console.
+#' @param n_threads Maximum number of threads to use.
+#' @param grain_size Minimum amount of work to do (rows in X to add) per thread.
+#'
+#' @description
+#' See details of [RcppHNSW::hnsw_build] and [RcppHNSW::hnsw_search]
 #'
 #'
 method_hnsw <- function(x,
@@ -29,7 +30,8 @@ method_hnsw <- function(x,
                         ef_c,
                         ef_s,
                         verbose = 0,
-                        n_threads) {
+                        n_threads,
+                        grain_size) {
   ## index
   l_ind <- RcppHNSW::hnsw_build(X = x,
                                 distance = distance,

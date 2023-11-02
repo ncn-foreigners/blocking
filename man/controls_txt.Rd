@@ -7,12 +7,12 @@
 controls_txt(n_shingles = 2L, n_chunks = 10L)
 }
 \arguments{
-\item{n_shingles}{length of shingles (default 2), passed to \code{tokenizers::tokenize_character_shingles}}
+\item{n_shingles}{length of shingles (default 2L), passed to \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles},}
 
-\item{n_chunks}{passed to \code{tokenizers::tokenize_character_shingles}}
+\item{n_chunks}{passed to (default 10L) \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles}.}
 }
 \value{
-Returns a list with parameters
+Returns a list with parameters.
 }
 \description{
 Controls for text data used in the \code{blocking} functions

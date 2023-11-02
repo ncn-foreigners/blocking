@@ -8,8 +8,10 @@ blocking(
   x,
   y = NULL,
   deduplication = TRUE,
+  block = NULL,
   ann = c("hnsw", "lsh", "annoy", "kd"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
+  true_blocks = NULL,
   verbose = c(0, 1, 2),
   n_threads = 1,
   seed = 2023,
@@ -24,10 +26,14 @@ blocking(
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
+\item{block}{initial blocking to reduce comparisons (currently not supported),}
+
 \item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
 default \code{"hnsw"}),}
 
 \item{distance}{distance metric (default \code{cosine}),}
+
+\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (all metrics from \code{\link[igraph:compare]{igraph::compare()}} are returned).}
 
 \item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),}
 
@@ -40,7 +46,13 @@ default \code{"hnsw"}),}
 \item{control_ann}{list of controls for ann algorithms.}
 }
 \value{
-Returns list with cluster indicators for x, y, ann method and colnames of the dtm
+Returns a list with containing:\cr
+\itemize{
+\item{\code{result} -- \code{data.frame} with indices (rows) of x, y and block}
+\item{\code{ann} -- name of the ann algorithm used,}
+\item{\code{metrics} -- metrics, if \code{true_blocks} is provided,}
+\item{\code{colnames} -- variable names (colnames) used for search.}
+}
 }
 \description{
 Function that creates shingles (strings with 2 characters), applies approximate nearest neibhour search using
@@ -57,6 +69,7 @@ result <- blocking(x = df_example$txt,
                    ann = "hnsw",
                    control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
 
+result
 
 }
 \author{

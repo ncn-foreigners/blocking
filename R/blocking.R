@@ -3,18 +3,11 @@
 #' @importFrom text2vec create_vocabulary
 #' @importFrom text2vec vocab_vectorizer
 #' @importFrom text2vec create_dtm
-#' @importFrom RcppAnnoy AnnoyAngular
-#' @importFrom RcppAnnoy AnnoyEuclidean
-#' @importFrom RcppAnnoy AnnoyHamming
-#' @importFrom RcppAnnoy AnnoyManhattan
-#' @importFrom mlpack lsh
-#' @importFrom mlpack knn
 #' @importFrom igraph graph_from_adjacency_matrix
 #' @importFrom igraph components
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
-#' @importFrom methods new
 #'
 #'
 #' @title Main function for blocking records given text data
@@ -22,8 +15,8 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function that creates shingles (strings with 2 characters), applies approximate nearest neibhour search using
-#' \code{RcppHNSW} and creates blocks using \code{igraph}
+#' Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
+#' [RcppHNSW], [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
 #'
 #' @param x input text or matrix data,
 #' @param y input text or matrix data (default NULL),
@@ -32,6 +25,8 @@
 #' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
 #' default \code{"hnsw"}),
 #' @param distance distance metric (default \code{cosine}),
+#' @param ann_read reading index from file (currently not supported),
+#' @param ann_save saving index to file. Two files will be created: 1) with index, 2) with column names (currently not supported),
 #' @param true_blocks matrix with true blocks to calculate evaluation metrics (all metrics from [igraph::compare()] are returned).
 #' @param verbose whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),
 #' @param seed seed for the algorithms,
@@ -68,6 +63,8 @@ blocking <- function(x,
                      block = NULL,
                      ann = c("hnsw", "lsh", "annoy", "kd"),
                      distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
+                     ann_read = NULL,
+                     ann_save = NULL,
                      true_blocks = NULL,
                      verbose = c(0, 1, 2),
                      n_threads = 1,
@@ -77,6 +74,10 @@ blocking <- function(x,
 
   ## checks
   stopifnot("Only character or matrix x is supported" = is.character(x) | is.matrix(x))
+
+  #stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
+  #            distance %in% c("euclidean", "manhatan", "hamming", "angular") & ann == "annoy")
+
 
   if (!is.null(true_blocks)) {
     stopifnot("`true block` should be a data.frame with columns: x, y, block" =
@@ -122,7 +123,6 @@ blocking <- function(x,
     l_dtm <- text2vec::create_dtm(l_tokens, l_vec)
     l_dtm <- base::as.matrix(l_dtm)
 
-    ## tokens for y (check history to avoid copying)
     if (is.null(y_default)) {
       l_dtm_y <- l_dtm
     } else {
@@ -146,91 +146,40 @@ blocking <- function(x,
                 ann, nrow(l_dtm), nrow(l_dtm_y), length(colnames_xy)))
   }
 
-  ## switch with separate functions for each package?
-  if (ann == "hnsw") {
+  l_df <- switch(ann,
+                 "hnsw" = method_hnsw(x = l_dtm[, colnames_xy],
+                                      y = l_dtm_y[, colnames_xy],
+                                      k = k,
+                                      distance = distance,
+                                      verbose = if (verbose == 2) TRUE else FALSE,
+                                      n_threads = n_threads,
+                                      control = control_ann),
+                 "lsh" = method_mlpack(x = l_dtm[, colnames_xy],
+                                       y = l_dtm_y[, colnames_xy],
+                                       algo = "lsh",
+                                       k = k,
+                                       verbose = if (verbose == 2) TRUE else FALSE,
+                                       seed = seed,
+                                       control = control_ann),
+                 "kd" = method_mlpack(x = l_dtm[, colnames_xy],
+                                      y = l_dtm_y[, colnames_xy],
+                                      algo = "kd",
+                                      k = k,
+                                      verbose = if (verbose == 2) TRUE else FALSE,
+                                      seed = seed,
+                                      control = control_ann),
+                 "annoy" = method_annoy(x = l_dtm[, colnames_xy],
+                                        y = l_dtm_y[, colnames_xy],
+                                        k = k,
+                                        distance  = distance,
+                                        verbose = if (verbose == 2) TRUE else FALSE,
+                                        seed = seed,
+                                        control = control_ann))
 
-    l_df <- method_hnsw(x = l_dtm[, colnames_xy],
-                        y = l_dtm_y[, colnames_xy],
-                        deduplication = deduplication,
-                        k = k,
-                        distance = distance,
-                        verbose = if (verbose == 2) TRUE else FALSE,
-                        n_threads = n_threads,
-                        M = control_ann$hnsw$M,
-                        ef_c = control_ann$hnsw$ef_c,
-                        ef_s = control_ann$hnsw$ef_s)
-  }
-
-  if (ann == "lsh") {
-
-    l_lhs_result <- mlpack::lsh(k = k,
-                                query = l_dtm_y[, colnames_xy],
-                                reference = l_dtm[, colnames_xy],
-                                verbose = if (verbose == 2) TRUE else FALSE,
-                                seed = seed,
-                                bucket_size = control_ann$lsh$bucket_size,
-                                hash_width = control_ann$lsh$hash_width,
-                                num_probes = control_ann$lsh$num_probes,
-                                projections = control_ann$lsh$projections,
-                                tables = control_ann$lsh$tables)
-
-    l_df <- base::data.frame(y = 1:NROW(y),
-                             x = l_lhs_result$neighbors[, k] + 1)
-
-  }
-
-  if (ann == "kd") {
-
-    l_knn_result <- mlpack::knn(k = k,
-                                query = l_dtm_y[, colnames_xy],
-                                reference = l_dtm[, colnames_xy],
-                                verbose = if (verbose == 2) TRUE else FALSE,
-                                seed = seed,
-                                algorithm = control_ann$kd$algorithm,
-                                leaf_size = control_ann$kd$leaf_size,
-                                tree_type = control_ann$kd$tree_type,
-                                eps = control_ann$kd$epsilon,
-                                rho = control_ann$kd$rho,
-                                tau = control_ann$kd$tau,
-                                random_basis = control_ann$kd$random_basis)
-
-    l_df <- base::data.frame(y = 1:NROW(y),
-                             x = l_knn_result$neighbors[, k] + 1)
-
-  }
-
-  if (ann == "annoy") {
-
-    stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
-                distance %in% c("euclidean", "manhatan", "hamming", "angular"))
-
-    colnames_xy_n <- length(colnames_xy)
-    l_ind <- switch(distance,
-                    "euclidean" = methods::new(RcppAnnoy::AnnoyManhattan, colnames_xy_n),
-                    "manhatan"  = methods::new(RcppAnnoy::AnnoyManhattan, colnames_xy_n),
-                    "hamming"   = methods::new(RcppAnnoy::AnnoyHamming,   colnames_xy_n),
-                    "angular"   = methods::new(RcppAnnoy::AnnoyAngular,   colnames_xy_n)
-                    )
-
-    l_ind$setSeed(seed)
-
-    if (verbose == 2) l_ind$setVerbose(1)
-
-    ## index
-    for (i in 1:nrow(l_dtm)) l_ind$addItem(i - 1, l_dtm[i, colnames_xy])
-    l_ind$build(control_ann$annoy$n_trees)
-    l_ind_nns <- numeric(length = nrow(l_dtm_y))
-
-    ## query
-    for (i in 1:nrow(l_dtm_y)) l_ind_nns[i] <- l_ind$getNNsByVector(l_dtm_y[i, colnames_xy], k)[k]
-
-    l_df <- base::data.frame(y = 1:NROW(y),
-                             x = l_ind_nns + 1)
-
-  }
 
   if (verbose %in% 1:2) cat("===== creating graph =====\n")
 
+  ## this should be switched to data.table
   if (deduplication) {
     l_df$query_g <- paste0("q", l_df$y)
     l_df$index_g <- paste0("q", l_df$x)
@@ -242,7 +191,8 @@ blocking <- function(x,
   ## wybor kolumn powinien zalezec od tego czy jest tylko x czy x, y
   l_gr <- igraph::graph_from_data_frame(l_df[, c("query_g", "index_g")], directed = F)
   l_block <- igraph::components(l_gr, "weak")$membership
-  l_df$block <- l_block[names(l_block) %in% l_df$query_g]
+
+  l_df$block <- l_block[names(l_block) %in% l_df$query_g] ## to data.table
 
   ## if true are given
   if (!is.null(true_blocks)) {
@@ -264,7 +214,7 @@ blocking <- function(x,
   }
 
   list(
-    result = l_df[, c("x", "y", "block")],
+    result = as.data.frame(l_df[, c("x", "y", "block")]), ## will be further changed to data.table
     method = ann,
     metrics = if (is.null(true_blocks)) NULL else eval_metrics,
     colnames = colnames_xy

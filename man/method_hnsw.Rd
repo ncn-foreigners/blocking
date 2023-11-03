@@ -4,42 +4,22 @@
 \alias{method_hnsw}
 \title{An internal function to use hnsw algorithm via RcppHNSW.}
 \usage{
-method_hnsw(
-  x,
-  y,
-  deduplication,
-  k,
-  distance,
-  M,
-  ef_c,
-  ef_s,
-  verbose = 0,
-  n_threads,
-  grain_size
-)
+method_hnsw(x, y, k, distance, verbose, n_threads, control)
 }
 \arguments{
 \item{x}{Deduplication or reference data.}
 
 \item{y}{Query data.}
 
-\item{deduplication}{deduplication}
-
 \item{k}{Number of neighbors to return.}
 
 \item{distance}{Type of distance to calculate.}
-
-\item{M}{Controls the number of bi-directional links created for each element during index construction.}
-
-\item{ef_c}{Size of the dynamic list used during construction.}
-
-\item{ef_s}{Size of the dynamic list used during search.}
 
 \item{verbose}{If TRUE, log messages to the console.}
 
 \item{n_threads}{Maximum number of threads to use.}
 
-\item{grain_size}{Minimum amount of work to do (rows in X to add) per thread.}
+\item{control}{Controls for the HNSW algorithm}
 }
 \description{
 See details of \link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build} and \link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search}

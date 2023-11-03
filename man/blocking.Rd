@@ -11,6 +11,8 @@ blocking(
   block = NULL,
   ann = c("hnsw", "lsh", "annoy", "kd"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
+  ann_read = NULL,
+  ann_save = NULL,
   true_blocks = NULL,
   verbose = c(0, 1, 2),
   n_threads = 1,
@@ -32,6 +34,10 @@ blocking(
 default \code{"hnsw"}),}
 
 \item{distance}{distance metric (default \code{cosine}),}
+
+\item{ann_read}{reading index from file (currently not supported),}
+
+\item{ann_save}{saving index to file. Two files will be created: 1) with index, 2) with column names (currently not supported),}
 
 \item{true_blocks}{matrix with true blocks to calculate evaluation metrics (all metrics from \code{\link[igraph:compare]{igraph::compare()}} are returned).}
 
@@ -55,13 +61,15 @@ Returns a list with containing:\cr
 }
 }
 \description{
-Function that creates shingles (strings with 2 characters), applies approximate nearest neibhour search using
-\code{RcppHNSW} and creates blocks using \code{igraph}
+Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
+\link{RcppHNSW}, \link{RcppAnnoy} and \link{mlpack} and creates blocks using \link{igraph}.
 }
 \details{
 Imports
 }
 \examples{
+
+## general example
 df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
@@ -70,6 +78,8 @@ result <- blocking(x = df_example$txt,
                    control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
 
 result
+
+## an example with true blocks
 
 }
 \author{

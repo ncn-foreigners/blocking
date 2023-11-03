@@ -23,5 +23,6 @@ Imports:
   RcppAnnoy,
   mlpack,
   igraph,
+  data.table,
   methods
-Suggests: tinytest
+Suggests: tinytest, reclin2

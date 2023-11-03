@@ -59,17 +59,17 @@ expect_equal(
 
 ## record linkage -------------------------------------------------------------
 
-df_base <- data.frame(true = c("montypython", "kowalskijan"))
+df_base <- data.frame(txt = c("montypython", "kowalskijan"))
 
 expect_silent(
-  blocking(x = df_base$true, y = df_example$txt)
+  blocking(x = df_base$txt, y = df_example$txt)
 )
 
 
 ### RcppHNSW ----------------------------------------------------------------
 
 expect_equal(
-  blocking(x = df_base$true,
+  blocking(x = df_base$txt,
            y = df_example$txt,
            ann = "hnsw",
            control_ann = controls_ann(hnsw = list(M = 5, ef_s = 10, ef_c = 10))),
@@ -87,7 +87,7 @@ expect_equal(
 ### mlpack ----------------------------------------------------------------
 
 expect_equal(
-  blocking(x = df_base$true,
+  blocking(x = df_base$txt,
            y = df_example$txt,
            ann = "lsh"),
   list(result = structure(
@@ -102,7 +102,7 @@ expect_equal(
 )
 
 expect_equal(
-  blocking(x = df_base$true,
+  blocking(x = df_base$txt,
            y = df_example$txt,
            ann = "kd"),
   list(result = structure(
@@ -120,7 +120,7 @@ expect_equal(
 ### RcppAnnoy ----------------------------------------------------------------
 
 expect_equal(
-  blocking(x = df_base$true,
+  blocking(x = df_base$txt,
            y = df_example$txt,
            ann = "annoy",
            distance = "euclidean"),
@@ -302,4 +302,9 @@ expect_equal(
            true_blocks = result$result)$metrics,
   c(vi = 0, nmi = 1, split.join = 0, rand = 1, adjusted.rand = 1)
 )
+
+
+
+# reclin2 testing ---------------------------------------------------------
+
 

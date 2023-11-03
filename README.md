@@ -96,7 +96,53 @@ blocking_result$result
 #> 8 5 8     2
 ```
 
-Deduplication followed by the `reclin2` package – TBA
+Deduplication followed by the `reclin2` package
+
+``` r
+pair_ann(x = df_example, on = "txt") |>
+  compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
+  score_simple("score", on = "txt") |>
+  select_threshold("threshold", score = "score", threshold = 0.55) |>
+  link(selection = "threshold")
+#>   Total number of pairs: 10 pairs
+#> 
+#> Key: <.y>
+#>        .y    .x       txt.x           txt.y
+#>     <int> <int>      <char>          <char>
+#>  1:     2     1 jankowalski     kowalskijan
+#>  2:     3     1 jankowalski    kowalskimjan
+#>  3:     3     2 kowalskijan    kowalskimjan
+#>  4:     4     1 jankowalski        kowaljan
+#>  5:     4     2 kowalskijan        kowaljan
+#>  6:     6     5 montypython     pythonmonty
+#>  7:     7     5 montypython cyrkmontypython
+#>  8:     7     6 pythonmonty cyrkmontypython
+#>  9:     8     5 montypython           monty
+#> 10:     8     6 pythonmonty           monty
+```
+
+Record linkage
+
+``` r
+pair_ann(y = df_example, x = df_base, on = "txt", deduplication = FALSE) |>
+  compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
+  score_simple("score", on = "txt") |>
+  select_threshold("threshold", score = "score", threshold = 0.55) |>
+  link(selection = "threshold")
+#>   Total number of pairs: 8 pairs
+#> 
+#> Key: <.y>
+#>       .y    .x       txt.x           txt.y
+#>    <int> <int>      <char>          <char>
+#> 1:     1     2 kowalskijan     jankowalski
+#> 2:     2     2 kowalskijan     kowalskijan
+#> 3:     3     2 kowalskijan    kowalskimjan
+#> 4:     4     2 kowalskijan        kowaljan
+#> 5:     5     1 montypython     montypython
+#> 6:     6     1 montypython     pythonmonty
+#> 7:     7     1 montypython cyrkmontypython
+#> 8:     8     1 montypython           monty
+```
 
 ## See also
 

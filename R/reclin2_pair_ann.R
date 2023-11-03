@@ -48,14 +48,14 @@ pair_ann <- function(x,
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
 
-  a <- x[, `..on`]
+  a <- x[, ..on]
   a[, `:=`(`.x`, .I)]
-  a <- a[unique(block_ann[,.(`.x`=x, `block`)]), on = ".x"]
+  a <- a[unique(block_ann[,.(`.x`=x, block)]), on = ".x"]
   a[, `:=`((on), NULL)]
 
   b <- y[, `..on`]
   b[, `:=`(`.y`, .I)]
-  b <- b[unique(block_ann[,.(`.y`=y, `block`)]), on = ".y"]
+  b <- b[unique(block_ann[,.(`.y`=y, block)]), on = ".y"]
   b[, `:=`((on), NULL)]
 
   pairs <- merge(a, b,

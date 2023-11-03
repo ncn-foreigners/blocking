@@ -1,5 +1,12 @@
-#' @title Integration with reclin2 package
+#' Imports
+#'
+#' @import data.table
+#'
+#' @title Integration with the reclin2 package
 #' @author Maciej Beręsewicz
+#'
+#' @description
+#' Function for the integration with the reclin2 package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
 #'
 #' @param x x
 #' @param y y
@@ -9,7 +16,8 @@
 #' @param add_xy whether to add x and y
 #' @param ... arguments passed to [blocking::blocking()] function.
 #'
-#' @returns Returns a [data.table] with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. This data.table is also of a class \code{pairs} which allows for integration witn the [reclin2] package.
+#'
+#' @returns Returns a [data.table] with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. This data.table is also of a class \code{pairs} which allows for integration witn the [reclin2::compare_pairs()] package.
 #'
 #' @examples
 #' data("linkexample1", "linkexample2", package = "reclin2")
@@ -33,18 +41,20 @@ pair_ann <- function(x,
                                       deduplication = deduplication,
                                       ...)
 
-  x <- as.data.table(x)
-  y <- as.data.table(y)
+  block_ann <- data.table::as.data.table(block_result$result)
+
+  x <- data.table::as.data.table(x)
+  y <- data.table::as.data.table(y)
 
   a <- x[, ..on]
-  a[, `:=`(.x, .I)]
-  a <- a[unique(block_ann[,.(.x=x, block)]), on = ".x"]
-  a[, `:=`((on), NULL)]
+  a[, data.table::`:=`(.x, data.table::.I)]
+  a <- a[unique(block_result[,.(.x=x, block)]), on = ".x"]
+  a[, data.table::`:=`((on), NULL)]
 
   b <- y[, ..on]
-  b[, `:=`(.y, .I)]
-  b <- b[unique(block_ann[,.(.y=y, block)]), on = ".y"]
-  b[, `:=`((on), NULL)]
+  b[, data.table::`:=`(.y, data.table::.I)]
+  b <- b[unique(block_result[,.(.y=y, block)]), on = ".y"]
+  b[, data.table::`:=`((on), NULL)]
 
   pairs <- merge(a, b,
                  by = "block",
@@ -52,16 +62,16 @@ pair_ann <- function(x,
                  all.y = FALSE,
                  allow.cartesian = TRUE)
 
-  setkey(pairs, NULL)
-  setattr(pairs, "class", c("pairs", class(pairs)))
+  data.table::setkey(pairs, NULL)
+  data.table::setattr(pairs, "class", c("pairs", class(pairs)))
 
-  if (!keep_block) pairs[, `:=`("block", NULL)]
+  if (!keep_block) pairs[, data.table::`:=`("block", NULL)]
 
-  if (deduplication) setattr(pairs, "deduplication", TRUE)
+  if (deduplication) data.table::setattr(pairs, "deduplication", TRUE)
 
   if (add_xy) {
-    setattr(pairs, "x", x)
-    setattr(pairs, "y", y)
+    data.table::setattr(pairs, "x", x)
+    data.table::setattr(pairs, "y", y)
   }
 
   pairs

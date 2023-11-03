@@ -16,14 +16,13 @@
 #'
 #' @description
 #' Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
-#' [RcppHNSW], [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
+#' RcppHNSW, [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
 #'
 #' @param x input text or matrix data,
 #' @param y input text or matrix data (default NULL),
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param block initial blocking to reduce comparisons (currently not supported),
-#' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
-#' default \code{"hnsw"}),
+#' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")}, default \code{"hnsw"}),
 #' @param distance distance metric (default \code{cosine}),
 #' @param ann_read reading index from file (currently not supported),
 #' @param ann_save saving index to file. Two files will be created: 1) with index, 2) with column names (currently not supported),

@@ -30,8 +30,7 @@ blocking(
 
 \item{block}{initial blocking to reduce comparisons (currently not supported),}
 
-\item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")},
-default \code{"hnsw"}),}
+\item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")}, default \code{"hnsw"}),}
 
 \item{distance}{distance metric (default \code{cosine}),}
 
@@ -62,7 +61,7 @@ Returns a list with containing:\cr
 }
 \description{
 Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
-\link{RcppHNSW}, \link{RcppAnnoy} and \link{mlpack} and creates blocks using \link{igraph}.
+RcppHNSW, \link{RcppAnnoy} and \link{mlpack} and creates blocks using \link{igraph}.
 }
 \details{
 Imports

@@ -34,10 +34,12 @@ pair_ann <- function(x,
 
   stopifnot("Only one `on` is possible" = length(on) == 1)
 
+  if (!is.null(y)) deduplication <- FALSE
+
   y <- if (deduplication) x else y
 
   block_result  <- blocking::blocking(x = x[, on],
-                                      y = y[, on],
+                                      y = if (deduplication) NULL else y[, on],
                                       deduplication = deduplication,
                                       ...)
 
@@ -46,15 +48,15 @@ pair_ann <- function(x,
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
 
-  a <- x[, ..on]
-  a[, data.table::`:=`(.x, data.table::.I)]
-  a <- a[unique(block_result[,.(.x=x, block)]), on = ".x"]
-  a[, data.table::`:=`((on), NULL)]
+  a <- x[, `..on`]
+  a[, `:=`(`.x`, .I)]
+  a <- a[unique(block_ann[,.(`.x`=x, `block`)]), on = ".x"]
+  a[, `:=`((on), NULL)]
 
-  b <- y[, ..on]
-  b[, data.table::`:=`(.y, data.table::.I)]
-  b <- b[unique(block_result[,.(.y=y, block)]), on = ".y"]
-  b[, data.table::`:=`((on), NULL)]
+  b <- y[, `..on`]
+  b[, `:=`(`.y`, .I)]
+  b <- b[unique(block_ann[,.(`.y`=y, `block`)]), on = ".y"]
+  b[, `:=`((on), NULL)]
 
   pairs <- merge(a, b,
                  by = "block",
@@ -62,8 +64,11 @@ pair_ann <- function(x,
                  all.y = FALSE,
                  allow.cartesian = TRUE)
 
+  if (deduplication)  pairs <- pairs[.y > .x]
+
   data.table::setkey(pairs, NULL)
   data.table::setattr(pairs, "class", c("pairs", class(pairs)))
+  setattr(pairs, "blocking_on", on)
 
   if (!keep_block) pairs[, data.table::`:=`("block", NULL)]
 

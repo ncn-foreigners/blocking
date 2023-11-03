@@ -16,6 +16,10 @@ algorithms
 - [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
   `mlpack::lsh` and `mlpack::knn`).
 
+The package also supports integration with
+[reclin2](https://cran.r-project.org/package=reclin2) package via
+`blocking::pair_ann` function.
+
 ## Funding
 
 Work on this package is supported by the the National Science Centre,
@@ -32,9 +36,20 @@ remotes::install_github("ncn-foreigners/blocking")
 
 ## Basic usage
 
+Load packages for the examples
+
 ``` r
 library(blocking)
+library(reclin2)
+#> Loading required package: data.table
+#> 
+#> Attaching package: 'reclin2'
+#> The following object is masked from 'package:base':
+#> 
+#>     identical
 ```
+
+Generate simple data with two groups.
 
 ``` r
 df_example <- data.frame(txt = c(
@@ -47,6 +62,8 @@ df_example <- data.frame(txt = c(
   "cyrkmontypython",
   "monty"
 ))
+df_base <- data.frame(txt = c("montypython", "kowalskijan"))
+
 df_example
 #>               txt
 #> 1     jankowalski
@@ -58,6 +75,8 @@ df_example
 #> 7 cyrkmontypython
 #> 8           monty
 ```
+
+Deduplication using blocking
 
 ``` r
 blocking_result <- blocking(x = df_example$txt)
@@ -76,6 +95,8 @@ blocking_result$result
 #> 7 5 7     2
 #> 8 5 8     2
 ```
+
+Deduplication followed by the `reclin2` package – TBA
 
 ## See also
 

@@ -24,6 +24,7 @@ Currently supports the following R packages that binds to specific ANN algorithm
 + [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy), 
 + [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see `mlpack::lsh` and `mlpack::knn`).
 
+The package also supports integration with [reclin2](https://cran.r-project.org/package=reclin2) package via `blocking::pair_ann` function.
 
 ## Funding
 
@@ -40,9 +41,14 @@ remotes::install_github("ncn-foreigners/blocking")
 
 ## Basic usage
 
+Load packages for the examples
+
 ```{r}
 library(blocking)
+library(reclin2)
 ```
+
+Generate simple data with two groups.
 
 ```{r}
 df_example <- data.frame(txt = c(
@@ -55,14 +61,21 @@ df_example <- data.frame(txt = c(
   "cyrkmontypython",
   "monty"
 ))
+df_base <- data.frame(txt = c("montypython", "kowalskijan"))
+
 df_example
 ```
+
+Deduplication using blocking
 
 ```{r}
 blocking_result <- blocking(x = df_example$txt)
 ## data frame with indices and block 
 blocking_result$result
 ```
+
+Deduplication followed by the `reclin2` package -- TBA
+
 
 ## See also
 

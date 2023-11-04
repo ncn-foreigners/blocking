@@ -25,4 +25,6 @@ Imports:
   igraph,
   data.table,
   methods
-Suggests: tinytest, reclin2
+Suggests: 
+  tinytest, 
+  reclin2

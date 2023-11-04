@@ -22,9 +22,9 @@ blocking(
 )
 }
 \arguments{
-\item{x}{input text or matrix data,}
+\item{x}{reference data (character vector or matrix),}
 
-\item{y}{input text or matrix data (default NULL),}
+\item{y}{query data, if not provided NULL by default,}
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 

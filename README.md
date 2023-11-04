@@ -16,14 +16,14 @@ algorithms
 - [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
   `mlpack::lsh` and `mlpack::knn`).
 
-The package also supports integration with
+The package also supports integration with the
 [reclin2](https://cran.r-project.org/package=reclin2) package via
 `blocking::pair_ann` function.
 
 ## Funding
 
-Work on this package is supported by the the National Science Centre,
-OPUS 22 grant no. 2020/39/B/HS4/00941.
+Work on this package is supported by the National Science Centre, OPUS
+22 grant no. 2020/39/B/HS4/00941.
 
 ## Installation
 
@@ -74,6 +74,11 @@ df_example
 #> 6     pythonmonty
 #> 7 cyrkmontypython
 #> 8           monty
+
+df_base
+#>           txt
+#> 1 montypython
+#> 2 kowalskijan
 ```
 
 Deduplication using blocking
@@ -84,16 +89,29 @@ blocking_result <- blocking(x = df_example$txt)
 #> Use 'as(., "CsparseMatrix")' instead.
 #> See help("Deprecated") and help("Matrix-deprecated").
 ## data frame with indices and block 
+blocking_result
+#> Blocking based on the hnsw method.
+#> Number of blocks: 2.
+#> Number of columns used for blocking: 28.
+#> Distribution of the size of the blocks:
+#> 1 
+#> 2
+```
+
+Table with blocking
+
+``` r
 blocking_result$result
-#>   x y block
-#> 1 2 1     1
-#> 2 1 2     1
-#> 3 2 3     1
-#> 4 2 4     1
-#> 5 6 5     2
-#> 6 5 6     2
-#> 7 5 7     2
-#> 8 5 8     2
+#>        x     y block
+#>    <int> <int> <num>
+#> 1:     1     2     1
+#> 2:     2     1     1
+#> 3:     2     3     1
+#> 4:     2     4     1
+#> 5:     5     6     2
+#> 6:     5     7     2
+#> 7:     5     8     2
+#> 8:     6     5     2
 ```
 
 Deduplication followed by the `reclin2` package
@@ -124,7 +142,7 @@ pair_ann(x = df_example, on = "txt") |>
 Record linkage
 
 ``` r
-pair_ann(y = df_example, x = df_base, on = "txt", deduplication = FALSE) |>
+pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>
   compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
   score_simple("score", on = "txt") |>
   select_threshold("threshold", score = "score", threshold = 0.55) |>
@@ -146,5 +164,15 @@ pair_ann(y = df_example, x = df_base, on = "txt", deduplication = FALSE) |>
 
 ## See also
 
-- [reclin2](https://CRAN.R-project.org/package=reclin2)
-- [klsh](https://CRAN.R-project.org/package=klsh)
+See section `Data Integration (Statistical Matching and Record Linkage)`
+in [the Official Statistics Task
+View](https://cran.r-project.org/web/views/OfficialStatistics.html).
+
+Packages that allow blocking:
+
+- [klsh](https://CRAN.R-project.org/package=klsh) – k-means locality
+  sensitive hashing,
+- [reclin2](https://CRAN.R-project.org/package=reclin2) –
+  `pair_blocking`, `pari_minsim` functions,
+- [fastLink](https://CRAN.R-project.org/package=fastLink) – `blockData`
+  function.

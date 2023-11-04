@@ -39,8 +39,25 @@ Function for the integration with the reclin2 package. The function is based on 
 Imports
 }
 \examples{
+
+# example using two datasets from reclin2
+
+library(reclin2)
+
 data("linkexample1", "linkexample2", package = "reclin2")
 
+linkexample1$txt <- with(linkexample1, tolower(paste0(firstname, lastname, address, sex, postcode)))
+linkexample1$txt <- gsub("\\\\s+", "", linkexample1$txt)
+linkexample2$txt <- with(linkexample2, tolower(paste0(firstname, lastname, address, sex, postcode)))
+linkexample2$txt <- gsub("\\\\s+", "", linkexample2$txt)
+
+# pairing records from linkexample2 to linkexample1 based on txt column
+
+pair_ann(x = linkexample1, y = linkexample2, on = "txt", deduplication = FALSE) |>
+compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
+score_simple("score", on = "txt") |>
+select_threshold("threshold", score = "score", threshold = 0.75) |>
+link(selection = "threshold")
 
 }
 \author{

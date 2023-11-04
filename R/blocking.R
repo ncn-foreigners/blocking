@@ -18,8 +18,8 @@
 #' Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
 #' RcppHNSW, [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
 #'
-#' @param x input text or matrix data,
-#' @param y input text or matrix data (default NULL),
+#' @param x reference data (character vector or matrix),
+#' @param y query data, if not provided NULL by default,
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param block initial blocking to reduce comparisons (currently not supported),
 #' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")}, default \code{"hnsw"}),
@@ -93,11 +93,8 @@ blocking <- function(x,
   if (!is.null(y)) {
     deduplication <- FALSE
     y_default <- FALSE
-  }
-
-  k <- 1L
-
-  if (is.null(y)) {
+    k <- 1L
+  } else {
     y_default <- y
     y <- x
     k <- 2L
@@ -180,18 +177,17 @@ blocking <- function(x,
 
   ## this should be switched to data.table
   if (deduplication) {
-    l_df$query_g <- paste0("q", l_df$y)
-    l_df$index_g <- paste0("q", l_df$x)
+    l_df[, `:=`("query_g", paste0("q", y))]
+    l_df[, `:=`("index_g", paste0("q", x))]
   } else {
-    l_df$query_g <- paste0("q", l_df$y)
-    l_df$index_g <- paste0("i", l_df$x)
+    l_df[, `:=`("query_g", paste0("q", y))]
+    l_df[, `:=`("index_g", paste0("i", x))]
   }
 
-  ## wybor kolumn powinien zalezec od tego czy jest tylko x czy x, y
   l_gr <- igraph::graph_from_data_frame(l_df[, c("query_g", "index_g")], directed = F)
   l_block <- igraph::components(l_gr, "weak")$membership
 
-  l_df$block <- l_block[names(l_block) %in% l_df$query_g] ## to data.table
+  l_df[, `:=`(block, l_block[names(l_block) %in% l_df$query_g])]
 
   ## if true are given
   if (!is.null(true_blocks)) {
@@ -212,10 +208,15 @@ blocking <- function(x,
 
   }
 
-  list(
-    result = as.data.frame(l_df[, c("x", "y", "block")]), ## will be further changed to data.table
-    method = ann,
-    metrics = if (is.null(true_blocks)) NULL else eval_metrics,
-    colnames = colnames_xy
-   )
+  setorderv(l_df, c("x", "y", "block"))
+
+  structure(
+    list(
+      result = l_df[, c("x", "y", "block")],
+      method = ann,
+      metrics = if (is.null(true_blocks)) NULL else eval_metrics,
+      colnames = colnames_xy
+   ),
+   class = "blocking"
+  )
 }

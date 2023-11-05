@@ -1,8 +1,10 @@
 ---
 output: github_document
 ---
-
-
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/ncn-foreigners/blocking/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ncn-foreigners/blocking/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+  
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

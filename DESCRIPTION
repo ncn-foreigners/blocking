@@ -26,5 +26,8 @@ Imports:
   data.table,
   methods
 Suggests: 
-  tinytest, 
-  reclin2
+    tinytest,
+    reclin2,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

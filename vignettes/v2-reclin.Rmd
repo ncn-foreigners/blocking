@@ -1,0 +1,19 @@
+---
+title: "v2-reclin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{v2-reclin}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(blocking)
+```

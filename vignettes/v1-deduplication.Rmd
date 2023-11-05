@@ -1,8 +1,9 @@
 ---
-title: "v1-deduplication"
+title: "Blocking records for deduplication"
+author: "Maciej Beręsewicz"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{v1-deduplication}
+  %\VignetteIndexEntry{Blocking records for deduplication}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,10 +11,90 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
   comment = "#>"
 )
 ```
 
+# Setup
+
+Read required packages
+
 ```{r setup}
 library(blocking)
+library(reclin2)
+library(data.table)
 ```
+
+Read the `RLdata500` data used in the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package from the [dblink](https://github.com/cleanzr/dblink) Github repository.
+
+```{r}
+df <- fread("https://raw.githubusercontent.com/cleanzr/dblink/dc3dd0daf55f8a303863423817a0f0042b3c275a/examples/RLdata500.csv")
+head(df)
+```
+This dataset contains `r nrow(df)` with `r NROW(unique(df$ent_id))` entities.
+
+# Blocking for deduplication
+
+Now we create a new column that concatenates the information in each row. 
+
+```{r}
+df[, id_count :=.N, ent_id] ## how many times given unit occurs
+df[is.na(fname_c2), fname_c2:=""]
+df[is.na(lname_c2), lname_c2:=""]
+df[, bm:=sprintf("%02d", bm)] ## add leading zeros to month
+df[, bd:=sprintf("%02d", bd)] ## add leading zeros to month
+df[, txt:=tolower(paste0(fname_c1,fname_c2,lname_c1,lname_c2,by,bm,bd))]
+head(df)
+```
+
+In the next step we use the newly created column in the `blocking` function. If we specify verbose, we get information about the progress.
+
+```{r}
+df_blocks <- blocking(x = df$txt, ann = "hnsw", verbose=TRUE)
+```
+
+Results are as follows:
+
++ based in `RcppHNSW` we created 133 blocks,
++ it was based on 429 columns (2 character shingles),
++ we have 46 blocks of 2 elements, 43 blocks of 3 elements, ..., 1 block of 17 elements.
+
+```{r}
+df_blocks
+```
+Structure of the object is as follows:
+
++ `result` - a data.table with identifiers and block IDs,
++ `method` - the method used,
++ `metrics` - based on the `igraph::compare` methods for comparing graphs (here NULL),
++ `colnames` - column names used for the comparison.
+
+```{r}
+str(df_blocks,1)
+```
+The resulting data.table has three columns:
+
++ `x` - Reference dataset (i.e. `df') -- this may not contain all units of `df',
++ `y` - query (each row of `df`) -- this will return all units of `df`,
++ `block` -- the block ID.
+
+```{r}
+head(df_blocks$result)
+```
+
+We add block information to the final dataset.
+
+```{r}
+df_block_result <- copy(df_blocks$result[order(y),])
+df[, block_id := df_block_result$block]
+head(df)
+```
+
+Finally, we can check in how many blocks the same entities (`ent_id`) are observed. In our example, all the same entities are in the same blocks. 
+
+```{r}
+df[, .(uniq_blocks = uniqueN(block_id)), .(ent_id)][, .N, uniq_blocks]
+```
+

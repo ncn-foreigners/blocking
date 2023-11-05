@@ -7,3 +7,4 @@
 5. initial support for the `reclin2` package.
 6. class `blocking` introduced.
 7. s3method for printing.
+8. first vignette added.

@@ -9,7 +9,7 @@ print.blocking <- function(x,...) {
   cat("Number of columns used for blocking: ", NROW(x$colnames), ".\n",sep="")
   cat("Distribution of the size of the blocks:")
 
-  print(table(table(unique(blocks_summ))))
+  print(table(table(blocks_summ)))
 
   invisible(x)
 }

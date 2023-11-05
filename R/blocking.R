@@ -1,4 +1,5 @@
 #' Imports
+#' @importFrom text2vec itoken
 #' @importFrom text2vec itoken_parallel
 #' @importFrom text2vec create_vocabulary
 #' @importFrom text2vec vocab_vectorizer
@@ -108,11 +109,20 @@ blocking <- function(x,
     if (verbose %in% 1:2) cat("===== creating tokens =====\n")
 
     ## tokens for x
-    l_tokens <- text2vec::itoken(
-      iterable = x,
-      tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
-      n_chunks = control_txt$n_chunks,
-      progressbar = verbose)
+    if (.Platform$OS.type == "unix") {
+      l_tokens <- text2vec::itoken_parallel(
+        iterable = x,
+        tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+        n_chunks = control_txt$n_chunks,
+        progressbar = verbose)
+    } else {
+      l_tokens <- text2vec::itoken(
+        iterable = x,
+        tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+        n_chunks = control_txt$n_chunks,
+        progressbar = verbose)
+    }
+
 
     l_voc <- text2vec::create_vocabulary(l_tokens)
     l_vec <- text2vec::vocab_vectorizer(l_voc)
@@ -122,12 +132,19 @@ blocking <- function(x,
     if (is.null(y_default)) {
       l_dtm_y <- l_dtm
     } else {
-      l_tokens_y <- text2vec::itoken(
+      if (.Platform$OS.type == "unix") {
+      l_tokens_y <- text2vec::itoken_parallel(
         iterable = y,
         tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
         n_chunks = control_txt$n_chunks,
         progressbar = verbose)
-
+      } else {
+        l_tokens_y <- text2vec::itoken(
+          iterable = y,
+          tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+          n_chunks = control_txt$n_chunks,
+          progressbar = verbose)
+      }
       l_voc_y <- text2vec::create_vocabulary(l_tokens_y)
       l_vec_y <- text2vec::vocab_vectorizer(l_voc_y)
       l_dtm_y <- text2vec::create_dtm(l_tokens_y, l_vec_y)

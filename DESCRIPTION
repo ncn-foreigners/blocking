@@ -12,7 +12,7 @@ Description: A small R package that uses various approximate nearest neighbours 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/ncn-foreigners/blocking
+URL: https://github.com/ncn-foreigners/blocking, https://ncn-foreigners.github.io/blocking/
 BugReports: https://github.com/ncn-foreigners/blocking
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

@@ -3,6 +3,8 @@
 
 [![R-CMD-check](https://github.com/ncn-foreigners/blocking/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ncn-foreigners/blocking/actions/workflows/R-CMD-check.yaml)
 [![test-coverage](https://github.com/ncn-foreigners/blocking/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ncn-foreigners/blocking/actions/workflows/test-coverage.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ncn-foreigners/blocking?branch=main)
 <!-- badges: end -->
 
 # Overview
@@ -100,7 +102,7 @@ blocking_result
 #> Number of blocks: 2.
 #> Number of columns used for blocking: 28.
 #> Distribution of the size of the blocks:
-#> 1 
+#> 4 
 #> 2
 ```
 

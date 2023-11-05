@@ -108,7 +108,7 @@ blocking <- function(x,
     if (verbose %in% 1:2) cat("===== creating tokens =====\n")
 
     ## tokens for x
-    l_tokens <- text2vec::itoken_parallel(
+    l_tokens <- text2vec::itoken(
       iterable = x,
       tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
       n_chunks = control_txt$n_chunks,
@@ -122,7 +122,7 @@ blocking <- function(x,
     if (is.null(y_default)) {
       l_dtm_y <- l_dtm
     } else {
-      l_tokens_y <- text2vec::itoken_parallel(
+      l_tokens_y <- text2vec::itoken(
         iterable = y,
         tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
         n_chunks = control_txt$n_chunks,

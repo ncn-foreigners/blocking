@@ -25,7 +25,17 @@ method_hnsw <- function(x,
                         verbose,
                         n_threads,
                         control) {
+
+
+  ## conversion from sparse to dense matrix
+  ## this should be done with verification of the size
+  ## calculate size based on 8*1e6/(2^20)
+  ## source: https://stackoverflow.com/questions/45332767/how-the-object-size-in-r-are-calculated
+
+  x <- as.matrix(x)
+  y <- as.matrix(y)
   ## index
+
   l_ind <- RcppHNSW::hnsw_build(X = x,
                                 distance = distance,
                                 verbose = verbose,

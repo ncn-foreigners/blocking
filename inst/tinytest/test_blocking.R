@@ -246,7 +246,8 @@ expect_equal(
 expect_equal(
   blocking(x = mat_x,
            y = mat_y,
-           ann = "lsh"),
+           ann = "lsh",
+           seed = 2023),
   structure(list(result = structure(
     list(x = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
          y = c(5L, 6L, 7L, 8L, 1L, 2L, 3L, 4L),
@@ -263,7 +264,8 @@ expect_equal(
 expect_equal(
   blocking(x = mat_x,
            y = mat_y,
-           ann = "kd"),
+           ann = "kd",
+           seed = 2023),
   structure(list(result = structure(
     list(x = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
          y = c(5L, 6L, 7L, 8L, 1L, 2L, 3L, 4L),
@@ -284,6 +286,7 @@ expect_equal(
   blocking(x = mat_x,
            y = mat_y,
            ann = "annoy",
+           seed = 2023,
            distance = "euclidean"),
   structure(list(result = structure(
     list(x = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
@@ -316,7 +319,9 @@ expect_error(
 expect_equal(
   blocking(x = df_example$txt,
            true_blocks = result$result)$metrics,
-  c(vi = 0, nmi = 1, split.join = 0, rand = 1, adjusted.rand = 1)
+  c(vi = 0, nmi = 1, split.join = 0, rand = 1, adjusted.rand = 1,
+    recall = 1, precision = 1, fpr = 0, fnr = 0, accuracy = 1, specificity = 1
+  )
 )
 
 

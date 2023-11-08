@@ -25,6 +25,16 @@ method_mlpack <- function(x,
                           seed,
                           control) {
 
+  ## TODO: separate building an index from querying
+
+  ## conversion from sparse to dense matrix
+  ## this should be done with verification of the size
+  ## calculate size based on 8*1e6/(2^20)
+  ## source: https://stackoverflow.com/questions/45332767/how-the-object-size-in-r-are-calculated
+
+  x <- as.matrix(x)
+  y <- as.matrix(y)
+
   result <- switch(algo,
                    "lsh" = mlpack::lsh(k = k,
                                        query = y,

@@ -77,7 +77,7 @@ str(df_blocks,1)
 ```
 The resulting data.table has three columns:
 
-+ `x` - Reference dataset (i.e. `df') -- this may not contain all units of `df',
++ `x` - Reference dataset (i.e. `df`) -- this may not contain all units of `df`,
 + `y` - query (each row of `df`) -- this will return all units of `df`,
 + `block` -- the block ID.
 

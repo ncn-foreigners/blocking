@@ -31,6 +31,7 @@ method_annoy <- function(x,
                          control) {
 
 
+
   ncols <- ncol(x)
 
   l_ind <- switch(distance,
@@ -44,7 +45,7 @@ method_annoy <- function(x,
 
   if (verbose) l_ind$setVerbose(1)
 
-  ## index
+  ## index - this does not require dense matrix (sparse can be used?)
   for (i in 1:nrow(x)) l_ind$addItem(i - 1, x[i,])
   l_ind$build(control$annoy$n_trees)
   l_ind_nns <- numeric(length = nrow(y))

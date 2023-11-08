@@ -9,6 +9,7 @@
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
+#' @importFrom utils combn
 #'
 #'
 #' @title Main function for blocking records given text data
@@ -74,7 +75,6 @@ blocking <- function(x,
 
   ## checks
   stopifnot("Only character or matrix x is supported" = is.character(x) | is.matrix(x))
-
   #stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
   #            distance %in% c("euclidean", "manhatan", "hamming", "angular") & ann == "annoy")
 
@@ -90,7 +90,11 @@ blocking <- function(x,
   ## defaults
   if (missing(verbose)) verbose <- 0
   if (missing(ann)) ann <- "hnsw"
+
+  ## this this should be done depending on the distance
+
   if (missing(distance)) distance <- "cosine"
+
   if (!is.null(y)) {
     deduplication <- FALSE
     y_default <- FALSE
@@ -101,6 +105,7 @@ blocking <- function(x,
     k <- 2L
   }
 
+  ## add verification if x and y is a sparse matrix
   if (is.matrix(x)) {
     l_dtm <- x
     l_dtm_y <- y
@@ -127,7 +132,7 @@ blocking <- function(x,
     l_voc <- text2vec::create_vocabulary(l_tokens)
     l_vec <- text2vec::vocab_vectorizer(l_voc)
     l_dtm <- text2vec::create_dtm(l_tokens, l_vec)
-    l_dtm <- base::as.matrix(l_dtm)
+
 
     if (is.null(y_default)) {
       l_dtm_y <- l_dtm
@@ -148,9 +153,10 @@ blocking <- function(x,
       l_voc_y <- text2vec::create_vocabulary(l_tokens_y)
       l_vec_y <- text2vec::vocab_vectorizer(l_voc_y)
       l_dtm_y <- text2vec::create_dtm(l_tokens_y, l_vec_y)
-      l_dtm_y <- base::as.matrix(l_dtm_y)
+
     }
   }
+
 
   colnames_xy <- intersect(colnames(l_dtm), colnames(l_dtm_y))
 
@@ -158,6 +164,7 @@ blocking <- function(x,
     cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
                 ann, nrow(l_dtm), nrow(l_dtm_y), length(colnames_xy)))
   }
+
 
   l_df <- switch(ann,
                  "hnsw" = method_hnsw(x = l_dtm[, colnames_xy],
@@ -208,7 +215,8 @@ blocking <- function(x,
 
   ## if true are given
   if (!is.null(true_blocks)) {
-    ## commom part
+
+    ## Graph metrics
     eval_blocks <- merge(x = l_df[, c("x", "y", "block")],
                          y = true_blocks,
                          by = c("x", "y"),
@@ -223,6 +231,25 @@ blocking <- function(x,
     eval_metrics <- base::sapply(c("vi", "nmi", "split.join", "rand", "adjusted.rand"),
                                  igraph::compare, comm1=eval_g1_cl, comm2=eval_g2_cl)
 
+    ## standard metrics based on klsh::confusion.from.blocking
+    block_ids <- eval_g1_cl$membership
+    true_ids <- eval_g2_cl$membership
+    candidate_pairs <- utils::combn(length(block_ids), 2)
+    same_block <- block_ids[candidate_pairs[1, ]] == block_ids[candidate_pairs[2, ]]
+    same_truth <- true_ids[candidate_pairs[1, ]] == true_ids[candidate_pairs[2, ]]
+    confusion <- table(same_block, same_truth)
+
+    fp <- confusion[2, 1]
+    fn <- confusion[1, 2]
+    tp <- confusion[2, 2]
+    tn <- confusion[1, 1]
+    recall <- tp/(fn + tp)
+
+    eval_metrics2 <- c(recall = tp/(fn + tp), precision = tp/(tp + fp),
+                       fpr = fp/(fp + tn), fnr = fn/(fn + tp),
+                       accuracy = (tp + tn)/(tp + tn + fn + fp),
+                       specificity = tn/(tn + fp))
+    eval_metrics <- c(eval_metrics, eval_metrics2)
   }
 
   setorderv(l_df, c("x", "y", "block"))

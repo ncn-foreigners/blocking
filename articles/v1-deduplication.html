@@ -152,9 +152,12 @@ of 17 elements.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_blocks</span></span>
+<span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the hnsw method.</span></span>
 <span><span class="co">#&gt; Number of blocks: 133.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 429.</span></span>
+<span><span class="co">#&gt; Reduction ratio: 0.99.</span></span>
+<span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;  2  3  4  5  6  7  8  9 11 13 17 </span></span>
 <span><span class="co">#&gt; 45 35 23 10  5  7  2  3  1  1  1</span></span></code></pre></div>
@@ -183,8 +186,8 @@ methods for comparing graphs (here NULL),</li>
 <p>The resulting data.table has three columns:</p>
 <ul>
 <li>
-<code>x</code> - Reference dataset
-(i.e. <code>df') -- this may not contain all units of</code>df’,</li>
+<code>x</code> - Reference dataset (i.e. <code>df</code>) – this may
+not contain all units of <code>df</code>,</li>
 <li>
 <code>y</code> - query (each row of <code>df</code>) – this will
 return all units of <code>df</code>,</li>

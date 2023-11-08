@@ -98,9 +98,12 @@ blocking_result <- blocking(x = df_example$txt)
 #> See help("Deprecated") and help("Matrix-deprecated").
 ## data frame with indices and block 
 blocking_result
+#> ========================================================
 #> Blocking based on the hnsw method.
 #> Number of blocks: 2.
 #> Number of columns used for blocking: 28.
+#> Reduction ratio: 0.57.
+#> ========================================================
 #> Distribution of the size of the blocks:
 #> 4 
 #> 2

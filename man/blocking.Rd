@@ -23,9 +23,9 @@ blocking(
 )
 }
 \arguments{
-\item{x}{reference data (character vector or matrix),}
+\item{x}{reference data (character vector or a matrix),}
 
-\item{y}{query data, if not provided NULL by default,}
+\item{y}{query data (types the same), if not provided NULL by default,}
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 

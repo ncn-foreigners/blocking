@@ -20,8 +20,8 @@
 #' Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
 #' RcppHNSW, [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
 #'
-#' @param x reference data (character vector or matrix),
-#' @param y query data, if not provided NULL by default,
+#' @param x reference data (character vector or a matrix),
+#' @param y query data (types the same), if not provided NULL by default,
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param block initial blocking to reduce comparisons (currently not supported),
 #' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")}, default \code{"hnsw"}),

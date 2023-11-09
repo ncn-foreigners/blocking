@@ -53,7 +53,7 @@ head(df)
 In the next step we use the newly created column in the `blocking` function. If we specify verbose, we get information about the progress.
 
 ```{r}
-df_blocks <- blocking(x = df$txt, ann = "hnsw", verbose=TRUE)
+df_blocks <- blocking(x = df$txt, ann = "hnsw", verbose=TRUE, graph = TRUE)
 ```
 
 Results are as follows:
@@ -69,12 +69,19 @@ Structure of the object is as follows:
 
 + `result` - a data.table with identifiers and block IDs,
 + `method` - the method used,
-+ `metrics` - based on the `igraph::compare` methods for comparing graphs (here NULL),
-+ `colnames` - column names used for the comparison.
++ `metrics` - standard metrics and based on the `igraph::compare` methods for comparing graphs (here NULL),
++ `colnames` - column names used for the comparison,
++ `graph` -- an `igraph` object mainly for visualisation.
 
 ```{r}
 str(df_blocks,1)
 ```
+Plot connections
+
+```{r}
+plot(df_blocks$graph, vertex.size=1, vertex.label = NA)
+```
+
 The resulting data.table has three columns:
 
 + `x` - Reference dataset (i.e. `df`) -- this may not contain all units of `df`,

@@ -102,7 +102,7 @@ blocking_result
 #> Blocking based on the hnsw method.
 #> Number of blocks: 2.
 #> Number of columns used for blocking: 28.
-#> Reduction ratio: 0.57.
+#> Reduction ratio: 0.5714.
 #> ========================================================
 #> Distribution of the size of the blocks:
 #> 4 
@@ -187,3 +187,10 @@ Packages that allow blocking:
   `pair_blocking`, `pari_minsim` functions,
 - [fastLink](https://CRAN.R-project.org/package=fastLink) – `blockData`
   function.
+
+Other:
+
+- [clevr](https://CRAN.R-project.org/package=clevr) – evaluation of
+  clustering, helper functions.
+- [exchanger](https://github.com/cleanzr/exchanger) – bayesian Entity
+  Resolution with Exchangeable Random Partition Priors

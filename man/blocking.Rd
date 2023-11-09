@@ -15,8 +15,9 @@ blocking(
   ann_save = NULL,
   true_blocks = NULL,
   verbose = c(0, 1, 2),
-  n_threads = 1,
+  graph = FALSE,
   seed = 2023,
+  n_threads = 1,
   control_txt = controls_txt(),
   control_ann = controls_ann()
 )
@@ -42,9 +43,11 @@ blocking(
 
 \item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),}
 
-\item{n_threads}{number of threads used for the ann,}
+\item{graph}{whether a graph should be returned,}
 
 \item{seed}{seed for the algorithms,}
+
+\item{n_threads}{number of threads used for the ann,}
 
 \item{control_txt}{list of controls for text data,}
 

@@ -8,3 +8,4 @@
 6. class `blocking` introduced.
 7. s3method for printing.
 8. first vignette added.
+9. evaluation with standard metrics (recall, fpr etc) added, works with vector for deduplication.

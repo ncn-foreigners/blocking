@@ -30,6 +30,7 @@
 #' @param ann_save saving index to file. Two files will be created: 1) with index, 2) with column names (currently not supported),
 #' @param true_blocks matrix with true blocks to calculate evaluation metrics (all metrics from [igraph::compare()] are returned).
 #' @param verbose whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),
+#' @param graph whether a graph should be returned,
 #' @param seed seed for the algorithms,
 #' @param n_threads number of threads used for the ann,
 #' @param control_txt list of controls for text data,
@@ -68,8 +69,9 @@ blocking <- function(x,
                      ann_save = NULL,
                      true_blocks = NULL,
                      verbose = c(0, 1, 2),
-                     n_threads = 1,
+                     graph = FALSE,
                      seed = 2023,
+                     n_threads = 1,
                      control_txt = controls_txt(),
                      control_ann = controls_ann()) {
 
@@ -80,11 +82,17 @@ blocking <- function(x,
 
 
   if (!is.null(true_blocks)) {
-    stopifnot("`true block` should be a data.frame with columns: x, y, block" =
-                !is.null(true_blocks) &
-                is.data.frame(true_blocks) &
-                length(colnames(true_blocks)) == 3,
-              all(colnames(true_blocks) == c("x", "y", "block")))
+    if (is.data.frame(true_blocks)) {
+      stopifnot("`true blocks` should be a data.frame with columns: x, y, block" =
+                  !is.null(true_blocks) &
+                  is.data.frame(true_blocks) &
+                  length(colnames(true_blocks)) == 3,
+                all(colnames(true_blocks) == c("x", "y", "block")))
+    }
+    if (is.vector(true_blocks)) {
+      stopifnot("`true blocks` should be a vector with elements equal to nrow(x)" =
+                  NROW(true_blocks) == NROW(x))
+    }
   }
 
   ## defaults
@@ -216,11 +224,21 @@ blocking <- function(x,
   ## if true are given
   if (!is.null(true_blocks)) {
 
-    ## Graph metrics
-    eval_blocks <- merge(x = l_df[, c("x", "y", "block")],
+    ## if true_block is a vector
+    if (is.vector(true_blocks)) {
+      true_blocks <- data.table(y=1:NROW(l_dtm_y), block = true_blocks)
+      eval_blocks <- merge(x = l_df[, c("x", "y", "block")],
                          y = true_blocks,
-                         by = c("x", "y"),
+                         by = "y",
                          all = F)
+    } else {
+      eval_blocks <- merge(x = l_df[, c("x", "y", "block")],
+                           y = true_blocks,
+                           by = c("x", "y"),
+                           all = F)
+    }
+    ## Graph metrics
+
 
     eval_g1 <- igraph::graph_from_data_frame(eval_blocks[, c("x", "y")], directed = FALSE)
     eval_g2 <- igraph::graph_from_data_frame(eval_blocks[, c("x", "y")], directed = FALSE)
@@ -259,7 +277,10 @@ blocking <- function(x,
       result = l_df[, c("x", "y", "block")],
       method = ann,
       metrics = if (is.null(true_blocks)) NULL else eval_metrics,
-      colnames = colnames_xy
+      colnames = colnames_xy,
+      graph = if (graph) {
+        igraph::graph_from_data_frame(l_df[, c("x", "y")], directed = F)
+        } else NULL
    ),
    class = "blocking"
   )

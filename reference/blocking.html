@@ -73,8 +73,9 @@ RcppHNSW, RcppAnnoy and mlpack and creates blocks using igraph.</p>
 <span>  ann_save <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  true_blocks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  n_threads <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  graph <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">2023</span>,</span>
+<span>  n_threads <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  control_txt <span class="op">=</span> <span class="fu"><a href="controls_txt.html">controls_txt</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  control_ann <span class="op">=</span> <span class="fu"><a href="controls_ann.html">controls_ann</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -122,12 +123,16 @@ RcppHNSW, RcppAnnoy and mlpack and creates blocks using igraph.</p>
 <dd><p>whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),</p></dd>
 
 
-<dt>n_threads</dt>
-<dd><p>number of threads used for the ann,</p></dd>
+<dt>graph</dt>
+<dd><p>whether a graph should be returned,</p></dd>
 
 
 <dt>seed</dt>
 <dd><p>seed for the algorithms,</p></dd>
+
+
+<dt>n_threads</dt>
+<dd><p>number of threads used for the ann,</p></dd>
 
 
 <dt>control_txt</dt>

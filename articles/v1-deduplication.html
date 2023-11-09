@@ -139,7 +139,7 @@ row.</p>
 <code>blocking</code> function. If we specify verbose, we get
 information about the progress.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">txt</span>, ann <span class="op">=</span> <span class="st">"hnsw"</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">txt</span>, ann <span class="op">=</span> <span class="st">"hnsw"</span>, verbose<span class="op">=</span><span class="cn">TRUE</span>, graph <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
 <span><span class="co">#&gt; ===== starting search (hnsw, x, y: 500, 500, t: 429) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
@@ -169,20 +169,29 @@ IDs,</li>
 <li>
 <code>method</code> - the method used,</li>
 <li>
-<code>metrics</code> - based on the <code><a href="https://r.igraph.org/reference/compare.html" class="external-link">igraph::compare</a></code>
-methods for comparing graphs (here NULL),</li>
+<code>metrics</code> - standard metrics and based on the
+<code><a href="https://r.igraph.org/reference/compare.html" class="external-link">igraph::compare</a></code> methods for comparing graphs (here
+NULL),</li>
 <li>
-<code>colnames</code> - column names used for the comparison.</li>
+<code>colnames</code> - column names used for the comparison,</li>
+<li>
+<code>graph</code> – an <code>igraph</code> object mainly for
+visualisation.</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df_blocks</span>,<span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 4</span></span>
+<span><span class="co">#&gt; List of 5</span></span>
 <span><span class="co">#&gt;  $ result  :Classes 'data.table' and 'data.frame':   500 obs. of  3 variables:</span></span>
 <span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  $ method  : chr "hnsw"</span></span>
 <span><span class="co">#&gt;  $ metrics : NULL</span></span>
 <span><span class="co">#&gt;  $ colnames: chr [1:429] "86" "ap" "av" "bf" ...</span></span>
+<span><span class="co">#&gt;  $ graph   :Class 'igraph'  hidden list of 10</span></span>
 <span><span class="co">#&gt;  - attr(*, "class")= chr "blocking"</span></span></code></pre></div>
+<p>Plot connections</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">graph</span>, vertex.size<span class="op">=</span><span class="fl">1</span>, vertex.label <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <p>The resulting data.table has three columns:</p>
 <ul>
 <li>
@@ -194,7 +203,7 @@ return all units of <code>df</code>,</li>
 <li>
 <code>block</code> – the block ID.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    x   y block</span></span>
 <span><span class="co">#&gt; 1: 2  43     2</span></span>
@@ -204,7 +213,7 @@ return all units of <code>df</code>,</li>
 <span><span class="co">#&gt; 5: 7  20     6</span></span>
 <span><span class="co">#&gt; 6: 7  28     6</span></span></code></pre></div>
 <p>We add block information to the final dataset.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_block_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="va">block_id</span> <span class="op">:=</span> <span class="va">df_block_result</span><span class="op">$</span><span class="va">block</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
@@ -225,7 +234,7 @@ return all units of <code>df</code>,</li>
 <p>Finally, we can check in how many blocks the same entities
 (<code>ent_id</code>) are observed. In our example, all the same
 entities are in the same blocks.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>uniq_blocks <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">uniqueN</a></span><span class="op">(</span><span class="va">block_id</span><span class="op">)</span><span class="op">)</span>, <span class="fu">.</span><span class="op">(</span><span class="va">ent_id</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">uniq_blocks</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    uniq_blocks   N</span></span>
 <span><span class="co">#&gt; 1:           1 450</span></span></code></pre></div>

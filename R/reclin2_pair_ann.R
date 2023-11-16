@@ -10,7 +10,8 @@
 #'
 #' @param x x
 #' @param y y
-#' @param on variable
+#' @param on variables for ann search
+#' @param on_blocking blocking variables
 #' @param deduplication deduplication
 #' @param keep_block whether to keep block in the set
 #' @param add_xy whether to add x and y
@@ -44,6 +45,7 @@
 pair_ann <- function(x,
                      y = NULL,
                      on,
+                     on_blocking = NULL,
                      deduplication = TRUE,
                      keep_block = TRUE,
                      add_xy = TRUE,

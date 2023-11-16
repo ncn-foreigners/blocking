@@ -8,11 +8,12 @@ blocking(
   x,
   y = NULL,
   deduplication = TRUE,
-  block = NULL,
-  ann = c("hnsw", "lsh", "annoy", "kd"),
+  on = NULL,
+  on_blocking = NULL,
+  ann = c("hnsw", "lsh", "annoy", "kd", "nnd"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
-  ann_read = NULL,
-  ann_save = NULL,
+  ann_write = NULL,
+  ann_colnames = NULL,
   true_blocks = NULL,
   verbose = c(0, 1, 2),
   graph = FALSE,
@@ -29,15 +30,17 @@ blocking(
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
-\item{block}{initial blocking to reduce comparisons (currently not supported),}
+\item{on}{variables for ann search (currently not supported),}
+
+\item{on_blocking}{variables for blocking (currently not supported),}
 
 \item{ann}{algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")}, default \code{"hnsw"}),}
 
 \item{distance}{distance metric (default \code{cosine}),}
 
-\item{ann_read}{reading index from file (currently not supported),}
+\item{ann_write}{writing an index to file. Two files will be created: 1) an index, 2) and txt file with column names (currently not supported),}
 
-\item{ann_save}{saving index to file. Two files will be created: 1) with index, 2) with column names (currently not supported),}
+\item{ann_colnames}{testing}
 
 \item{true_blocks}{matrix with true blocks to calculate evaluation metrics (all metrics from \code{\link[igraph:compare]{igraph::compare()}} are returned).}
 

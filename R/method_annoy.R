@@ -15,6 +15,7 @@
 #' @param distance distance metric
 #' @param verbose If TRUE, log messages to the console.
 #' @param seed seed for the pseudo-random numbers algorithm.
+#' @param path path to write the index.
 #' @param control controls for  \code{lsh} or \code{kd}.
 #'
 #' @description
@@ -27,7 +28,9 @@ method_annoy <- function(x,
                          k,
                          distance,
                          verbose,
+                         path,
                          seed,
+
                          control) {
 
 
@@ -49,11 +52,32 @@ method_annoy <- function(x,
   for (i in 1:nrow(x)) l_ind$addItem(i - 1, x[i,])
   l_ind$build(control$annoy$n_trees)
   l_ind_nns <- numeric(length = nrow(y))
+  l_ind_dist <- numeric(length = nrow(y))
 
   ## query
-  for (i in 1:nrow(y)) l_ind_nns[i] <- l_ind$getNNsByVector(y[i, ], k)[k]
+  for (i in 1:nrow(y)) {
+    annoy_res <- l_ind$getNNsByVectorList(y[i, ], k, -1, TRUE)
+    l_ind_nns[i] <- annoy_res$item[k]
+    l_ind_dist[i] <- annoy_res$distance[k]
+  }
+
+  if (!is.null(path)) {
+    if (grepl("(/|\\\\)$", path)) {
+      path_ann <- paste0(path, "index.annoy")
+      path_ann_cols <- paste0(path, "index-colnames.txt")
+    } else {
+      path_ann <- paste0(path, "//index.annoy")
+      path_ann_cols <- paste0(path, "//index-colnames.txt")
+    }
+    if (verbose == 2) {
+      cat("Writing an index to `path`\n")
+    }
+    l_ind$save(path_ann)
+    writeLines(colnames(x), path_ann_cols)
+  }
 
   l_df <- data.table::data.table(y = 1:NROW(y),
-                                 x = l_ind_nns + 1)
+                                 x = l_ind_nns + 1,
+                                 dist = l_ind_dist)
   l_df
 }

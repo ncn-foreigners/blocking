@@ -16,7 +16,10 @@ expect_equal(
   structure(list(result = structure(
     list(x = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
          y = c(5L, 6L, 7L, 8L, 1L, 2L, 3L, 4L),
-         block = c(2, 2, 2, 2, 1, 1, 1, 1)),
+         block = c(2, 2, 2, 2, 1, 1, 1, 1),
+         dist = c(1.19209289550781e-07, 0.0425729155540466,
+                  1.19209289550781e-07, 0.278312206268311, 0.0513166785240173,
+                  -1.19209289550781e-07, 0.0513166785240173, 0.225403368473053)),
     row.names = c(NA, -8L),
     class = c("data.table", "data.frame")),
     method = "hnsw",
@@ -43,7 +46,10 @@ expect_equal(
   structure(list(result = structure(
     list(x = c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L),
          y = c(5L, 6L, 7L, 8L, 1L, 2L, 3L, 4L),
-         block = c(2, 2, 2, 2, 1, 1, 1, 1)),
+         block = c(2, 2, 2, 2, 1, 1, 1, 1),
+         dist = c(1.19209289550781e-07, 0.0425729155540466,
+1.19209289550781e-07, 0.278312206268311, 0.0513166785240173,
+-1.19209289550781e-07, 0.0513166785240173, 0.225403368473053)),
     row.names = c(NA, -8L),
     class = c("data.table", "data.frame")),
     method = "hnsw",
@@ -53,3 +59,23 @@ expect_equal(
     graph = NULL),
     class = "blocking")
 )
+
+
+## testing saving
+
+expect_true({
+  blocking(x = mat_y,
+           ann = "hnsw",
+           ann_write = ".")
+  file.exists("./index.hnsw") &
+    file.exists("./index-colnames.txt")
+})
+
+expect_equal({
+  ncols <- length(readLines("./index-colnames.txt"))
+  ann_hnsw <- methods::new(RcppHNSW::HnswCosine, ncols, "./index.hnsw")
+  ann_hnsw$size()
+},  8)
+
+
+

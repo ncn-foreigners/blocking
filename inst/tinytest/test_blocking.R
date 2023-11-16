@@ -37,17 +37,17 @@ result <- blocking(x = df_example$txt)
 
 expect_silent(
   blocking(x = df_example$txt,
-           true_blocks = result$result)
+           true_blocks = result$result[, c("x", "y", "block")])
 )
 
 expect_error(
   blocking(x = df_example$txt,
-           true_blocks = result$result[, c("x", "y")])
+           true_blocks = result$result)
 )
 
 expect_equal(
   blocking(x = df_example$txt,
-           true_blocks = result$result)$metrics,
+           true_blocks = result$result[, c("x", "y", "block")])$metrics,
   c(vi = 0, nmi = 1, split.join = 0, rand = 1, adjusted.rand = 1,
     recall = 1, precision = 1, fpr = 0, fnr = 0, accuracy = 1, specificity = 1
   )

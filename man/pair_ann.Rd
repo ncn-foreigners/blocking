@@ -8,6 +8,7 @@ pair_ann(
   x,
   y = NULL,
   on,
+  on_blocking = NULL,
   deduplication = TRUE,
   keep_block = TRUE,
   add_xy = TRUE,
@@ -19,7 +20,9 @@ pair_ann(
 
 \item{y}{y}
 
-\item{on}{variable}
+\item{on}{variables for ann search}
+
+\item{on_blocking}{blocking variables}
 
 \item{deduplication}{deduplication}
 

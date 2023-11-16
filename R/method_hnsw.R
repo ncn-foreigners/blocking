@@ -18,6 +18,7 @@
 #' @param distance 	Type of distance to calculate.
 #' @param verbose If TRUE, log messages to the console.
 #' @param n_threads Maximum number of threads to use.
+#' @param path path to write the index.
 #' @param control Controls for the HNSW algorithm
 #'
 #' @description
@@ -30,25 +31,18 @@ method_hnsw <- function(x,
                         distance,
                         verbose,
                         n_threads,
+                        path,
                         control) {
 
-
-  ## conversion from sparse to dense matrix
-  ## this should be done with verification of the size
-  ## calculate size based on 8*1e6/(2^20)
-  ## source: https://stackoverflow.com/questions/45332767/how-the-object-size-in-r-are-calculated
-
-  ## check size of x
-  x_size <- 8*nrow(x)*ncol(x)/(2^20)
-  y_size <- 8*nrow(y)*ncol(y)/(2^20)
-
+  ## depending whether x is an
   ## to avoid coping to marix
-  if (x_size > 100 | y_size > 100) {
+  if (control$sparse) {
     index <- switch(distance,
                     "l2" = RcppHNSW::HnswL2,
                     "euclidean" = RcppHNSW::HnswL2,
                     "cosine" = RcppHNSW::HnswCosine,
                     "ip" = RcppHNSW::HnswIp)
+
 
     l_ind <- methods::new(index, ncol(x), nrow(x), control$hnsw$M, control$hnsw$ef_c)
     l_ind$setNumThreads(n_threads)
@@ -73,9 +67,9 @@ method_hnsw <- function(x,
     ## this should be changed to loop
     ## add items from a sparse matrix in a batches
 
-    if (verbose) {
-      pb <- utils::txtProgressBar(style = 3)
-    }
+    # if (verbose) {
+    #   pb <- utils::txtProgressBar(style = 3)
+    # }
     starts <- seq(1, nrow(x), 1000) ## by 1000 batches
 
     l_1nn <- list()
@@ -84,9 +78,10 @@ method_hnsw <- function(x,
     for (i in 1:NROW(starts)) {
       ## check if last element is used
       l_1nn_m[[i]] <- l_ind$getAllNNsList(as.matrix(y[starts[i]:(starts[i]+999),]), k, TRUE)$item
-      if (exists("pb")) utils::setTxtProgressBar(pb,i)
+      #if (exists("pb")) utils::setTxtProgressBar(pb,i)
     }
-    if (exists("pb")) close(pb)
+
+    #if (exists("pb")) close(pb)
 
     l_1nn$idx <- do.call('rbind',l_1nn_m)
 
@@ -100,6 +95,7 @@ method_hnsw <- function(x,
                                   n_threads = n_threads,
                                   M = control$hnsw$M,
                                   ef = control$hnsw$ef_c)
+
     ## query
     l_1nn <- RcppHNSW::hnsw_search(X = y,
                                    ann = l_ind,
@@ -110,9 +106,26 @@ method_hnsw <- function(x,
   }
 
 
+  if (!is.null(path)) {
+    if (grepl("(/|\\\\)$", path)) {
+      path_ann <- paste0(path, "index.hnsw")
+      path_ann_cols <- paste0(path, "index-colnames.txt")
+    } else {
+      path_ann <- paste0(path, "//index.hnsw")
+      path_ann_cols <- paste0(path, "//index-colnames.txt")
+    }
+    if (verbose == 2) {
+        cat("Writing an index to `path`\n")
+    }
+    l_ind$save(path_ann)
+    writeLines(colnames(x), path_ann_cols)
+  }
 
   l_df <- data.table::data.table(y = 1:NROW(y),
-                                 x = l_1nn$idx[, k])
+                                 x = l_1nn$idx[, k],
+                                 dist = l_1nn$dist[,k])
+
+
 
   l_df
 }

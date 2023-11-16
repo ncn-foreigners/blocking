@@ -5,6 +5,7 @@
 #' @description
 #' Controls for ANN algorithms used in the package
 #'
+#' @param sparse whether sparse data should be used as an input for algorithms.
 #' @param hnsw parameters for [RcppHNSW::hnsw_build()] and [RcppHNSW::hnsw_search()].
 #' @param lsh parameters for [mlpack::lsh()].
 #' @param annoy parameters for [RcppAnnoy] package.
@@ -14,6 +15,7 @@
 #'
 #' @export
 controls_ann <- function(
+    sparse = FALSE,
     hnsw = list(M = 25,
                 ef_c = 200,
                 ef_s = 200,
@@ -37,7 +39,8 @@ controls_ann <- function(
               tree_type = "kd")
     ) {
 
-   list(hnsw = hnsw,
+   list(sparse = sparse,
+        hnsw = hnsw,
         lsh = lsh,
         annoy = annoy,
         kd = kd)

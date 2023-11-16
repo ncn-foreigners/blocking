@@ -4,7 +4,7 @@
 \alias{method_hnsw}
 \title{An internal function to use hnsw algorithm via RcppHNSW.}
 \usage{
-method_hnsw(x, y, k, distance, verbose, n_threads, control)
+method_hnsw(x, y, k, distance, verbose, n_threads, path, control)
 }
 \arguments{
 \item{x}{Deduplication or reference data.}
@@ -18,6 +18,8 @@ method_hnsw(x, y, k, distance, verbose, n_threads, control)
 \item{verbose}{If TRUE, log messages to the console.}
 
 \item{n_threads}{Maximum number of threads to use.}
+
+\item{path}{path to write the index.}
 
 \item{control}{Controls for the HNSW algorithm}
 }

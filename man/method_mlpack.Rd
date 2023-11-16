@@ -4,7 +4,7 @@
 \alias{method_mlpack}
 \title{An internal function to use algorthms from the mlpack package.}
 \usage{
-method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, control)
+method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, path, control)
 }
 \arguments{
 \item{x}{Deduplication or reference data.}
@@ -18,6 +18,8 @@ method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, control)
 \item{verbose}{If TRUE, log messages to the console.}
 
 \item{seed}{seed for the pseudo-random numbers algorithm.}
+
+\item{path}{path to write the index.}
 
 \item{control}{controls for  \code{lsh} or \code{kd}.}
 }

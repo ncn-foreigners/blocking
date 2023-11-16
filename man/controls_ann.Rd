@@ -5,6 +5,7 @@
 \title{Controls for approximate nearest neighbours algoritms}
 \usage{
 controls_ann(
+  sparse = FALSE,
   hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
   lsh = list(bucket_size = 500, hash_width = 10, num_probes = 0, projections = 10, tables
     = 30),
@@ -14,6 +15,8 @@ controls_ann(
 )
 }
 \arguments{
+\item{sparse}{whether sparse data should be used as an input for algorithms.}
+
 \item{hnsw}{parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}}.}
 
 \item{lsh}{parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}}.}

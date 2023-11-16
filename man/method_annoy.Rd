@@ -4,7 +4,7 @@
 \alias{method_annoy}
 \title{An internal function to use Annoy algorithm via RcppAnnoy.}
 \usage{
-method_annoy(x, y, k, distance, verbose, seed, control)
+method_annoy(x, y, k, distance, verbose, path, seed, control)
 }
 \arguments{
 \item{x}{Deduplication or reference data.}
@@ -16,6 +16,8 @@ method_annoy(x, y, k, distance, verbose, seed, control)
 \item{distance}{distance metric}
 
 \item{verbose}{If TRUE, log messages to the console.}
+
+\item{path}{path to write the index.}
 
 \item{seed}{seed for the pseudo-random numbers algorithm.}
 

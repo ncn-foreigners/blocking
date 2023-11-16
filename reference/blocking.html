@@ -66,11 +66,12 @@ RcppHNSW, RcppAnnoy and mlpack and creates blocks using igraph.</p>
 <span>  <span class="va">x</span>,</span>
 <span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  deduplication <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  block <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ann <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hnsw"</span>, <span class="st">"lsh"</span>, <span class="st">"annoy"</span>, <span class="st">"kd"</span><span class="op">)</span>,</span>
+<span>  on <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_blocking <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ann <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hnsw"</span>, <span class="st">"lsh"</span>, <span class="st">"annoy"</span>, <span class="st">"kd"</span>, <span class="st">"nnd"</span><span class="op">)</span>,</span>
 <span>  distance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cosine"</span>, <span class="st">"euclidean"</span>, <span class="st">"l2"</span>, <span class="st">"ip"</span>, <span class="st">"manhatan"</span>, <span class="st">"hamming"</span>, <span class="st">"angular"</span><span class="op">)</span>,</span>
-<span>  ann_read <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  ann_save <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ann_write <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ann_colnames <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  true_blocks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  graph <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -95,8 +96,12 @@ RcppHNSW, RcppAnnoy and mlpack and creates blocks using igraph.</p>
 <dd><p>whether deduplication should be applied (default TRUE as y is set to NULL),</p></dd>
 
 
-<dt>block</dt>
-<dd><p>initial blocking to reduce comparisons (currently not supported),</p></dd>
+<dt>on</dt>
+<dd><p>variables for ann search (currently not supported),</p></dd>
+
+
+<dt>on_blocking</dt>
+<dd><p>variables for blocking (currently not supported),</p></dd>
 
 
 <dt>ann</dt>
@@ -107,12 +112,12 @@ RcppHNSW, RcppAnnoy and mlpack and creates blocks using igraph.</p>
 <dd><p>distance metric (default <code>cosine</code>),</p></dd>
 
 
-<dt>ann_read</dt>
-<dd><p>reading index from file (currently not supported),</p></dd>
+<dt>ann_write</dt>
+<dd><p>writing an index to file. Two files will be created: 1) an index, 2) and txt file with column names (currently not supported),</p></dd>
 
 
-<dt>ann_save</dt>
-<dd><p>saving index to file. Two files will be created: 1) with index, 2) with column names (currently not supported),</p></dd>
+<dt>ann_colnames</dt>
+<dd><p>testing</p></dd>
 
 
 <dt>true_blocks</dt>
@@ -174,9 +179,6 @@ RcppHNSW, RcppAnnoy and mlpack and creates blocks using igraph.</p>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">blocking</span><span class="op">(</span>x <span class="op">=</span> <span class="va">df_example</span><span class="op">$</span><span class="va">txt</span>,</span></span>
 <span class="r-in"><span>                   ann <span class="op">=</span> <span class="st">"hnsw"</span>,</span></span>
 <span class="r-in"><span>                   control_ann <span class="op">=</span> <span class="fu"><a href="controls_ann.html">controls_ann</a></span><span class="op">(</span>hnsw <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>M <span class="op">=</span> <span class="fl">5</span>, ef_c <span class="op">=</span> <span class="fl">10</span>, ef_s <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'as(&lt;dgTMatrix&gt;, "dgCMatrix")' is deprecated.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Use 'as(., "CsparseMatrix")' instead.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("Matrix-deprecated").</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>

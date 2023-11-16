@@ -60,6 +60,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">controls_ann</span><span class="op">(</span></span>
+<span>  sparse <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  hnsw <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>M <span class="op">=</span> <span class="fl">25</span>, ef_c <span class="op">=</span> <span class="fl">200</span>, ef_s <span class="op">=</span> <span class="fl">200</span>, grain_size <span class="op">=</span> <span class="fl">1</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  lsh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bucket_size <span class="op">=</span> <span class="fl">500</span>, hash_width <span class="op">=</span> <span class="fl">10</span>, num_probes <span class="op">=</span> <span class="fl">0</span>, projections <span class="op">=</span> <span class="fl">10</span>, tables</span>
 <span>    <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
@@ -71,7 +72,11 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>hnsw</dt>
+    <dl><dt>sparse</dt>
+<dd><p>whether sparse data should be used as an input for algorithms.</p></dd>
+
+
+<dt>hnsw</dt>
 <dd><p>parameters for <code><a href="https://rdrr.io/pkg/RcppHNSW/man/hnsw_build.html" class="external-link">RcppHNSW::hnsw_build()</a></code> and <code><a href="https://rdrr.io/pkg/RcppHNSW/man/hnsw_search.html" class="external-link">RcppHNSW::hnsw_search()</a></code>.</p></dd>
 
 

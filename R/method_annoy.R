@@ -69,7 +69,7 @@ method_annoy <- function(x,
       path_ann <- paste0(path, "//index.annoy")
       path_ann_cols <- paste0(path, "//index-colnames.txt")
     }
-    if (verbose == 2) {
+    if (verbose) {
       cat("Writing an index to `path`\n")
     }
     l_ind$save(path_ann)

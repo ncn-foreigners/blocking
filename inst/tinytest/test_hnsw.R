@@ -63,6 +63,12 @@ expect_equal(
 
 ## testing saving
 
+expect_error({
+  blocking(x = mat_y,
+           ann = "hnsw",
+           ann_write = "./plik")
+})
+
 expect_true({
   blocking(x = mat_y,
            ann = "hnsw",
@@ -71,6 +77,15 @@ expect_true({
     file.exists("./index-colnames.txt")
 })
 
+expect_true({
+  blocking(x = mat_y,
+           ann = "hnsw",
+           ann_write = "./")
+  file.exists("./index.hnsw") &
+    file.exists("./index-colnames.txt")
+})
+
+
 expect_equal({
   ncols <- length(readLines("./index-colnames.txt"))
   ann_hnsw <- methods::new(RcppHNSW::HnswCosine, ncols, "./index.hnsw")
@@ -78,4 +93,17 @@ expect_equal({
 },  8)
 
 
+## check verbose
+expect_stdout(
+  blocking(x = mat_y,
+           ann = "hnsw",
+           verbose = 2)
+)
+
+expect_stdout(
+  blocking(x = mat_y,
+           ann = "hnsw",
+           verbose = 2,
+           ann_write = ".")
+)
 

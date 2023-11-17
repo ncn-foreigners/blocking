@@ -60,20 +60,20 @@ method_mlpack <- function(x,
                                        rho = control$kd$rho,
                                        tau = control$kd$tau,
                                        random_basis = control$kd$random_basis))
-  if (!is.null(path)) {
-    if (grepl("(/|\\\\)$", path)) {
-      path_ann <- paste0(path, "index.annoy")
-      path_ann_cols <- paste0(path, "index-colnames.txt")
-    } else {
-      path_ann <- paste0(path, "//index.annoy")
-      path_ann_cols <- paste0(path, "//index-colnames.txt")
-    }
-    if (verbose == 2) {
-      cat("Writing an index to `path`\n")
-    }
-    l_ind$save(path_ann)
-    writeLines(colnames(x), path_ann_cols)
-  }
+  # if (!is.null(path)) {
+  #   if (grepl("(/|\\\\)$", path)) {
+  #     path_ann <- paste0(path, "index.annoy")
+  #     path_ann_cols <- paste0(path, "index-colnames.txt")
+  #   } else {
+  #     path_ann <- paste0(path, "//index.annoy")
+  #     path_ann_cols <- paste0(path, "//index-colnames.txt")
+  #   }
+  #   if (verbose == 2) {
+  #     cat("Writing an index to `path`\n")
+  #   }
+  #   l_ind$save(path_ann)
+  #   writeLines(colnames(x), path_ann_cols)
+  # }
 
 
   l_df <- data.table::data.table(y = 1:NROW(y),

@@ -91,3 +91,11 @@ expect_equal(
 )
 
 
+## test verbose
+expect_stdout(
+  blocking(x = mat_y,
+           ann = "lsh",
+           verbose = 1)
+)
+
+

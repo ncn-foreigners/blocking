@@ -64,12 +64,28 @@ expect_equal(
 
 
 ## file saving
+expect_error(
+  blocking(x = mat_y,
+           ann = "annoy",
+           distance = "euclidean",
+           ann_write = "./plik")
+  )
+
 
 expect_true({
   blocking(x = mat_y,
            ann = "annoy",
            distance = "euclidean",
            ann_write = ".")
+  file.exists("./index.annoy") &
+    file.exists("./index-colnames.txt")
+})
+
+expect_true({
+  blocking(x = mat_y,
+           ann = "annoy",
+           distance = "euclidean",
+           ann_write = "./")
   file.exists("./index.annoy") &
     file.exists("./index-colnames.txt")
 })
@@ -81,4 +97,12 @@ expect_equal({
   ann_annoy$load("./index.annoy")
   ann_annoy$getNItems()
 },  8)
+
+## test verbose
+expect_stdout(
+  blocking(x = mat_y,
+         ann = "annoy",
+         distance = "euclidean",
+         verbose = 2)
+)
 

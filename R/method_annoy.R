@@ -30,7 +30,6 @@ method_annoy <- function(x,
                          verbose,
                          path,
                          seed,
-
                          control) {
 
 

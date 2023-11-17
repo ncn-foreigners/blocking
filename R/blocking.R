@@ -79,6 +79,9 @@ blocking <- function(x,
 
   ## checks
   stopifnot("Only character or matrix x is supported" = is.character(x) | is.matrix(x))
+  if (!is.null(ann_write)) {
+    stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
+  }
   #stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
   #            distance %in% c("euclidean", "manhatan", "hamming", "angular") & ann == "annoy")
 

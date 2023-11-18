@@ -28,7 +28,8 @@ controls_ann <- function(
                projections = 10,
                tables = 30),
 
-    annoy = list(n_trees = 250),
+    annoy = list(n_trees = 250,
+                 build_on_disk = FALSE),
 
     kd = list(algorithm = "dual_tree",
               epsilon = 0,

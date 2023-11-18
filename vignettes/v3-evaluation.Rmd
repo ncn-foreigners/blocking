@@ -1,12 +1,18 @@
 ---
-title: "v3-evaluation"
-output: rmarkdown::html_vignette
+title: "Evaluation of blocking procedures"
+author: "Maciej Beręsewicz"
+output: 
+    html_vignette:
+        df_print: kable
+        toc: true
+        number_sections: true
+        fig_width: 6
+        fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{v3-evaluation}
+  %\VignetteIndexEntry{Evaluation of blocking procedures}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

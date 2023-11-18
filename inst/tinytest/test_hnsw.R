@@ -107,3 +107,4 @@ expect_stdout(
            ann_write = ".")
 )
 
+

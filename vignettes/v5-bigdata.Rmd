@@ -1,5 +1,5 @@
 ---
-title: "Blocking records for record linkage"
+title: "Dealing with large datasets"
 author: "Maciej Beręsewicz"
 output: 
     html_vignette:
@@ -9,11 +9,10 @@ output:
         fig_width: 6
         fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{Blocking records for record linkage}
+  %\VignetteIndexEntry{Dealing with large datasets}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

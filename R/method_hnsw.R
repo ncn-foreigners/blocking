@@ -48,42 +48,20 @@ method_hnsw <- function(x,
     l_ind$setNumThreads(n_threads)
     l_ind$setGrainSize(control$hnsw$grain_size)
 
-    ## add items from a sparse matrix in a batches
-    if (verbose) {
-      pb <- utils::txtProgressBar(style = 3)
+    for (i in 1:nrow(x)) {
+      l_ind$addItem(x[i,])
     }
-    starts <- seq(1, nrow(x), 1000) ## by 1000 batches
 
-    for (i in 1:NROW(starts)) {
-      ## check if last element is used
-      l_ind$addItems(as.matrix(x[starts[i]:(starts[i]+999),]))
-      if (exists("pb")) utils::setTxtProgressBar(pb,i)
-    }
-    if (exists("pb")) close(pb)
-
-    ## query based on sparse data in batches
     l_ind$setEf(control$hnsw$ef_s)
 
-    ## this should be changed to loop
-    ## add items from a sparse matrix in a batches
 
-    # if (verbose) {
-    #   pb <- utils::txtProgressBar(style = 3)
-    # }
-    starts <- seq(1, nrow(x), 1000) ## by 1000 batches
 
-    l_1nn <- list()
-    l_1nn_m <- list()
-
-    for (i in 1:NROW(starts)) {
-      ## check if last element is used
-      l_1nn_m[[i]] <- l_ind$getAllNNsList(as.matrix(y[starts[i]:(starts[i]+999),]), k, TRUE)$item
-      #if (exists("pb")) utils::setTxtProgressBar(pb,i)
+    for (i in 1:nrow(y)) {
+      l_1nn_m[[i]] <- l_ind$getNNsList(y[i,], k, TRUE)
     }
 
-    #if (exists("pb")) close(pb)
-
-    l_1nn$idx <- do.call('rbind',l_1nn_m)
+    l_1nn <- list(idx = do.call("rbind",lapply(l_1nn_m, "[[", "item")),
+                  dist = do.call("rbind",lapply(l_1nn_m, "[[", "distance")))
 
   } else {
     x <- as.matrix(x)

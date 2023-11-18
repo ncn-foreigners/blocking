@@ -1,5 +1,7 @@
 source("test_data.R")
 
+
+
 expect_silent(
   blocking(x = df_example$txt)
 )
@@ -28,6 +30,17 @@ expect_silent(
 
 expect_silent(
   blocking(x = mat_x, y = mat_y)
+)
+
+
+# test parameters ---------------------------------------------------------
+
+expect_error(
+  blocking(x = df_example$txt, ann = "hnsw", distance = "manhatan")
+)
+
+expect_error(
+  blocking(x = df_example$txt, ann = "annoy", distance = "cosine")
 )
 
 

@@ -9,7 +9,7 @@ controls_ann(
   hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
   lsh = list(bucket_size = 500, hash_width = 10, num_probes = 0, projections = 10, tables
     = 30),
-  annoy = list(n_trees = 250),
+  annoy = list(n_trees = 250, build_on_disk = FALSE),
   kd = list(algorithm = "dual_tree", epsilon = 0, leaf_size = 20, random_basis = FALSE,
     rho = 0.7, tau = 0, tree_type = "kd")
 )

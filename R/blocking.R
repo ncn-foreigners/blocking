@@ -47,7 +47,7 @@
 #'
 #' @examples
 #'
-#' ## general example
+#' ## an example using RcppHNSW
 #' df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 #' "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 #'
@@ -57,15 +57,27 @@
 #'
 #' result
 #'
-#' ## an example with true blocks
+#' ## an example using RcppAnnoy
 #'
+#' result_annoy <- blocking(x = df_example$txt,
+#'                          ann = "annoy",
+#'                          distance = "angular")
+#'
+#' result_annoy
+#'
+#' ## an example using mlpack::lsh
+#'
+#' result_lsh <- blocking(x = df_example$txt,
+#'                        ann = "lsh")
+#'
+#' result_lsh
 #' @export
 blocking <- function(x,
                      y = NULL,
                      deduplication = TRUE,
                      on = NULL,
                      on_blocking = NULL,
-                     ann = c("hnsw", "lsh", "annoy", "kd", "nnd"),
+                     ann = c("hnsw", "annoy", "lsh", "kd", "nnd"),
                      distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
                      ann_write = NULL,
                      ann_colnames = NULL,
@@ -77,13 +89,29 @@ blocking <- function(x,
                      control_txt = controls_txt(),
                      control_ann = controls_ann()) {
 
-  ## checks
+  ## defaults
+  if (missing(verbose)) verbose <- 0
+  if (missing(ann)) ann <- "hnsw"
+  if (missing(distance)) distance <- switch(ann,
+                                            "hnsw"="cosine",
+                                            "annoy"="angular",
+                                            "lsh"=NULL,
+                                            "kd"=NULL)
+
   stopifnot("Only character or matrix x is supported" = is.character(x) | is.matrix(x))
   if (!is.null(ann_write)) {
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
   }
-  #stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
-  #            distance %in% c("euclidean", "manhatan", "hamming", "angular") & ann == "annoy")
+
+  if (ann == "hnsw") {
+    stopifnot("Distance for HNSW should be `l2, euclidean, cosine, ip`" =
+                distance %in% c("l2", "euclidean", "cosine", "ip"))
+  }
+
+  if (ann == "annoy") {
+    stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
+                distance %in% c("euclidean", "manhatan", "hamming", "angular"))
+  }
 
 
   if (!is.null(true_blocks)) {
@@ -100,13 +128,6 @@ blocking <- function(x,
     }
   }
 
-  ## defaults
-  if (missing(verbose)) verbose <- 0
-  if (missing(ann)) ann <- "hnsw"
-
-  ## this this should be done depending on the distance
-
-  if (missing(distance)) distance <- "cosine"
 
   if (!is.null(y)) {
     deduplication <- FALSE

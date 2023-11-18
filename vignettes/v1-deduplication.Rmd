@@ -1,7 +1,13 @@
 ---
 title: "Blocking records for deduplication"
 author: "Maciej Beręsewicz"
-output: rmarkdown::html_vignette
+output: 
+    html_vignette:
+        df_print: kable
+        toc: true
+        number_sections: true
+        fig_width: 6
+        fig_height: 4
 vignette: >
   %\VignetteIndexEntry{Blocking records for deduplication}
   %\VignetteEngine{knitr::rmarkdown}
@@ -97,6 +103,7 @@ We add block information to the final dataset.
 ```{r}
 df_block_result <- copy(df_blocks$result[order(y),])
 df[, block_id := df_block_result$block]
+df[, block_dist := df_block_result$dist]
 head(df)
 ```
 
@@ -104,5 +111,16 @@ Finally, we can check in how many blocks the same entities (`ent_id`) are observ
 
 ```{r}
 df[, .(uniq_blocks = uniqueN(block_id)), .(ent_id)][, .N, uniq_blocks]
+```
+Compare distances for block that contains different (1) and the same (2) units. 
+
+```{r}
+boxplot(block_dist ~ id_count, data=df, xlab = "Block type", ylab = "Distances")
+```
+
+```{r}
+plot(density(df[id_count==2]$block_dist), col = "blue", xlim = c(0, 0.8), 
+     main = "Distribution of distances between\nclusters type (1=red, 2=blue)")
+lines(density(df[id_count==1]$block_dist), col = "red", xlim = c(0, 0.8))
 ```
 

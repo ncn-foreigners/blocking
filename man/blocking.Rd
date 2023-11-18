@@ -10,7 +10,7 @@ blocking(
   deduplication = TRUE,
   on = NULL,
   on_blocking = NULL,
-  ann = c("hnsw", "lsh", "annoy", "kd", "nnd"),
+  ann = c("hnsw", "annoy", "lsh", "kd", "nnd"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
   ann_write = NULL,
   ann_colnames = NULL,
@@ -74,7 +74,7 @@ Imports
 }
 \examples{
 
-## general example
+## an example using RcppHNSW
 df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
@@ -84,8 +84,20 @@ result <- blocking(x = df_example$txt,
 
 result
 
-## an example with true blocks
+## an example using RcppAnnoy
 
+result_annoy <- blocking(x = df_example$txt,
+                         ann = "annoy",
+                         distance = "angular")
+
+result_annoy
+
+## an example using mlpack::lsh
+
+result_lsh <- blocking(x = df_example$txt,
+                       ann = "lsh")
+
+result_lsh
 }
 \author{
 Maciej Beręsewicz

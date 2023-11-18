@@ -45,6 +45,12 @@ method_annoy <- function(x,
 
   l_ind$setSeed(seed)
 
+  if (control$annoy$build_on_disk) {
+    temp_annoy <- tempfile(pattern="annoy", fileext="tree")
+    cat("Building index on disk:", temp_annoy, "\n")
+    l_ind$onDiskBuild(temp_annoy)
+
+  }
   if (verbose) l_ind$setVerbose(1)
 
   ## index - this does not require dense matrix (sparse can be used?)

@@ -42,8 +42,10 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/v1-deduplication.html">Blocking records for deduplication</a>
-    <a class="dropdown-item" href="../articles/v2-reclin.html">v2-reclin</a>
-    <a class="dropdown-item" href="../articles/v3-evaluation.html">v3-evaluation</a>
+    <a class="dropdown-item" href="../articles/v2-reclin.html">Blocking records for record linkage</a>
+    <a class="dropdown-item" href="../articles/v3-evaluation.html">Evaluation of blocking procedures</a>
+    <a class="dropdown-item" href="../articles/v4-integration.html">Integration with existing packages</a>
+    <a class="dropdown-item" href="../articles/v5-bigdata.html">Dealing with large datasets</a>
   </div>
 </li>
 <li class="nav-item">
@@ -216,6 +218,7 @@ return all units of <code>df</code>,</li>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_block_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">df</span><span class="op">[</span>, <span class="va">block_id</span> <span class="op">:=</span> <span class="va">df_block_result</span><span class="op">$</span><span class="va">block</span><span class="op">]</span></span>
+<span><span class="va">df</span><span class="op">[</span>, <span class="va">block_dist</span> <span class="op">:=</span> <span class="va">df_block_result</span><span class="op">$</span><span class="va">dist</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    fname_c1 fname_c2 lname_c1 lname_c2   by bm bd rec_id ent_id id_count</span></span>
 <span><span class="co">#&gt; 1:  CARSTEN             MEIER          1949 07 22      1     34        1</span></span>
@@ -224,13 +227,13 @@ return all units of <code>df</code>,</li>
 <span><span class="co">#&gt; 4:   STEFAN             WOLFF          1957 09 02      4    189        1</span></span>
 <span><span class="co">#&gt; 5:     RALF           KRUEGER          1966 01 13      5     72        1</span></span>
 <span><span class="co">#&gt; 6:  JUERGEN            FRANKE          1929 07 04      6    142        1</span></span>
-<span><span class="co">#&gt;                       txt block_id</span></span>
-<span><span class="co">#&gt; 1:   carstenmeier19490722        1</span></span>
-<span><span class="co">#&gt; 2:      gerdbauer19680727        2</span></span>
-<span><span class="co">#&gt; 3: roberthartmann19300430        3</span></span>
-<span><span class="co">#&gt; 4:    stefanwolff19570902        4</span></span>
-<span><span class="co">#&gt; 5:    ralfkrueger19660113        5</span></span>
-<span><span class="co">#&gt; 6:  juergenfranke19290704        1</span></span></code></pre></div>
+<span><span class="co">#&gt;                       txt block_id block_dist</span></span>
+<span><span class="co">#&gt; 1:   carstenmeier19490722        1 0.47379863</span></span>
+<span><span class="co">#&gt; 2:      gerdbauer19680727        2 0.08074522</span></span>
+<span><span class="co">#&gt; 3: roberthartmann19300430        3 0.43263358</span></span>
+<span><span class="co">#&gt; 4:    stefanwolff19570902        4 0.52565831</span></span>
+<span><span class="co">#&gt; 5:    ralfkrueger19660113        5 0.51333570</span></span>
+<span><span class="co">#&gt; 6:  juergenfranke19290704        1 0.48712242</span></span></code></pre></div>
 <p>Finally, we can check in how many blocks the same entities
 (<code>ent_id</code>) are observed. In our example, all the same
 entities are in the same blocks.</p>
@@ -238,6 +241,16 @@ entities are in the same blocks.</p>
 <code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>uniq_blocks <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">uniqueN</a></span><span class="op">(</span><span class="va">block_id</span><span class="op">)</span><span class="op">)</span>, <span class="fu">.</span><span class="op">(</span><span class="va">ent_id</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">uniq_blocks</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    uniq_blocks   N</span></span>
 <span><span class="co">#&gt; 1:           1 450</span></span></code></pre></div>
+<p>Compare distances for block that contains different (1) and the same
+(2) units.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="va">block_dist</span> <span class="op">~</span> <span class="va">id_count</span>, data<span class="op">=</span><span class="va">df</span>, xlab <span class="op">=</span> <span class="st">"Block type"</span>, ylab <span class="op">=</span> <span class="st">"Distances"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">id_count</span><span class="op">==</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">block_dist</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"blue"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span>, </span>
+<span>     main <span class="op">=</span> <span class="st">"Distribution of distances between\nclusters type (1=red, 2=blue)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">df</span><span class="op">[</span><span class="va">id_count</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span><span class="op">$</span><span class="va">block_dist</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

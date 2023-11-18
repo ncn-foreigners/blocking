@@ -25,8 +25,10 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/v1-deduplication.html">Blocking records for deduplication</a>
-    <a class="dropdown-item" href="../articles/v2-reclin.html">v2-reclin</a>
-    <a class="dropdown-item" href="../articles/v3-evaluation.html">v3-evaluation</a>
+    <a class="dropdown-item" href="../articles/v2-reclin.html">Blocking records for record linkage</a>
+    <a class="dropdown-item" href="../articles/v3-evaluation.html">Evaluation of blocking procedures</a>
+    <a class="dropdown-item" href="../articles/v4-integration.html">Integration with existing packages</a>
+    <a class="dropdown-item" href="../articles/v5-bigdata.html">Dealing with large datasets</a>
   </div>
 </li>
 <li class="nav-item">
@@ -64,7 +66,7 @@
 <span>  hnsw <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>M <span class="op">=</span> <span class="fl">25</span>, ef_c <span class="op">=</span> <span class="fl">200</span>, ef_s <span class="op">=</span> <span class="fl">200</span>, grain_size <span class="op">=</span> <span class="fl">1</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  lsh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bucket_size <span class="op">=</span> <span class="fl">500</span>, hash_width <span class="op">=</span> <span class="fl">10</span>, num_probes <span class="op">=</span> <span class="fl">0</span>, projections <span class="op">=</span> <span class="fl">10</span>, tables</span>
 <span>    <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
-<span>  annoy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n_trees <span class="op">=</span> <span class="fl">250</span><span class="op">)</span>,</span>
+<span>  annoy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n_trees <span class="op">=</span> <span class="fl">250</span>, build_on_disk <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  kd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>algorithm <span class="op">=</span> <span class="st">"dual_tree"</span>, epsilon <span class="op">=</span> <span class="fl">0</span>, leaf_size <span class="op">=</span> <span class="fl">20</span>, random_basis <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>    rho <span class="op">=</span> <span class="fl">0.7</span>, tau <span class="op">=</span> <span class="fl">0</span>, tree_type <span class="op">=</span> <span class="st">"kd"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>

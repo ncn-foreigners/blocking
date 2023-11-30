@@ -81,6 +81,8 @@
 <p>Currently supports the following R packages that binds to specific ANN algorithms</p>
 <ul>
 <li>
+<a href="https://cran.r-project.org/package=rnndescent" class="external-link">rnndescent</a> (default),</li>
+<li>
 <a href="https://cran.r-project.org/package=RcppHNSW" class="external-link">RcppHNSW</a>,</li>
 <li>
 <a href="https://cran.r-project.org/package=RcppAnnoy" class="external-link">RcppAnnoy</a>,</li>
@@ -147,13 +149,10 @@
 <p>Deduplication using blocking</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">blocking_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df_example</span><span class="op">$</span><span class="va">txt</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 'as(&lt;dgTMatrix&gt;, "dgCMatrix")' is deprecated.</span></span>
-<span><span class="co">#&gt; Use 'as(., "CsparseMatrix")' instead.</span></span>
-<span><span class="co">#&gt; See help("Deprecated") and help("Matrix-deprecated").</span></span>
 <span><span class="co">## data frame with indices and block </span></span>
 <span><span class="va">blocking_result</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
-<span><span class="co">#&gt; Blocking based on the hnsw method.</span></span>
+<span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
 <span><span class="co">#&gt; Number of blocks: 2.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 28.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 0.5714.</span></span>
@@ -164,16 +163,16 @@
 <p>Table with blocking</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">blocking_result</span><span class="op">$</span><span class="va">result</span></span>
-<span><span class="co">#&gt;        x     y block</span></span>
-<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:     1     2     1</span></span>
-<span><span class="co">#&gt; 2:     2     1     1</span></span>
-<span><span class="co">#&gt; 3:     2     3     1</span></span>
-<span><span class="co">#&gt; 4:     2     4     1</span></span>
-<span><span class="co">#&gt; 5:     5     6     2</span></span>
-<span><span class="co">#&gt; 6:     5     7     2</span></span>
-<span><span class="co">#&gt; 7:     5     8     2</span></span>
-<span><span class="co">#&gt; 8:     6     5     2</span></span></code></pre></div>
+<span><span class="co">#&gt;        x     y block       dist</span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;num&gt;      &lt;num&gt;</span></span>
+<span><span class="co">#&gt; 1:     1     2     1 0.10000005</span></span>
+<span><span class="co">#&gt; 2:     1     3     1 0.14188367</span></span>
+<span><span class="co">#&gt; 3:     1     4     1 0.28286284</span></span>
+<span><span class="co">#&gt; 4:     2     1     1 0.10000005</span></span>
+<span><span class="co">#&gt; 5:     5     6     2 0.08333336</span></span>
+<span><span class="co">#&gt; 6:     5     7     2 0.13397458</span></span>
+<span><span class="co">#&gt; 7:     5     8     2 0.27831215</span></span>
+<span><span class="co">#&gt; 8:     6     5     2 0.08333336</span></span></code></pre></div>
 <p>Deduplication followed by the <code>reclin2</code> package</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df_example</span>, on <span class="op">=</span> <span class="st">"txt"</span><span class="op">)</span> <span class="op">|&gt;</span></span>

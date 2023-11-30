@@ -18,7 +18,7 @@
 #'
 #' @description
 #' Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
-#' RcppHNSW, [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
+#' [rnndescent], RcppHNSW, [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
 #'
 #' @param x reference data (character vector or a matrix),
 #' @param y query data (types the same), if not provided NULL by default,
@@ -77,7 +77,7 @@ blocking <- function(x,
                      deduplication = TRUE,
                      on = NULL,
                      on_blocking = NULL,
-                     ann = c("hnsw", "annoy", "lsh", "kd", "nnd"),
+                     ann = c("nnd", "hnsw", "annoy", "lsh", "kd"),
                      distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
                      ann_write = NULL,
                      ann_colnames = NULL,
@@ -91,17 +91,19 @@ blocking <- function(x,
 
   ## defaults
   if (missing(verbose)) verbose <- 0
-  if (missing(ann)) ann <- "hnsw"
+  if (missing(ann)) ann <- "nnd"
   if (missing(distance)) distance <- switch(ann,
-                                            "hnsw"="cosine",
-                                            "annoy"="angular",
-                                            "lsh"=NULL,
-                                            "kd"=NULL)
+                                            "nnd" = "cosine",
+                                            "hnsw" = "cosine",
+                                            "annoy" = "angular",
+                                            "lsh" = NULL,
+                                            "kd" = NULL)
 
   stopifnot("Only character or matrix x is supported" = is.character(x) | is.matrix(x))
   if (!is.null(ann_write)) {
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
   }
+
 
   if (ann == "hnsw") {
     stopifnot("Distance for HNSW should be `l2, euclidean, cosine, ip`" =
@@ -112,6 +114,7 @@ blocking <- function(x,
     stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
                 distance %in% c("euclidean", "manhatan", "hamming", "angular"))
   }
+
 
 
   if (!is.null(true_blocks)) {
@@ -201,6 +204,13 @@ blocking <- function(x,
 
 
   l_df <- switch(ann,
+                 "nnd" = method_nnd(x = l_dtm[, colnames_xy],
+                                    y = l_dtm_y[, colnames_xy],
+                                    k = k,
+                                    distance = distance,
+                                    verbose = if (verbose == 2) TRUE else FALSE,
+                                    n_threads = n_threads,
+                                    control = control_ann),
                  "hnsw" = method_hnsw(x = l_dtm[, colnames_xy],
                                       y = l_dtm_y[, colnames_xy],
                                       k = k,

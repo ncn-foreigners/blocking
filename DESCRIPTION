@@ -22,6 +22,7 @@ Imports:
   RcppHNSW,
   RcppAnnoy,
   mlpack,
+  rnndescent,
   igraph,
   data.table,
   methods

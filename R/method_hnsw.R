@@ -54,8 +54,7 @@ method_hnsw <- function(x,
 
     l_ind$setEf(control$hnsw$ef_s)
 
-
-
+    l_1nn_m <- list()
     for (i in 1:nrow(y)) {
       l_1nn_m[[i]] <- l_ind$getNNsList(y[i,], k, TRUE)
     }

@@ -1,0 +1,83 @@
+#'
+#' @importFrom rnndescent rnnd_build
+#' @importFrom rnndescent rnnd_query
+#' @importFrom data.table data.table
+#'
+#' @title An internal function to use the nnd algorithm via rnndescent package
+#' @author Maciej Beręsewicz
+#'
+#' @param x Deduplication or reference data.
+#' @param y Query data.
+#' @param k Number of neighbours to return.
+#' @param distance 	Type of distance to calculate.
+#' @param verbose If TRUE, log messages to the console.
+#' @param n_threads Maximum number of threads to use.
+#' @param control Controls for the NND algorithm
+#'
+#' @description
+#' See details of [rnndescent::rnnd_build] and [rnndescent::rnnd_query]
+#'
+#'
+method_nnd <- function(x,
+                       y,
+                       k,
+                       distance,
+                       verbose,
+                       n_threads,
+                       control) {
+
+  l_ind <- rnndescent::rnnd_build(data = x,
+                                  k = control$nnd$k_build,
+                                  metric = distance,
+                                  verbose = verbose,
+                                  n_threads = n_threads,
+                                  use_alt_metric = control$nnd$use_alt_metric,
+                                  init = control$nnd$init,
+                                  n_trees = control$nnd$n_trees,
+                                  leaf_size = control$nnd$leaf_size,
+                                  max_tree_depth = control$nnd$max_tree_depth,
+                                  margin = control$nnd$margin,
+                                  n_iters = control$nnd$n_iters,
+                                  delta = control$nnd$delta,
+                                  max_candidates = control$nnd$max_candidates,
+                                  low_memory = control$nnd$low_memory,
+                                  n_search_trees = control$nnd$n_search_trees,
+                                  pruning_degree_multiplier = control$nnd$pruning_degree_multiplier,
+                                  diversify_prob = control$nnd$diversify_prob,
+                                  progress = control$nnd$progress,
+                                  obs = control$nnd$obs)
+
+  ## query
+  l_1nn <- rnndescent::rnnd_query(index = l_ind,
+                                  query = y,
+                                  k = k,
+                                  epsilon = 0.1,
+                                  max_search_fraction = 1,
+                                  init = NULL,
+                                  verbose = verbose,
+                                  n_threads = n_threads,
+                                  obs = "R")
+
+  # if (!is.null(path)) {
+  #   if (grepl("(/|\\\\)$", path)) {
+  #     path_ann <- paste0(path, "index.hnsw")
+  #     path_ann_cols <- paste0(path, "index-colnames.txt")
+  #   } else {
+  #     path_ann <- paste0(path, "//index.hnsw")
+  #     path_ann_cols <- paste0(path, "//index-colnames.txt")
+  #   }
+  #   if (verbose) {
+  #       cat("Writing an index to `path`\n")
+  #   }
+  #   l_ind$save(path_ann)
+  #   writeLines(colnames(x), path_ann_cols)
+  # }
+
+  l_df <- data.table::data.table(y = 1:NROW(y),
+                                 x = l_1nn$idx[, k],
+                                 dist = l_1nn$dist[,k])
+
+
+
+  l_df
+}

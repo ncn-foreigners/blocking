@@ -10,7 +10,7 @@ blocking(
   deduplication = TRUE,
   on = NULL,
   on_blocking = NULL,
-  ann = c("hnsw", "annoy", "lsh", "kd", "nnd"),
+  ann = c("nnd", "hnsw", "annoy", "lsh", "kd"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
   ann_write = NULL,
   ann_colnames = NULL,
@@ -67,7 +67,7 @@ Returns a list with containing:\cr
 }
 \description{
 Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
-RcppHNSW, \link{RcppAnnoy} and \link{mlpack} and creates blocks using \link{igraph}.
+\link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} and creates blocks using \link{igraph}.
 }
 \details{
 Imports

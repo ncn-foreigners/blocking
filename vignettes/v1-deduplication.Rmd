@@ -59,14 +59,14 @@ head(df)
 In the next step we use the newly created column in the `blocking` function. If we specify verbose, we get information about the progress.
 
 ```{r}
-df_blocks <- blocking(x = df$txt, ann = "hnsw", verbose=TRUE, graph = TRUE)
+df_blocks <- blocking(x = df$txt, ann = "nnd", verbose = 1, graph = TRUE)
 ```
 
 Results are as follows:
 
-+ based in `RcppHNSW` we created 133 blocks,
++ based in `rnndescent` we created . blocks,
 + it was based on 429 columns (2 character shingles),
-+ we have 46 blocks of 2 elements, 43 blocks of 3 elements, ..., 1 block of 17 elements.
++ we have 48 blocks of 2 elements, 34 blocks of 3 elements, ..., 1 block of 15 elements.
 
 ```{r}
 df_blocks

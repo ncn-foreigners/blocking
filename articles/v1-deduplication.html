@@ -8,8 +8,8 @@
 <meta name="description" content="blocking">
 <title>Blocking records for deduplication • blocking</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Blocking records for deduplication">
 <meta property="og:description" content="blocking">
@@ -141,28 +141,28 @@ row.</p>
 <code>blocking</code> function. If we specify verbose, we get
 information about the progress.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">txt</span>, ann <span class="op">=</span> <span class="st">"hnsw"</span>, verbose<span class="op">=</span><span class="cn">TRUE</span>, graph <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">txt</span>, ann <span class="op">=</span> <span class="st">"nnd"</span>, verbose <span class="op">=</span> <span class="fl">1</span>, graph <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
-<span><span class="co">#&gt; ===== starting search (hnsw, x, y: 500, 500, t: 429) =====</span></span>
+<span><span class="co">#&gt; ===== starting search (nnd, x, y: 500, 500, t: 429) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
 <p>Results are as follows:</p>
 <ul>
-<li>based in <code>RcppHNSW</code> we created 133 blocks,</li>
+<li>based in <code>rnndescent</code> we created . blocks,</li>
 <li>it was based on 429 columns (2 character shingles),</li>
-<li>we have 46 blocks of 2 elements, 43 blocks of 3 elements, …, 1 block
-of 17 elements.</li>
+<li>we have 48 blocks of 2 elements, 34 blocks of 3 elements, …, 1 block
+of 15 elements.</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_blocks</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
-<span><span class="co">#&gt; Blocking based on the hnsw method.</span></span>
+<span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
 <span><span class="co">#&gt; Number of blocks: 133.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 429.</span></span>
-<span><span class="co">#&gt; Reduction ratio: 0.9916.</span></span>
+<span><span class="co">#&gt; Reduction ratio: 0.9915.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
-<span><span class="co">#&gt;  2  3  4  5  6  7  8  9 11 13 17 </span></span>
-<span><span class="co">#&gt; 45 35 23 10  5  7  2  3  1  1  1</span></span></code></pre></div>
+<span><span class="co">#&gt;  2  3  4  5  6  7  8  9 10 11 12 17 </span></span>
+<span><span class="co">#&gt; 47 34 22  9  7  5  3  1  1  2  1  1</span></span></code></pre></div>
 <p>Structure of the object is as follows:</p>
 <ul>
 <li>
@@ -185,7 +185,7 @@ visualisation.</li>
 <span><span class="co">#&gt; List of 5</span></span>
 <span><span class="co">#&gt;  $ result  :Classes 'data.table' and 'data.frame':   500 obs. of  4 variables:</span></span>
 <span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
-<span><span class="co">#&gt;  $ method  : chr "hnsw"</span></span>
+<span><span class="co">#&gt;  $ method  : chr "nnd"</span></span>
 <span><span class="co">#&gt;  $ metrics : NULL</span></span>
 <span><span class="co">#&gt;  $ colnames: chr [1:429] "86" "ap" "av" "bf" ...</span></span>
 <span><span class="co">#&gt;  $ graph   :Class 'igraph'  hidden list of 10</span></span>
@@ -208,11 +208,11 @@ return all units of <code>df</code>,</li>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    x   y block       dist</span></span>
-<span><span class="co">#&gt; 1: 2  43     2 0.08074522</span></span>
-<span><span class="co">#&gt; 2: 2 486     2 0.41023219</span></span>
-<span><span class="co">#&gt; 3: 5 128     5 0.51333570</span></span>
-<span><span class="co">#&gt; 4: 5 439     5 0.51333570</span></span>
-<span><span class="co">#&gt; 5: 7  20     6 0.27246726</span></span>
+<span><span class="co">#&gt; 1: 2  43     2 0.08074532</span></span>
+<span><span class="co">#&gt; 2: 2 486     2 0.41023218</span></span>
+<span><span class="co">#&gt; 3: 5 128     5 0.51333577</span></span>
+<span><span class="co">#&gt; 4: 5 439     5 0.51333577</span></span>
+<span><span class="co">#&gt; 5: 7  20     6 0.27246721</span></span>
 <span><span class="co">#&gt; 6: 7  28     6 0.45405132</span></span></code></pre></div>
 <p>We add block information to the final dataset.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -228,12 +228,12 @@ return all units of <code>df</code>,</li>
 <span><span class="co">#&gt; 5:     RALF           KRUEGER          1966 01 13      5     72        1</span></span>
 <span><span class="co">#&gt; 6:  JUERGEN            FRANKE          1929 07 04      6    142        1</span></span>
 <span><span class="co">#&gt;                       txt block_id block_dist</span></span>
-<span><span class="co">#&gt; 1:   carstenmeier19490722        1 0.47379863</span></span>
-<span><span class="co">#&gt; 2:      gerdbauer19680727        2 0.08074522</span></span>
-<span><span class="co">#&gt; 3: roberthartmann19300430        3 0.43263358</span></span>
-<span><span class="co">#&gt; 4:    stefanwolff19570902        4 0.52565831</span></span>
-<span><span class="co">#&gt; 5:    ralfkrueger19660113        5 0.51333570</span></span>
-<span><span class="co">#&gt; 6:  juergenfranke19290704        1 0.48712242</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:   carstenmeier19490722        1 0.47379870</span></span>
+<span><span class="co">#&gt; 2:      gerdbauer19680727        2 0.08074532</span></span>
+<span><span class="co">#&gt; 3: roberthartmann19300430        3 0.43263354</span></span>
+<span><span class="co">#&gt; 4:    stefanwolff19570902        4 0.52565834</span></span>
+<span><span class="co">#&gt; 5:    ralfkrueger19660113        5 0.51333577</span></span>
+<span><span class="co">#&gt; 6:  juergenfranke19290704        1 0.48712237</span></span></code></pre></div>
 <p>Finally, we can check in how many blocks the same entities
 (<code>ent_id</code>) are observed. In our example, all the same
 entities are in the same blocks.</p>

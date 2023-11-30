@@ -19,6 +19,7 @@ and graphs (via `igraph`).
 Currently supports the following R packages that binds to specific ANN
 algorithms
 
+- [rnndescent](https://cran.r-project.org/package=rnndescent) (default),
 - [RcppHNSW](https://cran.r-project.org/package=RcppHNSW),
 - [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy),
 - [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
@@ -93,13 +94,10 @@ Deduplication using blocking
 
 ``` r
 blocking_result <- blocking(x = df_example$txt)
-#> 'as(<dgTMatrix>, "dgCMatrix")' is deprecated.
-#> Use 'as(., "CsparseMatrix")' instead.
-#> See help("Deprecated") and help("Matrix-deprecated").
 ## data frame with indices and block 
 blocking_result
 #> ========================================================
-#> Blocking based on the hnsw method.
+#> Blocking based on the nnd method.
 #> Number of blocks: 2.
 #> Number of columns used for blocking: 28.
 #> Reduction ratio: 0.5714.
@@ -113,16 +111,16 @@ Table with blocking
 
 ``` r
 blocking_result$result
-#>        x     y block
-#>    <int> <int> <num>
-#> 1:     1     2     1
-#> 2:     2     1     1
-#> 3:     2     3     1
-#> 4:     2     4     1
-#> 5:     5     6     2
-#> 6:     5     7     2
-#> 7:     5     8     2
-#> 8:     6     5     2
+#>        x     y block       dist
+#>    <int> <int> <num>      <num>
+#> 1:     1     2     1 0.10000005
+#> 2:     1     3     1 0.14188367
+#> 3:     1     4     1 0.28286284
+#> 4:     2     1     1 0.10000005
+#> 5:     5     6     2 0.08333336
+#> 6:     5     7     2 0.13397458
+#> 7:     5     8     2 0.27831215
+#> 8:     6     5     2 0.08333336
 ```
 
 Deduplication followed by the `reclin2` package

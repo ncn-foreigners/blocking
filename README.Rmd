@@ -24,6 +24,7 @@ A small package used to block records for data deduplication and record linkage 
 
 Currently supports the following R packages that binds to specific ANN algorithms
 
++ [rnndescent](https://cran.r-project.org/package=rnndescent) (default),
 + [RcppHNSW](https://cran.r-project.org/package=RcppHNSW), 
 + [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy), 
 + [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see `mlpack::lsh` and `mlpack::knn`).

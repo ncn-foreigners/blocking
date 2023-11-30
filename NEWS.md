@@ -10,3 +10,4 @@
 8. first vignette added.
 9. evaluation with standard metrics (recall, fpr etc) added, works with vector for deduplication.
 10. added saving index for hnsw and annoy
+11. `rnndescend` support added.

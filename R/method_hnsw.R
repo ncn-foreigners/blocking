@@ -9,7 +9,7 @@
 #' @importFrom utils setTxtProgressBar
 #' @importFrom utils txtProgressBar
 #'
-#' @title An internal function to use HNSW algorithm via the [RcppHNSW] package.
+#' @title An internal function to use HNSW algorithm via the RcppHNSW package.
 #' @author Maciej Beręsewicz
 #'
 #' @param x deduplication or reference data,

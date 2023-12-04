@@ -74,3 +74,8 @@ expect_silent(
 )
 
 
+## printing
+
+expect_silent(
+  print(blocking(x = df_example$txt))
+)

@@ -59,14 +59,15 @@ blocking(
 \value{
 Returns a list with containing:\cr
 \itemize{
-\item{\code{result} -- \code{data.frame} with indices (rows) of x, y and block}
-\item{\code{ann} -- name of the ann algorithm used,}
-\item{\code{metrics} -- metrics, if \code{true_blocks} is provided,}
-\item{\code{colnames} -- variable names (colnames) used for search.}
+\item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
+\item{\code{method} -- name of the ANN algorithm used,}
+\item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
+\item{\code{colnames} -- variable names (colnames) used for search,}
+\item{\code{graph} -- \code{igraph} class object.}
 }
 }
 \description{
-Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, \link{RcppHNSW}, \link{RcppAnnoy} and \link{mlpack} packages,
+Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
 and creates blocks using graphs via \link{igraph}.
 }
 \details{
@@ -83,14 +84,6 @@ result <- blocking(x = df_example$txt,
                    control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
 
 result
-
-## an example using RcppAnnoy
-
-result_annoy <- blocking(x = df_example$txt,
-                         ann = "annoy",
-                         distance = "angular")
-
-result_annoy
 
 ## an example using mlpack::lsh
 

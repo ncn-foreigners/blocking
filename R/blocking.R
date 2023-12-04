@@ -17,7 +17,7 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the [rnndescent], [RcppHNSW], [RcppAnnoy] and [mlpack] packages,
+#' Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the [rnndescent], RcppHNSW, [RcppAnnoy] and [mlpack] packages,
 #' and creates blocks using graphs via [igraph].
 #'
 #' @param x reference data (a character vector or a matrix),
@@ -58,14 +58,6 @@
 #'
 #' result
 #'
-#' ## an example using RcppAnnoy
-#'
-#' result_annoy <- blocking(x = df_example$txt,
-#'                          ann = "annoy",
-#'                          distance = "angular")
-#'
-#' result_annoy
-#'
 #' ## an example using mlpack::lsh
 #'
 #' result_lsh <- blocking(x = df_example$txt,
@@ -100,7 +92,9 @@ blocking <- function(x,
                                             "lsh" = NULL,
                                             "kd" = NULL)
 
-  stopifnot("Only character or matrix x is supported" = is.character(x) | is.matrix(x))
+  stopifnot("Only character, dense or sparse (dgCMatrix) matrix x is supported" =
+              is.character(x) | is.matrix(x) | inherits(x, "Matrix"))
+
   if (!is.null(ann_write)) {
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
   }
@@ -144,7 +138,7 @@ blocking <- function(x,
   }
 
   ## add verification if x and y is a sparse matrix
-  if (is.matrix(x)) {
+  if (is.matrix(x) | inherits(x, "Matrix")) {
     l_dtm <- x
     l_dtm_y <- y
   } else {

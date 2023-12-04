@@ -11,16 +11,19 @@ coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.
 
 ## Description
 
-A small package used to block records for data deduplication and record
-linkage (entity resolution) based on [approximate nearest neighbours
-algorithms (ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search)
-and graphs (via `igraph`).
+An R package that aims to block records for data deduplication and
+record linkage (a.k.a. entity resolution) based on [approximate nearest
+neighbours algorithms
+(ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search) and graphs
+(via the `igraph` package).
 
 Currently supports the following R packages that binds to specific ANN
-algorithms
+algorithms:
 
-- [rnndescent](https://cran.r-project.org/package=rnndescent) (default),
-- [RcppHNSW](https://cran.r-project.org/package=RcppHNSW),
+- [rnndescent](https://cran.r-project.org/package=rnndescent) (default,
+  very powerful, supports sparse matrices),
+- [RcppHNSW](https://cran.r-project.org/package=RcppHNSW) (powerful but
+  does not support sparse matrices),
 - [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy),
 - [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
   `mlpack::lsh` and `mlpack::knn`).
@@ -36,7 +39,8 @@ Work on this package is supported by the National Science Centre, OPUS
 
 ## Installation
 
-You can install the development version of `blocking` from GitHub with:
+You can install the development version of the `blocking` package from
+GitHub with:
 
 ``` r
 # install.packages("remotes") # uncomment if needed
@@ -58,7 +62,8 @@ library(reclin2)
 #>     identical
 ```
 
-Generate simple data with two groups.
+Generate simple data with two groups (`df_example`) and reference data
+(`df_base`).
 
 ``` r
 df_example <- data.frame(txt = c(
@@ -90,7 +95,13 @@ df_base
 #> 2 kowalskijan
 ```
 
-Deduplication using blocking
+Deduplication using `blocking` function. Output contains information
+about: + the method used (where `nnd` which refers to the NN descent
+algorithm), + number of blocks created (here 2 blocks), + number of
+columns used for blocking, i.e. how many shingles were created by
+`text2vec` package (here 28), + reduction ratio, i.e. how large is the
+reduction of comparison pairs (here 0.5714 which means blocking reduces
+comparison by over 57%).
 
 ``` r
 blocking_result <- blocking(x = df_example$txt)
@@ -107,7 +118,11 @@ blocking_result
 #> 2
 ```
 
-Table with blocking
+Table with blocking which contains:
+
+- row numbers from the original data
+- block number (integers),
+- distance (from the ANN algorithm).
 
 ``` r
 blocking_result$result
@@ -123,7 +138,9 @@ blocking_result$result
 #> 8:     6     5     2 0.08333336
 ```
 
-Deduplication followed by the `reclin2` package
+Deduplication using the `pair_ann` function for integration with the
+`reclin2` package. Here I use the pipeline that can be used with the
+`reclin2` package.
 
 ``` r
 pair_ann(x = df_example, on = "txt") |>
@@ -148,7 +165,8 @@ pair_ann(x = df_example, on = "txt") |>
 #> 10:     8     6 pythonmonty           monty
 ```
 
-Record linkage
+Record linkage using the same function where `df_base` is the “register”
+and `df_example` is the reference (query data).
 
 ``` r
 pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>

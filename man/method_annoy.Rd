@@ -2,26 +2,26 @@
 % Please edit documentation in R/method_annoy.R
 \name{method_annoy}
 \alias{method_annoy}
-\title{An internal function to use Annoy algorithm via RcppAnnoy.}
+\title{An internal function to use Annoy algorithm via the \link{RcppAnnoy} package.}
 \usage{
 method_annoy(x, y, k, distance, verbose, path, seed, control)
 }
 \arguments{
-\item{x}{Deduplication or reference data.}
+\item{x}{deduplication or reference data,}
 
-\item{y}{Query data.}
+\item{y}{query data,}
 
-\item{k}{Number of neighbors to return.}
+\item{k}{number of neighbours to return,}
 
-\item{distance}{distance metric}
+\item{distance}{distance metric,}
 
-\item{verbose}{If TRUE, log messages to the console.}
+\item{verbose}{if TRUE, log messages to the console,}
 
-\item{path}{path to write the index.}
+\item{path}{path to write the index,}
 
-\item{seed}{seed for the pseudo-random numbers algorithm.}
+\item{seed}{seed for the pseudo-random numbers algorithm,}
 
-\item{control}{controls for  \code{lsh} or \code{kd}.}
+\item{control}{controls for \code{new} or \code{build} methods for \link{RcppAnnoy}.}
 }
 \description{
 See details of the \link{RcppAnnoy} package.

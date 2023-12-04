@@ -108,3 +108,16 @@ expect_stdout(
 )
 
 
+### checks sparse data
+
+expect_silent(
+  blocking(x = df_example$txt,
+           ann = "hnsw",
+           control_ann = controls_ann(sparse=TRUE))
+)
+
+expect_silent(
+  blocking(x = Matrix::Matrix(mat_y),
+           ann = "hnsw",
+           control_ann = controls_ann(sparse=TRUE))
+)

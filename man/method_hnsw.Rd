@@ -2,29 +2,29 @@
 % Please edit documentation in R/method_hnsw.R
 \name{method_hnsw}
 \alias{method_hnsw}
-\title{An internal function to use hnsw algorithm via RcppHNSW.}
+\title{An internal function to use HNSW algorithm via the RcppHNSW package.}
 \usage{
 method_hnsw(x, y, k, distance, verbose, n_threads, path, control)
 }
 \arguments{
-\item{x}{Deduplication or reference data.}
+\item{x}{deduplication or reference data,}
 
-\item{y}{Query data.}
+\item{y}{query data,}
 
-\item{k}{Number of neighbors to return.}
+\item{k}{number of neighbours to return,}
 
-\item{distance}{Type of distance to calculate.}
+\item{distance}{type of distance to calculate,}
 
-\item{verbose}{If TRUE, log messages to the console.}
+\item{verbose}{if TRUE, log messages to the console,}
 
-\item{n_threads}{Maximum number of threads to use.}
+\item{n_threads}{Maximum number of threads to use,}
 
-\item{path}{path to write the index.}
+\item{path}{path to write the index,}
 
-\item{control}{Controls for the HNSW algorithm}
+\item{control}{controls for the HNSW algorithm.}
 }
 \description{
-See details of \link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build} and \link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search}
+See details of \link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build} and \link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search}.
 }
 \author{
 Maciej Beręsewicz

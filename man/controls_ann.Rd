@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{controls_ann}
 \alias{controls_ann}
-\title{Controls for approximate nearest neighbours algoritms}
+\title{Controls for approximate nearest neighbours algorithms}
 \usage{
 controls_ann(
   sparse = FALSE,
@@ -19,15 +19,15 @@ controls_ann(
 )
 }
 \arguments{
-\item{sparse}{whether sparse data should be used as an input for algorithms.}
+\item{sparse}{whether sparse data should be used as an input for algorithms,}
 
-\item{nnd}{parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}}.}
+\item{nnd}{parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}},}
 
-\item{hnsw}{parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}}.}
+\item{hnsw}{parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}},}
 
-\item{lsh}{parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}}.}
+\item{lsh}{parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}},}
 
-\item{annoy}{parameters for \link{RcppAnnoy} package.}
+\item{annoy}{parameters for \link{RcppAnnoy} package,}
 
 \item{kd}{parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function.}
 }

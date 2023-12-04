@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{controls_txt}
 \alias{controls_txt}
-\title{Controls for text data}
+\title{Controls for processing text data}
 \usage{
 controls_txt(n_shingles = 2L, n_chunks = 10L)
 }

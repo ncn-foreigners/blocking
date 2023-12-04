@@ -16,24 +16,24 @@ pair_ann(
 )
 }
 \arguments{
-\item{x}{x}
+\item{x}{reference data (a data.frame or a data.table),}
 
-\item{y}{y}
+\item{y}{query data  (a data.frame or a data.table, default NULL),}
 
-\item{on}{variables for ann search}
+\item{on}{a character vector with column names for the ANN search,}
 
-\item{on_blocking}{blocking variables}
+\item{on_blocking}{blocking variables (currently not supported),}
 
-\item{deduplication}{deduplication}
+\item{deduplication}{whether deduplication should be performed (default TRUE),}
 
-\item{keep_block}{whether to keep block in the set}
+\item{keep_block}{whether to keep the block variable in the set,}
 
-\item{add_xy}{whether to add x and y}
+\item{add_xy}{whether to add x and y,}
 
 \item{...}{arguments passed to \code{\link[=blocking]{blocking()}} function.}
 }
 \value{
-Returns a \link{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. This data.table is also of a class \code{pairs} which allows for integration witn the \code{\link[reclin2:compare_pairs]{reclin2::compare_pairs()}} package.
+Returns a \link{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. Returning data.table is also of a class \code{pairs} which allows for integration with the \code{\link[reclin2:compare_pairs]{reclin2::compare_pairs()}} package.
 }
 \description{
 Function for the integration with the reclin2 package. The function is based on \code{\link[reclin2:pair_minsim]{reclin2::pair_minsim()}} and reuses some of its source code.

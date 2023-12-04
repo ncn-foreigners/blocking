@@ -2,26 +2,26 @@
 % Please edit documentation in R/method_mlpack.R
 \name{method_mlpack}
 \alias{method_mlpack}
-\title{An internal function to use algorthms from the mlpack package.}
+\title{An internal function to use the LSH and KD-tree algorithm via the \link{mlpack} package.}
 \usage{
 method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, path, control)
 }
 \arguments{
-\item{x}{Deduplication or reference data.}
+\item{x}{deduplication or reference data,}
 
-\item{y}{Query data.}
+\item{y}{query data,}
 
-\item{algo}{Which algorithm should be used. Possible: \code{lsh} or \code{kd}.}
+\item{algo}{which algorithm should be used: \code{lsh} or \code{kd},}
 
-\item{k}{Number of neighbors to return.}
+\item{k}{number of neighbours to return,}
 
-\item{verbose}{If TRUE, log messages to the console.}
+\item{verbose}{if TRUE, log messages to the console,}
 
-\item{seed}{seed for the pseudo-random numbers algorithm.}
+\item{seed}{seed for the pseudo-random numbers algorithm,}
 
-\item{path}{path to write the index.}
+\item{path}{path to write the index,}
 
-\item{control}{controls for  \code{lsh} or \code{kd}.}
+\item{control}{controls for the \code{lsh} or \code{kd} algorithms.}
 }
 \description{
 See details of \link[mlpack:lsh]{mlpack::lsh} and \link[mlpack:knn]{mlpack::knn}

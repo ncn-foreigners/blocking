@@ -76,31 +76,31 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>x</p></dd>
+<dd><p>reference data (a data.frame or a data.table),</p></dd>
 
 
 <dt>y</dt>
-<dd><p>y</p></dd>
+<dd><p>query data  (a data.frame or a data.table, default NULL),</p></dd>
 
 
 <dt>on</dt>
-<dd><p>variables for ann search</p></dd>
+<dd><p>a character vector with column names for the ANN search,</p></dd>
 
 
 <dt>on_blocking</dt>
-<dd><p>blocking variables</p></dd>
+<dd><p>blocking variables (currently not supported),</p></dd>
 
 
 <dt>deduplication</dt>
-<dd><p>deduplication</p></dd>
+<dd><p>whether deduplication should be performed (default TRUE),</p></dd>
 
 
 <dt>keep_block</dt>
-<dd><p>whether to keep block in the set</p></dd>
+<dd><p>whether to keep the block variable in the set,</p></dd>
 
 
 <dt>add_xy</dt>
-<dd><p>whether to add x and y</p></dd>
+<dd><p>whether to add x and y,</p></dd>
 
 
 <dt>...</dt>
@@ -111,7 +111,7 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns a <a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a> with two columns <code>.x</code> and <code>.y</code>. Columns <code>.x</code> and <code>.y</code> are row numbers from data.frames x and y respectively. This data.table is also of a class <code>pairs</code> which allows for integration witn the <code><a href="https://rdrr.io/pkg/reclin2/man/compare_pairs.html" class="external-link">reclin2::compare_pairs()</a></code> package.</p>
+<p>Returns a <a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a> with two columns <code>.x</code> and <code>.y</code>. Columns <code>.x</code> and <code>.y</code> are row numbers from data.frames x and y respectively. Returning data.table is also of a class <code>pairs</code> which allows for integration with the <code><a href="https://rdrr.io/pkg/reclin2/man/compare_pairs.html" class="external-link">reclin2::compare_pairs()</a></code> package.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

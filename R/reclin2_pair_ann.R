@@ -6,19 +6,19 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function for the integration with the reclin2 package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
+#' Function for the integration with the [reclin2] package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
 #'
-#' @param x x
-#' @param y y
-#' @param on variables for ann search
-#' @param on_blocking blocking variables
-#' @param deduplication deduplication
-#' @param keep_block whether to keep block in the set
-#' @param add_xy whether to add x and y
+#' @param x reference data (a data.frame or data.table),
+#' @param y query data  (a data.frame or data.table, default NULL),
+#' @param on a character vector with column names for the ANN search,
+#' @param on_blocking blocking variables (currently not supported),
+#' @param deduplication whether deduplication should be performed (default TRUE),
+#' @param keep_block whether to keep the block variable in the set,
+#' @param add_xy whether to add x and y,
 #' @param ... arguments passed to [blocking::blocking()] function.
 #'
 #'
-#' @returns Returns a [data.table] with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. This data.table is also of a class \code{pairs} which allows for integration witn the [reclin2::compare_pairs()] package.
+#' @returns Returns a [data.table] with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. Returning data.table is also of a class \code{pairs} which allows for integration with the [reclin2::compare_pairs()] package.
 #'
 #' @examples
 #'

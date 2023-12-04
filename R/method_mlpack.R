@@ -3,17 +3,17 @@
 #' @importFrom mlpack knn
 #' @importFrom data.table data.table
 #'
-#' @title An internal function to use algorthms from the mlpack package.
+#' @title An internal function to use the LSH and KD-tree algorithm via the [mlpack] package.
 #' @author Maciej Beręsewicz
 #'
-#' @param x Deduplication or reference data.
-#' @param y Query data.
-#' @param algo Which algorithm should be used. Possible: \code{lsh} or \code{kd}.
-#' @param k Number of neighbors to return.
-#' @param verbose If TRUE, log messages to the console.
-#' @param seed seed for the pseudo-random numbers algorithm.
-#' @param path path to write the index.
-#' @param control controls for  \code{lsh} or \code{kd}.
+#' @param x deduplication or reference data,
+#' @param y query data,
+#' @param algo which algorithm should be used: \code{lsh} or \code{kd},
+#' @param k number of neighbours to return,
+#' @param verbose if TRUE, log messages to the console,
+#' @param seed seed for the pseudo-random numbers algorithm,
+#' @param path path to write the index,
+#' @param control controls for the \code{lsh} or \code{kd} algorithms.
 #'
 #' @description
 #' See details of [mlpack::lsh] and [mlpack::knn]

@@ -9,20 +9,20 @@
 #' @importFrom utils setTxtProgressBar
 #' @importFrom utils txtProgressBar
 #'
-#' @title An internal function to use hnsw algorithm via RcppHNSW.
+#' @title An internal function to use HNSW algorithm via the [RcppHNSW] package.
 #' @author Maciej Beręsewicz
 #'
-#' @param x Deduplication or reference data.
-#' @param y Query data.
-#' @param k Number of neighbors to return.
-#' @param distance 	Type of distance to calculate.
-#' @param verbose If TRUE, log messages to the console.
-#' @param n_threads Maximum number of threads to use.
-#' @param path path to write the index.
-#' @param control Controls for the HNSW algorithm
+#' @param x deduplication or reference data,
+#' @param y query data,
+#' @param k number of neighbours to return,
+#' @param distance 	type of distance to calculate,
+#' @param verbose if TRUE, log messages to the console,
+#' @param n_threads Maximum number of threads to use,
+#' @param path path to write the index,
+#' @param control controls for the HNSW algorithm.
 #'
 #' @description
-#' See details of [RcppHNSW::hnsw_build] and [RcppHNSW::hnsw_search]
+#' See details of [RcppHNSW::hnsw_build] and [RcppHNSW::hnsw_search].
 #'
 #'
 method_hnsw <- function(x,

@@ -3,19 +3,19 @@
 #' @importFrom rnndescent rnnd_query
 #' @importFrom data.table data.table
 #'
-#' @title An internal function to use the nnd algorithm via rnndescent package
+#' @title An internal function to use the NN descent algorithm via the [rnndescent] package.
 #' @author Maciej Beręsewicz
 #'
-#' @param x Deduplication or reference data.
-#' @param y Query data.
-#' @param k Number of neighbours to return.
-#' @param distance 	Type of distance to calculate.
-#' @param verbose If TRUE, log messages to the console.
-#' @param n_threads Maximum number of threads to use.
-#' @param control Controls for the NND algorithm
+#' @param x deduplication or reference data,
+#' @param y query data,
+#' @param k number of neighbours to return,
+#' @param distance 	type of distance to calculate,
+#' @param verbose if TRUE, log messages to the console,
+#' @param n_threads maximum number of threads to use,
+#' @param control controls for the NN descent algorithm.
 #'
 #' @description
-#' See details of [rnndescent::rnnd_build] and [rnndescent::rnnd_query]
+#' See details of [rnndescent::rnnd_build] and [rnndescent::rnnd_query].
 #'
 #'
 method_nnd <- function(x,
@@ -76,7 +76,6 @@ method_nnd <- function(x,
   l_df <- data.table::data.table(y = 1:NROW(y),
                                  x = l_1nn$idx[, k],
                                  dist = l_1nn$dist[,k])
-
 
 
   l_df

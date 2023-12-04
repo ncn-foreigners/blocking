@@ -6,17 +6,17 @@
 #' @importFrom methods new
 #' @importFrom data.table data.table
 #'
-#' @title An internal function to use Annoy algorithm via RcppAnnoy.
+#' @title An internal function to use Annoy algorithm via the [RcppAnnoy] package.
 #' @author Maciej Beręsewicz
 #'
-#' @param x Deduplication or reference data.
-#' @param y Query data.
-#' @param k Number of neighbors to return.
-#' @param distance distance metric
-#' @param verbose If TRUE, log messages to the console.
-#' @param seed seed for the pseudo-random numbers algorithm.
-#' @param path path to write the index.
-#' @param control controls for  \code{lsh} or \code{kd}.
+#' @param x deduplication or reference data,
+#' @param y query data,
+#' @param k number of neighbours to return,
+#' @param distance distance metric,
+#' @param verbose if TRUE, log messages to the console,
+#' @param seed seed for the pseudo-random numbers algorithm,
+#' @param path path to write the index,
+#' @param control controls for \code{new} or \code{build} methods for [RcppAnnoy].
 #'
 #' @description
 #' See details of the [RcppAnnoy] package.

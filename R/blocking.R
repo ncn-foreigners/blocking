@@ -17,32 +17,33 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function that creates shingles (strings with 2 characters), applies approximate nearest neighbour search using
-#' [rnndescent], RcppHNSW, [RcppAnnoy] and [mlpack] and creates blocks using [igraph].
+#' Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the [rnndescent], [RcppHNSW], [RcppAnnoy] and [mlpack] packages,
+#' and creates blocks using graphs via [igraph].
 #'
-#' @param x reference data (character vector or a matrix),
-#' @param y query data (types the same), if not provided NULL by default,
+#' @param x reference data (a character vector or a matrix),
+#' @param y query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
-#' @param on variables for ann search (currently not supported),
-#' @param on_blocking variables for blocking (currently not supported),
-#' @param ann algorithm to be used for searching for ann (possible, \code{c("hnsw", "lsh", "annoy", "kd")}, default \code{"hnsw"}),
-#' @param distance distance metric (default \code{cosine}),
-#' @param ann_write writing an index to file. Two files will be created: 1) an index, 2) and txt file with column names (currently not supported),
-#' @param ann_colnames testing
-#' @param true_blocks matrix with true blocks to calculate evaluation metrics (all metrics from [igraph::compare()] are returned).
-#' @param verbose whether log should be provided (0 = none, 1 = main, 2 = ann algorithms),
-#' @param graph whether a graph should be returned,
-#' @param seed seed for the algorithms,
-#' @param n_threads number of threads used for the ann,
-#' @param control_txt list of controls for text data,
-#' @param control_ann list of controls for ann algorithms.
+#' @param on variables for ANN search (currently not supported),
+#' @param on_blocking variables for blocking records before ANN search (currently not supported),
+#' @param ann algorithm to be used for searching for ann (possible, \code{c("nnd", "hnsw", "annoy", "lsh", "kd")}, default \code{"nnd"} which corresponds to nearest neighbour descent method),
+#' @param distance distance metric (default \code{cosine}, more options are possible see details),
+#' @param ann_write writing an index to file. Two files will be created: 1) an index, 2) and text file with column names,
+#' @param ann_colnames file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),
+#' @param true_blocks matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from [igraph::compare()] are returned).
+#' @param verbose whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),
+#' @param graph whether a graph should be returned (default FALSE),
+#' @param seed seed for the algorithms (for reproducibility),
+#' @param n_threads number of threads used for the ANN algorithms and adding data for index and query,
+#' @param control_txt list of controls for text data (passed only to [text2vec::itoken_parallel] or [text2vec::itoken]),
+#' @param control_ann list of controls for the ANN algorithms.
 #'
 #' @returns Returns a list with containing:\cr
 #' \itemize{
-#' \item{\code{result} -- \code{data.frame} with indices (rows) of x, y and block}
-#' \item{\code{ann} -- name of the ann algorithm used,}
-#' \item{\code{metrics} -- metrics, if \code{true_blocks} is provided,}
-#' \item{\code{colnames} -- variable names (colnames) used for search.}
+#' \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
+#' \item{\code{method} -- name of the ANN algorithm used,}
+#' \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
+#' \item{\code{colnames} -- variable names (colnames) used for search,}
+#' \item{\code{graph} -- \code{igraph} class object.}
 #' }
 #'
 #' @examples

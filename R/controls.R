@@ -1,15 +1,15 @@
-#' @title Controls for approximate nearest neighbours algoritms
+#' @title Controls for approximate nearest neighbours algorithms
 #'
 #' @author Maciej Beręsewicz
 #'
 #' @description
 #' Controls for ANN algorithms used in the package
 #'
-#' @param sparse whether sparse data should be used as an input for algorithms.
-#' @param nnd parameters for [rnndescent::rnnd_build()] and [rnndescent::rnnd_query()].
-#' @param hnsw parameters for [RcppHNSW::hnsw_build()] and [RcppHNSW::hnsw_search()].
-#' @param lsh parameters for [mlpack::lsh()].
-#' @param annoy parameters for [RcppAnnoy] package.
+#' @param sparse whether sparse data should be used as an input for algorithms,
+#' @param nnd parameters for [rnndescent::rnnd_build()] and [rnndescent::rnnd_query()],
+#' @param hnsw parameters for [RcppHNSW::hnsw_build()] and [RcppHNSW::hnsw_search()],
+#' @param lsh parameters for [mlpack::lsh()],
+#' @param annoy parameters for [RcppAnnoy] package,
 #' @param kd parameters for [mlpack::knn()] function.
 #'
 #' @returns Returns a list with parameters
@@ -62,7 +62,7 @@ controls_ann <- function(
         kd = kd)
 }
 
-#' @title Controls for text data
+#' @title Controls for processing text data
 #'
 #' @author Maciej Beręsewicz
 #'

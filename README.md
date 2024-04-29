@@ -55,11 +55,6 @@ Load packages for the examples
 library(blocking)
 library(reclin2)
 #> Loading required package: data.table
-#> 
-#> Attaching package: 'reclin2'
-#> The following object is masked from 'package:base':
-#> 
-#>     identical
 ```
 
 Generate simple data with two groups (`df_example`) and reference data
@@ -76,7 +71,7 @@ df_example <- data.frame(txt = c(
   "cyrkmontypython",
   "monty"
 ))
-df_base <- data.frame(txt = c("montypython", "kowalskijan"))
+df_base <- data.frame(txt = c("montypython", "kowalskijan", "other"))
 
 df_example
 #>               txt
@@ -93,15 +88,19 @@ df_base
 #>           txt
 #> 1 montypython
 #> 2 kowalskijan
+#> 3       other
 ```
 
 Deduplication using `blocking` function. Output contains information
-about: + the method used (where `nnd` which refers to the NN descent
-algorithm), + number of blocks created (here 2 blocks), + number of
-columns used for blocking, i.e. how many shingles were created by
-`text2vec` package (here 28), + reduction ratio, i.e. how large is the
-reduction of comparison pairs (here 0.5714 which means blocking reduces
-comparison by over 57%).
+about:
+
+- the method used (where `nnd` which refers to the NN descent
+  algorithm),
+- number of blocks created (here 2 blocks),
+- number of columns used for blocking, i.e. how many shingles were
+  created by `text2vec` package (here 28),
+- reduction ratio, i.e. how large is the reduction of comparison pairs
+  (here 0.5714 which means blocking reduces comparison by over 57%).
 
 ``` r
 blocking_result <- blocking(x = df_example$txt)
@@ -131,11 +130,9 @@ blocking_result$result
 #> 1:     1     2     1 0.10000005
 #> 2:     1     3     1 0.14188367
 #> 3:     1     4     1 0.28286284
-#> 4:     2     1     1 0.10000005
-#> 5:     5     6     2 0.08333336
-#> 6:     5     7     2 0.13397458
-#> 7:     5     8     2 0.27831215
-#> 8:     6     5     2 0.08333336
+#> 4:     5     6     2 0.08333336
+#> 5:     5     7     2 0.13397458
+#> 6:     5     8     2 0.27831215
 ```
 
 Deduplication using the `pair_ann` function for integration with the
@@ -148,21 +145,17 @@ pair_ann(x = df_example, on = "txt") |>
   score_simple("score", on = "txt") |>
   select_threshold("threshold", score = "score", threshold = 0.55) |>
   link(selection = "threshold")
-#>   Total number of pairs: 10 pairs
+#>   Total number of pairs: 6 pairs
 #> 
 #> Key: <.y>
-#>        .y    .x       txt.x           txt.y
-#>     <int> <int>      <char>          <char>
-#>  1:     2     1 jankowalski     kowalskijan
-#>  2:     3     1 jankowalski    kowalskimjan
-#>  3:     3     2 kowalskijan    kowalskimjan
-#>  4:     4     1 jankowalski        kowaljan
-#>  5:     4     2 kowalskijan        kowaljan
-#>  6:     6     5 montypython     pythonmonty
-#>  7:     7     5 montypython cyrkmontypython
-#>  8:     7     6 pythonmonty cyrkmontypython
-#>  9:     8     5 montypython           monty
-#> 10:     8     6 pythonmonty           monty
+#>       .y    .x       txt.x           txt.y
+#>    <int> <int>      <char>          <char>
+#> 1:     2     1 jankowalski     kowalskijan
+#> 2:     3     1 jankowalski    kowalskimjan
+#> 3:     4     1 jankowalski        kowaljan
+#> 4:     6     5 montypython     pythonmonty
+#> 5:     7     5 montypython cyrkmontypython
+#> 6:     8     5 montypython           monty
 ```
 
 Record linkage using the same function where `df_base` is the “register”

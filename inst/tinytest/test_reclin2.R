@@ -1,7 +1,7 @@
 source("test_data.R")
 
 expect_silent(
-  pair_ann(x = df_example, on = "txt", ann = "hnsw")
+  pair_ann(x = df_example, on = "txt")
 )
 
 expect_equal(

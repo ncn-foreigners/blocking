@@ -59,22 +59,24 @@ head(df)
 In the next step we use the newly created column in the `blocking` function. If we specify verbose, we get information about the progress.
 
 ```{r}
-df_blocks <- blocking(x = df$txt, ann = "nnd", verbose = 1, graph = TRUE)
+df_blocks <- blocking(x = df$txt, ann = "nnd", verbose = 1, graph = TRUE, seed = 2024)
 ```
 
 Results are as follows:
 
-+ based in `rnndescent` we created . blocks,
-+ it was based on 429 columns (2 character shingles),
-+ we have 48 blocks of 2 elements, 34 blocks of 3 elements, ..., 1 block of 15 elements.
++ based in `rnndescent` we have created `r NROW(unique(df_blocks$result$block))` blocks,
++ it was based on `r NROW(unique(df_blocks$colnames))` columns (2 character shingles),
++ we have 93 blocks of 2 elements, 38 blocks of 3 elements, ..., 3 block of 6 elements.
 
 ```{r}
 df_blocks
 ```
+
 Structure of the object is as follows:
 
 + `result` - a data.table with identifiers and block IDs,
 + `method` - the method used,
++ `deduplication` -- whether deduplication was applied,
 + `metrics` - standard metrics and based on the `igraph::compare` methods for comparing graphs (here NULL),
 + `colnames` - column names used for the comparison,
 + `graph` -- an `igraph` object mainly for visualisation.
@@ -90,37 +92,51 @@ plot(df_blocks$graph, vertex.size=1, vertex.label = NA)
 
 The resulting data.table has three columns:
 
-+ `x` - Reference dataset (i.e. `df`) -- this may not contain all units of `df`,
-+ `y` - query (each row of `df`) -- this will return all units of `df`,
-+ `block` -- the block ID.
++ `x` -- reference dataset (i.e. `df`) -- this may not contain all units of `df`,
++ `y` - query (each row of `df`) -- this may not contain all units of `df`,
++ `block` -- the block ID,
++ `dist` -- distance between objects.
 
 ```{r}
 head(df_blocks$result)
 ```
 
+Create long `data.table` with information on blocks and units from original dataset.
+
+```{r}
+df_block_melted <- melt(df_blocks$result, id.vars = c("block", "dist"))
+df_block_melted_rec_block <- unique(df_block_melted[, .(rec_id=value, block)])
+head(df_block_melted_rec_block)
+```
+
 We add block information to the final dataset.
 
 ```{r}
-df_block_result <- copy(df_blocks$result[order(y),])
-df[, block_id := df_block_result$block]
-df[, block_dist := df_block_result$dist]
+df[df_block_melted_rec_block, on = "rec_id", block_id := i.block]
 head(df)
 ```
 
-Finally, we can check in how many blocks the same entities (`ent_id`) are observed. In our example, all the same entities are in the same blocks. 
+We can check in how many blocks the same entities (`ent_id`) are observed. In our example, all the same entities are in the same blocks. 
 
 ```{r}
 df[, .(uniq_blocks = uniqueN(block_id)), .(ent_id)][, .N, uniq_blocks]
 ```
-Compare distances for block that contains different (1) and the same (2) units. 
+
+We can visualise the distances between units stored in the `df_blocks$result` data set. Clearly we a mixture of two groups: matches (close to 0) and non-matches (close to 1). 
 
 ```{r}
-boxplot(block_dist ~ id_count, data=df, xlab = "Block type", ylab = "Distances")
+hist(df_blocks$result$dist, xlab = "Distances", ylab = "Frequency", breaks = "fd",
+     main = "Distances calculated between units")
 ```
 
+Finally, we can visualise the result based on the information whether block contains matches or not.
+
 ```{r}
-plot(density(df[id_count==2]$block_dist), col = "blue", xlim = c(0, 0.8), 
-     main = "Distribution of distances between\nclusters type (1=red, 2=blue)")
-lines(density(df[id_count==1]$block_dist), col = "red", xlim = c(0, 0.8))
+df_for_density <- copy(df_block_melted[block %in% df$block_id])
+df_for_density[, match:= block %in% df[id_count == 2]$block_id]
+
+plot(density(df_for_density[match==FALSE]$dist), col = "blue", xlim = c(0, 0.8), 
+     main = "Distribution of distances between\nclusters type (match=red, non-match=blue)")
+lines(density(df_for_density[match==TRUE]$dist), col = "red", xlim = c(0, 0.8))
 ```
 

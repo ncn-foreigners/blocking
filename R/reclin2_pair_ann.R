@@ -51,7 +51,7 @@ pair_ann <- function(x,
                      add_xy = TRUE,
                      ...) {
 
-  stopifnot("Only one `on` is possible" = length(on) == 1)
+  stopifnot("Only one `on` is currently supported" = NROW(on) == 1)
 
   if (!is.null(y)) deduplication <- FALSE
 
@@ -62,19 +62,17 @@ pair_ann <- function(x,
                                       deduplication = deduplication,
                                       ...)
 
-  block_ann <- data.table::as.data.table(block_result$result)
-
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
 
   a <- x[, ..on]
   a[, `:=`(".x", .I)]
-  a <- a[unique(block_ann[,.(".x"=x, block)]), on = ".x"]
+  a <- a[unique(block_result$result[,.(".x"=x, block)]), on = ".x"]
   a[, `:=`((on), NULL)]
 
   b <- y[, `..on`]
   b[, `:=`(".y", .I)]
-  b <- b[unique(block_ann[,.(".y"=y, block)]), on = ".y"]
+  b <- b[unique(block_result$result[,.(".y"=y, block)]), on = ".y"]
   b[, `:=`((on), NULL)]
 
   pairs <- merge(a, b,

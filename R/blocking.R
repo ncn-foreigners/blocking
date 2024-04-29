@@ -272,7 +272,7 @@ blocking <- function(x,
   if (!is.null(true_blocks)) {
 
     ## Graph metrics
-    eval_g1 <- igraph::graph_from_data_frame(eval_blocks[, c("x", "y")], directed = FALSE)
+    eval_g1 <- igraph::graph_from_data_frame(x_df[, c("x", "y")], directed = FALSE)
     eval_g2 <- igraph::graph_from_data_frame(true_blocks[, c("x", "y")], directed = FALSE)
 
     eval_g1_cl <- igraph::make_clusters(eval_g1, membership = igraph::components(eval_g1, "weak")$membership)

@@ -31,6 +31,8 @@ controls_ann <- function(
                n_search_trees = 1,
                pruning_degree_multiplier = 1.5,
                diversify_prob = 1,
+               weight_by_degree = FALSE,
+               prune_reverse = FALSE,
                progress = "bar",
                obs = "R"),
     hnsw = list(M = 25,

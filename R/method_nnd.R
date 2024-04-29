@@ -44,6 +44,8 @@ method_nnd <- function(x,
                                   n_search_trees = control$nnd$n_search_trees,
                                   pruning_degree_multiplier = control$nnd$pruning_degree_multiplier,
                                   diversify_prob = control$nnd$diversify_prob,
+                                  weight_by_degree = control$nnd$weight_by_degree,
+                                  prune_reverse = control$nnd$prune_reverse,
                                   progress = control$nnd$progress,
                                   obs = control$nnd$obs)
 

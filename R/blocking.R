@@ -95,6 +95,14 @@ blocking <- function(x,
   stopifnot("Only character, dense or sparse (dgCMatrix) matrix x is supported" =
               is.character(x) | is.matrix(x) | inherits(x, "Matrix"))
 
+  ## assuming rows (for nnd)
+  stopifnot("Minimum 3 cases required for x" = NROW(x) > 2)
+
+  if (!is.null(y)) {
+    stopifnot("Minimum 3 cases required for y" = NROW(y) > 2)
+  }
+
+
   if (!is.null(ann_write)) {
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
   }
@@ -139,21 +147,21 @@ blocking <- function(x,
 
   ## add verification if x and y is a sparse matrix
   if (is.matrix(x) | inherits(x, "Matrix")) {
-    l_dtm <- x
-    l_dtm_y <- y
+    x_dtm <- x
+    y_dtm <- y
   } else {
 
     if (verbose %in% 1:2) cat("===== creating tokens =====\n")
 
     ## tokens for x
     if (.Platform$OS.type == "unix") {
-      l_tokens <- text2vec::itoken_parallel(
+      x_tokens <- text2vec::itoken_parallel(
         iterable = x,
         tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
         n_chunks = control_txt$n_chunks,
         progressbar = verbose)
     } else {
-      l_tokens <- text2vec::itoken(
+      x_tokens <- text2vec::itoken(
         iterable = x,
         tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
         n_chunks = control_txt$n_chunks,
@@ -161,77 +169,77 @@ blocking <- function(x,
     }
 
 
-    l_voc <- text2vec::create_vocabulary(l_tokens)
-    l_vec <- text2vec::vocab_vectorizer(l_voc)
-    l_dtm <- text2vec::create_dtm(l_tokens, l_vec)
+    x_voc <- text2vec::create_vocabulary(x_tokens)
+    x_vec <- text2vec::vocab_vectorizer(x_voc)
+    x_dtm <- text2vec::create_dtm(x_tokens, x_vec)
 
 
     if (is.null(y_default)) {
-      l_dtm_y <- l_dtm
+      y_dtm <- x_dtm
     } else {
       if (.Platform$OS.type == "unix") {
-      l_tokens_y <- text2vec::itoken_parallel(
+      y_tokens <- text2vec::itoken_parallel(
         iterable = y,
         tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
         n_chunks = control_txt$n_chunks,
         progressbar = verbose)
       } else {
-        l_tokens_y <- text2vec::itoken(
+        y_tokens <- text2vec::itoken(
           iterable = y,
           tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
           n_chunks = control_txt$n_chunks,
           progressbar = verbose)
       }
-      l_voc_y <- text2vec::create_vocabulary(l_tokens_y)
-      l_vec_y <- text2vec::vocab_vectorizer(l_voc_y)
-      l_dtm_y <- text2vec::create_dtm(l_tokens_y, l_vec_y)
+      y_voc <- text2vec::create_vocabulary(y_tokens)
+      y_vec <- text2vec::vocab_vectorizer(y_voc)
+      y_dtm <- text2vec::create_dtm(y_tokens, y_vec)
 
     }
   }
 
 
-  colnames_xy <- intersect(colnames(l_dtm), colnames(l_dtm_y))
+  colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
 
   if (verbose %in% 1:2) {
     cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
-                ann, nrow(l_dtm), nrow(l_dtm_y), length(colnames_xy)))
+                ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
   }
 
 
-  l_df <- switch(ann,
-                 "nnd" = method_nnd(x = l_dtm[, colnames_xy],
-                                    y = l_dtm_y[, colnames_xy],
+  x_df <- switch(ann,
+                 "nnd" = method_nnd(x = x_dtm[, colnames_xy],
+                                    y = y_dtm[, colnames_xy],
                                     k = k,
                                     distance = distance,
                                     verbose = if (verbose == 2) TRUE else FALSE,
                                     n_threads = n_threads,
                                     control = control_ann),
-                 "hnsw" = method_hnsw(x = l_dtm[, colnames_xy],
-                                      y = l_dtm_y[, colnames_xy],
+                 "hnsw" = method_hnsw(x = x_dtm[, colnames_xy],
+                                      y = y_dtm[, colnames_xy],
                                       k = k,
                                       distance = distance,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       n_threads = n_threads,
                                       path = ann_write,
                                       control = control_ann),
-                 "lsh" = method_mlpack(x = l_dtm[, colnames_xy],
-                                       y = l_dtm_y[, colnames_xy],
+                 "lsh" = method_mlpack(x = x_dtm[, colnames_xy],
+                                       y = y_dtm[, colnames_xy],
                                        algo = "lsh",
                                        k = k,
                                        verbose = if (verbose == 2) TRUE else FALSE,
                                        seed = seed,
                                        path = ann_write,
                                        control = control_ann),
-                 "kd" = method_mlpack(x = l_dtm[, colnames_xy],
-                                      y = l_dtm_y[, colnames_xy],
+                 "kd" = method_mlpack(x = x_dtm[, colnames_xy],
+                                      y = y_dtm[, colnames_xy],
                                       algo = "kd",
                                       k = k,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       seed = seed,
                                       path = ann_write,
                                       control = control_ann),
-                 "annoy" = method_annoy(x = l_dtm[, colnames_xy],
-                                        y = l_dtm_y[, colnames_xy],
+                 "annoy" = method_annoy(x = x_dtm[, colnames_xy],
+                                        y = y_dtm[, colnames_xy],
                                         k = k,
                                         distance  = distance,
                                         verbose = if (verbose == 2) TRUE else FALSE,
@@ -242,44 +250,33 @@ blocking <- function(x,
 
   if (verbose %in% 1:2) cat("===== creating graph =====\n")
 
-  ## this should be switched to data.table
+  ## remove duplicated pairs
+
+  if (deduplication) x_df <- x_df[y > x]
+
   if (deduplication) {
-    l_df[, `:=`("query_g", paste0("q", y))]
-    l_df[, `:=`("index_g", paste0("q", x))]
+    x_df[, `:=`("query_g", paste0("q", y))]
+    x_df[, `:=`("index_g", paste0("q", x))]
   } else {
-    l_df[, `:=`("query_g", paste0("q", y))]
-    l_df[, `:=`("index_g", paste0("i", x))]
+    x_df[, `:=`("query_g", paste0("q", y))]
+    x_df[, `:=`("index_g", paste0("i", x))]
   }
 
-  l_gr <- igraph::graph_from_data_frame(l_df[, c("query_g", "index_g")], directed = F)
-  l_block <- igraph::components(l_gr, "weak")$membership
+  x_gr <- igraph::graph_from_data_frame(x_df[, c("query_g", "index_g")], directed = F)
+  x_block <- igraph::components(x_gr, "weak")$membership
 
-  l_df[, `:=`(block, l_block[names(l_block) %in% l_df$query_g])]
+  x_df[, `:=`(block, x_block[names(x_block) %in% x_df$query_g])]
+
 
   ## if true are given
   if (!is.null(true_blocks)) {
 
-    ## if true_block is a vector
-    if (is.vector(true_blocks)) {
-      true_blocks <- data.table(y=1:NROW(l_dtm_y), block = true_blocks)
-      eval_blocks <- merge(x = l_df[, c("x", "y", "block")],
-                         y = true_blocks,
-                         by = "y",
-                         all = F)
-    } else {
-      eval_blocks <- merge(x = l_df[, c("x", "y", "block")],
-                           y = true_blocks,
-                           by = c("x", "y"),
-                           all = F)
-    }
     ## Graph metrics
-
-
     eval_g1 <- igraph::graph_from_data_frame(eval_blocks[, c("x", "y")], directed = FALSE)
-    eval_g2 <- igraph::graph_from_data_frame(eval_blocks[, c("x", "y")], directed = FALSE)
+    eval_g2 <- igraph::graph_from_data_frame(true_blocks[, c("x", "y")], directed = FALSE)
 
-    eval_g1_cl <- igraph::make_clusters(eval_g1, membership = eval_blocks$block.x)
-    eval_g2_cl <- igraph::make_clusters(eval_g2, membership = eval_blocks$block.y)
+    eval_g1_cl <- igraph::make_clusters(eval_g1, membership = igraph::components(eval_g1, "weak")$membership)
+    eval_g2_cl <- igraph::make_clusters(eval_g2, membership = igraph::components(eval_g2, "weak")$membership)
 
     eval_metrics <- base::sapply(c("vi", "nmi", "split.join", "rand", "adjusted.rand"),
                                  igraph::compare, comm1=eval_g1_cl, comm2=eval_g2_cl)
@@ -305,16 +302,17 @@ blocking <- function(x,
     eval_metrics <- c(eval_metrics, eval_metrics2)
   }
 
-  setorderv(l_df, c("x", "y", "block"))
+  setorderv(x_df, c("x", "y", "block"))
 
   structure(
     list(
-      result = l_df[, c("x", "y", "block", "dist")],
+      result = x_df[, c("x", "y", "block", "dist")],
       method = ann,
+      deduplication = deduplication,
       metrics = if (is.null(true_blocks)) NULL else eval_metrics,
       colnames = colnames_xy,
       graph = if (graph) {
-        igraph::graph_from_data_frame(l_df[, c("x", "y")], directed = F)
+        igraph::graph_from_data_frame(x_df[, c("x", "y")], directed = F)
         } else NULL
    ),
    class = "blocking"

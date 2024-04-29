@@ -1,7 +1,5 @@
 source("test_data.R")
 
-
-
 expect_silent(
   blocking(x = df_example$txt)
 )
@@ -9,12 +7,12 @@ expect_silent(
 
 expect_equal(
   blocking(x = df_example$txt, ann = "lsh")$result$block,
-  c(1, 1, 1, 1, 2, 2, 2, 2)
+  c(1, 1, 1, 2, 2, 2)
 )
 
 expect_equal(
   blocking(x = df_example$txt, ann = "kd")$result$block,
-  c(1, 1, 1, 1, 2, 2, 2, 2)
+  c(1, 1, 1, 2, 2, 2)
 )
 
 
@@ -70,7 +68,8 @@ expect_equal(
 
 expect_silent(
   blocking(x = df_example$txt,
-           true_blocks = result$result$block)
+           #true_blocks = result$result$block)
+           true_blocks = result$result[, c("x", "y", "block")])
 )
 
 

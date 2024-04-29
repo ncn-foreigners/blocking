@@ -11,18 +11,21 @@ df_example <- data.frame(txt = c(
   "cyrkmontypython",
   "monty"
 ))
-df_base <- data.frame(txt = c("montypython", "kowalskijan"))
+df_base <- data.frame(txt = c("montypython", "kowalskijan", "other"))
 
 
 
 # testing matrix input ----------------------------------------------------
 
-mat_x <- structure(c(0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1,
-                     0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 2, 0),
-                   dim = c(2L, 19L),
-                   dimnames = list(c(`1` = "1", `2` = "2"),
-                                   c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt",
-                                     "ow", "py", "sk", "th", "ty", "wa", "yp", "yt", "on")))
+mat_x <- structure(c(0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1,
+                     0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+                     1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0,
+                     0, 2, 0, 0, 1, 0, 1),
+                   dim = c(3L, 22L),
+                   dimnames = list(c(`1` = "1", `2` = "2", `3` = "3"),
+                                   c("al", "an", "er", "he", "ho", "ij", "ja", "ki", "ko",
+                                     "ls", "mo", "nt", "ot", "ow", "py", "sk", "ty",
+                                     "wa", "yp", "yt", "on", "th")))
 
 mat_y <- structure(c(0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
                      0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,

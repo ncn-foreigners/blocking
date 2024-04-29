@@ -6,7 +6,7 @@ expect_silent(
 
 expect_equal(
   dim(pair_ann(x = df_example, on = "txt")),
-  c(10, 3)
+  c(6, 3)
 )
 
 expect_equal(

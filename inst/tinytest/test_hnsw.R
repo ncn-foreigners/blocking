@@ -4,7 +4,7 @@ expect_equal(
   blocking(x = df_example$txt,
            ann = "hnsw",
            control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))$result$block,
-  c(1, 1, 1, 1, 2, 2, 2, 2)
+  c(1, 1, 1, 2, 2, 2)
 )
 
 
@@ -23,9 +23,10 @@ expect_equal(
     row.names = c(NA, -8L),
     class = c("data.table", "data.frame")),
     method = "hnsw",
+    deduplication = FALSE,
     metrics = NULL,
-    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt", "ow", "py",
-                 "sk", "th", "ty", "wa", "yp", "yt", "on"),
+    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt", "ow",
+                 "py", "sk", "ty", "wa", "yp", "yt", "on", "th"),
     graph = NULL),
     class = "blocking")
 )
@@ -34,7 +35,7 @@ expect_equal(
   blocking(x = mat_y,
            ann = "hnsw",
            control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))$result$block,
-  c(1, 1, 1, 1, 2, 2, 2, 2)
+  c(1, 1, 1, 2, 2, 2)
 )
 
 
@@ -48,14 +49,15 @@ expect_equal(
          y = c(5L, 6L, 7L, 8L, 1L, 2L, 3L, 4L),
          block = c(2, 2, 2, 2, 1, 1, 1, 1),
          dist = c(1.19209289550781e-07, 0.0425729155540466,
-1.19209289550781e-07, 0.278312206268311, 0.0513166785240173,
--1.19209289550781e-07, 0.0513166785240173, 0.225403368473053)),
+                  1.19209289550781e-07, 0.278312206268311, 0.0513166785240173,
+                  -1.19209289550781e-07, 0.0513166785240173, 0.225403368473053)),
     row.names = c(NA, -8L),
     class = c("data.table", "data.frame")),
     method = "hnsw",
+    deduplication = FALSE,
     metrics = NULL,
-    colnames = c("al", "an","ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt", "ow", "py",
-                 "sk", "th", "ty", "wa", "yp", "yt", "on"),
+    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt", "ow",
+                 "py", "sk", "ty", "wa", "yp", "yt", "on", "th"),
     graph = NULL),
     class = "blocking")
 )
@@ -121,3 +123,4 @@ expect_silent(
            ann = "hnsw",
            control_ann = controls_ann(sparse=TRUE))
 )
+

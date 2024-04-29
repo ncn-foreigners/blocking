@@ -57,13 +57,13 @@ pair_ann <- function(x,
 
   y <- if (deduplication) x else y
 
-  block_result  <- blocking::blocking(x = x[, on],
-                                      y = if (deduplication) NULL else y[, on],
-                                      deduplication = deduplication,
-                                      ...)
-
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
+
+  block_result  <- blocking::blocking(x = x[, ..on][[1]],
+                                      y = if (deduplication) NULL else y[, ..on][[1]],
+                                      deduplication = deduplication,
+                                      ...)
 
   a <- x[, ..on]
   a[, `:=`(".x", .I)]

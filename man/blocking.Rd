@@ -2,7 +2,7 @@
 % Please edit documentation in R/blocking.R
 \name{blocking}
 \alias{blocking}
-\title{Main function for blocking records given text data}
+\title{Block records based on text data.}
 \usage{
 blocking(
   x,

@@ -33,7 +33,7 @@ library(reclin2)
 library(data.table)
 ```
 
-Read the `RLdata500` data used in the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package from the [dblink](https://github.com/cleanzr/dblink) Github repository.
+Read the `RLdata500` data from the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package from the [dblink](https://github.com/cleanzr/dblink) Github repository.
 
 ```{r}
 df <- read.csv("https://raw.githubusercontent.com/cleanzr/dblink/dc3dd0daf55f8a303863423817a0f0042b3c275a/examples/RLdata500.csv")

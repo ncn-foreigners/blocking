@@ -12,7 +12,7 @@
 #' @importFrom utils combn
 #'
 #'
-#' @title Main function for blocking records given text data
+#' @title Block records based on text data.
 #'
 #' @author Maciej Beręsewicz
 #'
@@ -271,22 +271,47 @@ blocking <- function(x,
   ## if true are given
   if (!is.null(true_blocks)) {
 
-    ## Graph metrics
-    eval_g1 <- igraph::graph_from_data_frame(x_df[, c("x", "y")], directed = FALSE)
-    eval_g2 <- igraph::graph_from_data_frame(true_blocks[, c("x", "y")], directed = FALSE)
+    setDT(true_blocks)
 
-    eval_g1_cl <- igraph::make_clusters(eval_g1, membership = igraph::components(eval_g1, "weak")$membership)
-    eval_g2_cl <- igraph::make_clusters(eval_g2, membership = igraph::components(eval_g2, "weak")$membership)
+    pairs_to_eval <- x_df[y %in% true_blocks$y, c("x", "y", "block")]
+    pairs_to_eval[true_blocks, on = c("x", "y"), both := TRUE]
+    pairs_to_eval[is.na(both), both := FALSE]
 
-    eval_metrics <- base::sapply(c("vi", "nmi", "split.join", "rand", "adjusted.rand"),
-                                 igraph::compare, comm1=eval_g1_cl, comm2=eval_g2_cl)
+    true_blocks[pairs_to_eval, on = c("x", "y"), both := TRUE]
+    true_blocks[is.na(both), both := FALSE]
+    true_blocks[, block:=block+max(pairs_to_eval$block)]
 
-    ## standard metrics based on klsh::confusion.from.blocking
-    block_ids <- eval_g1_cl$membership
-    true_ids <- eval_g2_cl$membership
-    candidate_pairs <- utils::combn(length(block_ids), 2)
-    same_block <- block_ids[candidate_pairs[1, ]] == block_ids[candidate_pairs[2, ]]
-    same_truth <- true_ids[candidate_pairs[1, ]] == true_ids[candidate_pairs[2, ]]
+    pairs_to_eval <- rbind(pairs_to_eval, true_blocks[both == FALSE, .(x,y,block)], fill = TRUE)
+
+    if (!deduplication) {
+
+      pairs_to_eval[, x2:=x+max(y)]
+      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x2, block, both)], id.vars = c("block", "both"))
+      pairs_to_eval_long[!is.na(both), block_id := .GRP, block]
+      block_id_max <- max(pairs_to_eval_long$block_id, na.rm = T)
+      pairs_to_eval_long[is.na(both), block_id:=block_id_max + rleid(block)]
+      pairs_to_eval_long[both == TRUE | is.na(both), true_id := .GRP, block]
+      true_id_max <- max(pairs_to_eval_long$true_id, na.rm = T)
+      pairs_to_eval_long[both==FALSE, true_id := true_id_max+rleid(block)]
+
+    } else {
+
+      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x, block, both)], id.vars = c("block", "both"))
+      pairs_to_eval_long[!is.na(both), block_id := .GRP, block]
+      block_id_max <- max(pairs_to_eval_long$block_id, na.rm = T)
+      pairs_to_eval_long[is.na(both), block_id:=block_id_max + rleid(block)]
+      pairs_to_eval_long[both == TRUE | is.na(both), true_id := .GRP, block]
+      true_id_max <- max(pairs_to_eval_long$true_id, na.rm = T)
+      pairs_to_eval_long[both==FALSE, true_id := true_id_max+rleid(block)]
+
+    }
+
+    ## consider using RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
+    candidate_pairs <- utils::combn(nrow(pairs_to_eval_long), 2)
+
+    same_block <- pairs_to_eval_long$block_id[candidate_pairs[1, ]] == pairs_to_eval_long$block_id[candidate_pairs[2, ]]
+    same_truth <- pairs_to_eval_long$true_id[candidate_pairs[1, ]] == pairs_to_eval_long$true_id[candidate_pairs[2, ]]
+
     confusion <- table(same_block, same_truth)
 
     fp <- confusion[2, 1]
@@ -295,11 +320,11 @@ blocking <- function(x,
     tn <- confusion[1, 1]
     recall <- tp/(fn + tp)
 
-    eval_metrics2 <- c(recall = tp/(fn + tp), precision = tp/(tp + fp),
-                       fpr = fp/(fp + tn), fnr = fn/(fn + tp),
-                       accuracy = (tp + tn)/(tp + tn + fn + fp),
-                       specificity = tn/(tn + fp))
-    eval_metrics <- c(eval_metrics, eval_metrics2)
+    eval_metrics <- c(recall = tp / (fn + tp), precision = tp / (tp + fp),
+                      fpr = fp / (fp + tn), fnr = fn / (fn + tp),
+                      accuracy = (tp + tn) / (tp + tn + fn + fp),
+                      specificity = tn / (tn + fp))
+
   }
 
   setorderv(x_df, c("x", "y", "block"))

@@ -6,7 +6,7 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function for the integration with the reclin2 package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
+#' Function for the integration with the `reclin2` package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
 #'
 #' @param x reference data (a data.frame or a data.table),
 #' @param y query data  (a data.frame or a data.table, default NULL),

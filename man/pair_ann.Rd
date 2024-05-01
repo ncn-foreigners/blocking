@@ -36,7 +36,7 @@ pair_ann(
 Returns a \link{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. Returning data.table is also of a class \code{pairs} which allows for integration with the \code{\link[reclin2:compare_pairs]{reclin2::compare_pairs()}} package.
 }
 \description{
-Function for the integration with the reclin2 package. The function is based on \code{\link[reclin2:pair_minsim]{reclin2::pair_minsim()}} and reuses some of its source code.
+Function for the integration with the \code{reclin2} package. The function is based on \code{\link[reclin2:pair_minsim]{reclin2::pair_minsim()}} and reuses some of its source code.
 }
 \details{
 Imports

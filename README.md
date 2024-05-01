@@ -11,13 +11,13 @@ coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.
 
 ## Description
 
-An R package that aims to block records for data deduplication and
-record linkage (a.k.a. entity resolution) based on [approximate nearest
-neighbours algorithms
+This R package is designed to block records for data deduplication and
+record linkage (also known as entity resolution) using [approximate
+nearest neighbours algorithms
 (ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search) and graphs
 (via the `igraph` package).
 
-Currently supports the following R packages that binds to specific ANN
+It supports the following R packages that bind to specific ANN
 algorithms:
 
 - [rnndescent](https://cran.r-project.org/package=rnndescent) (default,
@@ -28,8 +28,8 @@ algorithms:
 - [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
   `mlpack::lsh` and `mlpack::knn`).
 
-The package also supports integration with the
-[reclin2](https://cran.r-project.org/package=reclin2) package via
+The package can be used with the
+[reclin2](https://cran.r-project.org/package=reclin2) package via the
 `blocking::pair_ann` function.
 
 ## Funding
@@ -39,8 +39,7 @@ Work on this package is supported by the National Science Centre, OPUS
 
 ## Installation
 
-You can install the development version of the `blocking` package from
-GitHub with:
+Install the GitHub blocking package with:
 
 ``` r
 # install.packages("remotes") # uncomment if needed
@@ -57,7 +56,7 @@ library(reclin2)
 #> Loading required package: data.table
 ```
 
-Generate simple data with two groups (`df_example`) and reference data
+Generate simple data with three groups (`df_example`) and reference data
 (`df_base`).
 
 ``` r
@@ -91,8 +90,8 @@ df_base
 #> 3       other
 ```
 
-Deduplication using `blocking` function. Output contains information
-about:
+Deduplication using the `blocking` function. Output contains
+information:
 
 - the method used (where `nnd` which refers to the NN descent
   algorithm),
@@ -117,9 +116,9 @@ blocking_result
 #> 2
 ```
 
-Table with blocking which contains:
+Table with blocking results contains:
 
-- row numbers from the original data
+- row numbers from the original data,
 - block number (integers),
 - distance (from the ANN algorithm).
 
@@ -136,8 +135,7 @@ blocking_result$result
 ```
 
 Deduplication using the `pair_ann` function for integration with the
-`reclin2` package. Here I use the pipeline that can be used with the
-`reclin2` package.
+`reclin2` package. Use the pipeline with the `reclin2` package.
 
 ``` r
 pair_ann(x = df_example, on = "txt") |>
@@ -158,8 +156,8 @@ pair_ann(x = df_example, on = "txt") |>
 #> 6:     8     5 montypython           monty
 ```
 
-Record linkage using the same function where `df_base` is the “register”
-and `df_example` is the reference (query data).
+Linking records using the same function where `df_base` is the
+“register” and `df_example` is the reference (data).
 
 ``` r
 pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>

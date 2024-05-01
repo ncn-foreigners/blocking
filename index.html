@@ -77,8 +77,8 @@
 <div class="section level2">
 <h2 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
 </h2>
-<p>An R package that aims to block records for data deduplication and record linkage (a.k.a. entity resolution) based on <a href="https://en.wikipedia.org/wiki/Nearest_neighbor_search" class="external-link">approximate nearest neighbours algorithms (ANN)</a> and graphs (via the <code>igraph</code> package).</p>
-<p>Currently supports the following R packages that binds to specific ANN algorithms:</p>
+<p>This R package is designed to block records for data deduplication and record linkage (also known as entity resolution) using <a href="https://en.wikipedia.org/wiki/Nearest_neighbor_search" class="external-link">approximate nearest neighbours algorithms (ANN)</a> and graphs (via the <code>igraph</code> package).</p>
+<p>It supports the following R packages that bind to specific ANN algorithms:</p>
 <ul>
 <li>
 <a href="https://cran.r-project.org/package=rnndescent" class="external-link">rnndescent</a> (default, very powerful, supports sparse matrices),</li>
@@ -89,7 +89,7 @@
 <li>
 <a href="https://cran.r-project.org/package=RcppAnnoy" class="external-link">mlpack</a> (see <code><a href="https://rdrr.io/pkg/mlpack/man/lsh.html" class="external-link">mlpack::lsh</a></code> and <code><a href="https://rdrr.io/pkg/mlpack/man/knn.html" class="external-link">mlpack::knn</a></code>).</li>
 </ul>
-<p>The package also supports integration with the <a href="https://cran.r-project.org/package=reclin2" class="external-link">reclin2</a> package via <code><a href="reference/pair_ann.html">blocking::pair_ann</a></code> function.</p>
+<p>The package can be used with the <a href="https://cran.r-project.org/package=reclin2" class="external-link">reclin2</a> package via the <code><a href="reference/pair_ann.html">blocking::pair_ann</a></code> function.</p>
 </div>
 <div class="section level2">
 <h2 id="funding">Funding<a class="anchor" aria-label="anchor" href="#funding"></a>
@@ -99,7 +99,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of the <code>blocking</code> package from GitHub with:</p>
+<p>Install the GitHub blocking package with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes") # uncomment if needed</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ncn-foreigners/blocking"</span><span class="op">)</span></span></code></pre></div>
@@ -112,7 +112,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ncn-foreigners/blocking" class="external-link">blocking</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djvanderlaan/reclin2" class="external-link">reclin2</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: data.table</span></span></code></pre></div>
-<p>Generate simple data with two groups (<code>df_example</code>) and reference data (<code>df_base</code>).</p>
+<p>Generate simple data with three groups (<code>df_example</code>) and reference data (<code>df_base</code>).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df_example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>txt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"jankowalski"</span>,</span>
@@ -142,7 +142,7 @@
 <span><span class="co">#&gt; 1 montypython</span></span>
 <span><span class="co">#&gt; 2 kowalskijan</span></span>
 <span><span class="co">#&gt; 3       other</span></span></code></pre></div>
-<p>Deduplication using <code>blocking</code> function. Output contains information about:</p>
+<p>Deduplication using the <code>blocking</code> function. Output contains information:</p>
 <ul>
 <li>the method used (where <code>nnd</code> which refers to the NN descent algorithm),</li>
 <li>number of blocks created (here 2 blocks),</li>
@@ -162,9 +162,9 @@
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt; 4 </span></span>
 <span><span class="co">#&gt; 2</span></span></code></pre></div>
-<p>Table with blocking which contains:</p>
+<p>Table with blocking results contains:</p>
 <ul>
-<li>row numbers from the original data</li>
+<li>row numbers from the original data,</li>
 <li>block number (integers),</li>
 <li>distance (from the ANN algorithm).</li>
 </ul>
@@ -178,7 +178,7 @@
 <span><span class="co">#&gt; 4:     5     6     2 0.08333336</span></span>
 <span><span class="co">#&gt; 5:     5     7     2 0.13397458</span></span>
 <span><span class="co">#&gt; 6:     5     8     2 0.27831215</span></span></code></pre></div>
-<p>Deduplication using the <code>pair_ann</code> function for integration with the <code>reclin2</code> package. Here I use the pipeline that can be used with the <code>reclin2</code> package.</p>
+<p>Deduplication using the <code>pair_ann</code> function for integration with the <code>reclin2</code> package. Use the pipeline with the <code>reclin2</code> package.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df_example</span>, on <span class="op">=</span> <span class="st">"txt"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/compare_pairs.html" class="external-link">compare_pairs</a></span><span class="op">(</span>on <span class="op">=</span> <span class="st">"txt"</span>, comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/comparators.html" class="external-link">cmp_jarowinkler</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -196,7 +196,7 @@
 <span><span class="co">#&gt; 4:     6     5 montypython     pythonmonty</span></span>
 <span><span class="co">#&gt; 5:     7     5 montypython cyrkmontypython</span></span>
 <span><span class="co">#&gt; 6:     8     5 montypython           monty</span></span></code></pre></div>
-<p>Record linkage using the same function where <code>df_base</code> is the “register” and <code>df_example</code> is the reference (query data).</p>
+<p>Linking records using the same function where <code>df_base</code> is the “register” and <code>df_example</code> is the reference (data).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df_base</span>, y <span class="op">=</span> <span class="va">df_example</span>, on <span class="op">=</span> <span class="st">"txt"</span>, deduplication <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/compare_pairs.html" class="external-link">compare_pairs</a></span><span class="op">(</span>on <span class="op">=</span> <span class="st">"txt"</span>, comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/comparators.html" class="external-link">cmp_jarowinkler</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>

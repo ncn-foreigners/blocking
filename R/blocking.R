@@ -157,22 +157,26 @@ blocking <- function(x,
     if (.Platform$OS.type == "unix") {
       x_tokens <- text2vec::itoken_parallel(
         iterable = x,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                        n = control_txt$n_shingles,
+                                                                        lowercase = control_txt$lowercase,
+                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
         n_chunks = control_txt$n_chunks,
         progressbar = verbose)
     } else {
       x_tokens <- text2vec::itoken(
         iterable = x,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                        n = control_txt$n_shingles,
+                                                                        lowercase = control_txt$lowercase,
+                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
         n_chunks = control_txt$n_chunks,
         progressbar = verbose)
     }
 
-
     x_voc <- text2vec::create_vocabulary(x_tokens)
     x_vec <- text2vec::vocab_vectorizer(x_voc)
     x_dtm <- text2vec::create_dtm(x_tokens, x_vec)
-
 
     if (is.null(y_default)) {
       y_dtm <- x_dtm
@@ -180,13 +184,19 @@ blocking <- function(x,
       if (.Platform$OS.type == "unix") {
       y_tokens <- text2vec::itoken_parallel(
         iterable = y,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                        n = control_txt$n_shingles,
+                                                                        lowercase = control_txt$lowercase,
+                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
         n_chunks = control_txt$n_chunks,
         progressbar = verbose)
       } else {
         y_tokens <- text2vec::itoken(
           iterable = y,
-          tokenizer = function(x) tokenizers::tokenize_character_shingles(x, n = control_txt$n_shingles),
+          tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                          n = control_txt$n_shingles,
+                                                                          lowercase = control_txt$lowercase,
+                                                                          strip_non_alphanum = control_txt$strip_non_alphanum),
           n_chunks = control_txt$n_chunks,
           progressbar = verbose)
       }
@@ -197,14 +207,12 @@ blocking <- function(x,
     }
   }
 
-
   colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
 
   if (verbose %in% 1:2) {
     cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
                 ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
   }
-
 
   x_df <- switch(ann,
                  "nnd" = method_nnd(x = x_dtm[, colnames_xy],
@@ -267,11 +275,10 @@ blocking <- function(x,
 
   x_df[, `:=`(block, x_block[names(x_block) %in% x_df$query_g])]
 
-
   ## if true are given
   if (!is.null(true_blocks)) {
 
-    setDT(true_blocks)
+    setDT(true_blocks) ## move it somewhere else
 
     pairs_to_eval <- x_df[y %in% true_blocks$y, c("x", "y", "block")]
     pairs_to_eval[true_blocks, on = c("x", "y"), both := TRUE]
@@ -306,7 +313,7 @@ blocking <- function(x,
 
     }
 
-    ## consider using RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
+    #consider using RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
     candidate_pairs <- utils::combn(nrow(pairs_to_eval_long), 2)
 
     same_block <- pairs_to_eval_long$block_id[candidate_pairs[1, ]] == pairs_to_eval_long$block_id[candidate_pairs[2, ]]

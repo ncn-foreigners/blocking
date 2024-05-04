@@ -4,18 +4,27 @@
 \alias{controls_txt}
 \title{Controls for processing text data}
 \usage{
-controls_txt(n_shingles = 2L, n_chunks = 10L)
+controls_txt(
+  n_shingles = 2L,
+  n_chunks = 10L,
+  lowercase = TRUE,
+  strip_non_alphanum = TRUE
+)
 }
 \arguments{
-\item{n_shingles}{length of shingles (default 2L), passed to \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles},}
+\item{n_shingles}{length of shingles (default \code{2L}),}
 
-\item{n_chunks}{passed to (default 10L) \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles}.}
+\item{n_chunks}{passed to (default \code{10L}),}
+
+\item{lowercase}{should the caracters be made lowercase? (default \code{TRUE})}
+
+\item{strip_non_alphanum}{should punctuation and white space be stripped? (default \code{TRUE})}
 }
 \value{
 Returns a list with parameters.
 }
 \description{
-Controls for text data used in the \code{blocking} functions
+Controls for text data used in the \code{blocking} functions, passed to \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles}.
 }
 \author{
 Maciej Beręsewicz

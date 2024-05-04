@@ -1,6 +1,10 @@
 ---
 title: "Integration with existing packages"
 author: "Maciej Beręsewicz"
+execute:
+  warning: false
+  message: false
+lang: en
 output: 
     html_vignette:
         df_print: kable
@@ -20,6 +24,105 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Setup
+
 ```{r setup}
 library(blocking)
+library(reclin2)
+library(fastLink)
+library(RecordLinkage)
 ```
+
+# Data
+
+In the example we will use the same dataset as in the *Blocking records for record linkage* vignette.
+
+```{r}
+census <- read.csv("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv")
+cis <- read.csv("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv")
+setDT(census)
+setDT(cis)
+census[is.na(dob_day), dob_day := ""]
+census[is.na(dob_mon), dob_mon := ""]
+census[is.na(dob_year), dob_year := ""]
+cis[is.na(dob_day), dob_day := ""]
+cis[is.na(dob_mon), dob_mon := ""]
+cis[is.na(dob_year), dob_year := ""]
+census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
+cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
+census[, x:=1:.N]
+cis[, y:=1:.N]
+```
+
+# Integration with the `reclin2` package
+
+The package contains function `pair_ann` which aims at integration with `reclin2` package. This function works as follows
+
+```{r}
+pair_ann(x = census[1:1000], 
+         y = cis[1:1000], 
+         on = "txt", 
+         deduplication = FALSE)
+```
+
+Which provides you information on the total number of pairs. This can be further included in the pipeline of the `reclin2` package.
+
+```{r}
+pair_ann(x = census[1:1000], 
+         y = cis[1:1000], 
+         on = "txt", 
+         deduplication = FALSE,
+         ann = "hnsw") |>
+  compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
+  score_simple("score", on = "txt") |>
+  select_threshold("threshold", score = "score", threshold = 0.75) |>
+  link(selection = "threshold") |> 
+  head()
+```
+
+# Usage with `fastLink` package
+
+In order to use it with the `fastLink` package you need to add information on blocks to datasets and create appropriate subsets just like presented in the `blockData` function.
+
+```{r}
+blocks <- blocking(x = census$txt[1:1000],
+                   y = cis$txt[1:1000],
+                   #verbose = 1, 
+                   seed = 2024)
+
+census[blocks$result, on = "x", block:=as.integer(i.block)]
+cis[blocks$result, on = "y", block:=as.integer(i.block)]
+```
+
+Then you can use `blockData` function.
+
+```{r}
+blocked_data <- blockData(dfA = cis[1:1000],
+                          dfB =  census[1:1000],
+                          varnames = "block")
+```
+
+```{r}
+blocked_data$block.3
+```
+
+```{r}
+dfA_block1 <- cis[1:1000][blocked_data$block.3$dfA.inds,]
+dfB_block1 <- census[1:1000][blocked_data$block.3$dfB.inds,]
+```
+
+
+# Usage with `RecordLinkage` package
+
+Te same can be done with the `RecordLinkage` package
+
+```{r}
+pairs <- RecordLinkage::compare.linkage(dataset1 = cis[1:500],
+                                        dataset2 = census[1:500],
+                                        blockfld = list(12),
+                                        strcmp = c("pername1", "pername2", "sex", "enumcap", "enumpc"))
+summary(pairs)
+```
+
+
+

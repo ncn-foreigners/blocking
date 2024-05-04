@@ -69,19 +69,25 @@ controls_ann <- function(
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Controls for text data used in the \code{blocking} functions
+#' Controls for text data used in the \code{blocking} functions, passed to [tokenizers::tokenize_character_shingles].
 #'
-#' @param n_shingles length of shingles (default 2L), passed to [tokenizers::tokenize_character_shingles],
-#' @param n_chunks passed to (default 10L) [tokenizers::tokenize_character_shingles].
+#' @param n_shingles length of shingles (default `2L`),
+#' @param n_chunks passed to (default `10L`),
+#' @param lowercase should the caracters be made lowercase? (default `TRUE`)
+#' @param strip_non_alphanum should punctuation and white space be stripped? (default `TRUE`)
 #'
 #' @returns Returns a list with parameters.
 #'
 #' @export
 controls_txt <- function(
     n_shingles = 2L,
-    n_chunks = 10L
+    n_chunks = 10L,
+    lowercase = TRUE,
+    strip_non_alphanum = TRUE
     ) {
 
   list(n_shingles = n_shingles,
-       n_chunks = n_chunks)
+       n_chunks = n_chunks,
+       lowercase = lowercase,
+       strip_non_alphanum = strip_non_alphanum)
 }

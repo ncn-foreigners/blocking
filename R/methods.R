@@ -10,7 +10,7 @@ print.blocking <- function(x,...) {
   cat("Blocking based on the", x$method, "method.\n")
   cat("Number of blocks: ", length(unique(block_ids)), ".\n",sep="")
   cat("Number of columns used for blocking: ", NROW(x$colnames), ".\n",sep="")
-  cat("Reduction ratio: ", round(rr, 4), ".\n",sep="")
+  cat("Reduction ratio: ", sprintf("%.4f", rr), ".\n",sep="")
 
   cat("========================================================\n")
   cat("Distribution of the size of the blocks:")
@@ -20,7 +20,7 @@ print.blocking <- function(x,...) {
   if (!is.null(x$metrics)) {
     cat("========================================================\n")
     cat("Evaluation metrics (standard):\n" )
-    print(round(x$metrics*100, 4))
+    sprintf("%.4f", x$metrics*100)
 
   }
   invisible(x)

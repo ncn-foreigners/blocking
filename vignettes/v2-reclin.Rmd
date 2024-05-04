@@ -1,6 +1,10 @@
 ---
 title: "Blocking records for record linkage"
 author: "Maciej Beręsewicz"
+execute:
+  warning: false
+  message: false
+lang: en
 output: 
     html_vignette:
         df_print: kable
@@ -88,7 +92,6 @@ cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, 
 ```
 
 
-
 # Linking datasets
 
 ## Using basic functionalities of `blocking` package
@@ -110,6 +113,7 @@ Example pairs
 ```{r}
 head(result1$result, n= 10)
 ```
+
 Let's look at the first pair. Clearly there is a typo on the `pername1` but all other variables are the same so it seems that this is a match.
 
 ```{r}
@@ -127,7 +131,7 @@ cis[3901, ]
 
 ## Assessing the quality
 
-For some records we have information on the correct linkage. We can use this information to assess our approach.
+For some records we have information on the correct linkage. We can use this information to assess our approach but note that information on assessing the quality is described in detail in the other vignette. 
 
 ```{r}
 matches <- merge(x = census[, .(x=1:.N, person_id)],

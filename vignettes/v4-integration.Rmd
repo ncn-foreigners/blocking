@@ -30,7 +30,6 @@ knitr::opts_chunk$set(
 library(blocking)
 library(reclin2)
 library(fastLink)
-library(RecordLinkage)
 ```
 
 # Data
@@ -82,47 +81,10 @@ pair_ann(x = census[1:1000],
 
 # Usage with `fastLink` package
 
-In order to use it with the `fastLink` package you need to add information on blocks to datasets and create appropriate subsets just like presented in the `blockData` function.
-
-```{r}
-blocks <- blocking(x = census$txt[1:1000],
-                   y = cis$txt[1:1000],
-                   #verbose = 1, 
-                   seed = 2024)
-
-census[blocks$result, on = "x", block:=as.integer(i.block)]
-cis[blocks$result, on = "y", block:=as.integer(i.block)]
-```
-
-Then you can use `blockData` function.
-
-```{r}
-blocked_data <- blockData(dfA = cis[1:1000],
-                          dfB =  census[1:1000],
-                          varnames = "block")
-```
-
-```{r}
-blocked_data$block.3
-```
-
-```{r}
-dfA_block1 <- cis[1:1000][blocked_data$block.3$dfA.inds,]
-dfB_block1 <- census[1:1000][blocked_data$block.3$dfB.inds,]
-```
-
 
 # Usage with `RecordLinkage` package
 
-Te same can be done with the `RecordLinkage` package
 
-```{r}
-pairs <- RecordLinkage::compare.linkage(dataset1 = cis[1:500],
-                                        dataset2 = census[1:500],
-                                        blockfld = list(12),
-                                        strcmp = c("pername1", "pername2", "sex", "enumcap", "enumpc"))
-summary(pairs)
-```
 
 
 

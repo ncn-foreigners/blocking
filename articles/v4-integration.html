@@ -93,47 +93,7 @@ Beręsewicz</h4>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ncn-foreigners/blocking" class="external-link">blocking</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djvanderlaan/reclin2" class="external-link">reclin2</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: data.table</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fastLink</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RecordLinkage</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: DBI</span></span>
-<span><span class="co">#&gt; Loading required package: RSQLite</span></span>
-<span><span class="co">#&gt; Loading required package: ff</span></span>
-<span><span class="co">#&gt; Loading required package: bit</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'bit'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:data.table':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     setattr</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     xor</span></span>
-<span><span class="co">#&gt; Attaching package ff</span></span>
-<span><span class="co">#&gt; - getOption("fftempdir")=="/tmp/RtmpqcD2Zz/ff"</span></span>
-<span><span class="co">#&gt; - getOption("ffextension")=="ff"</span></span>
-<span><span class="co">#&gt; - getOption("ffdrop")==TRUE</span></span>
-<span><span class="co">#&gt; - getOption("fffinonexit")==TRUE</span></span>
-<span><span class="co">#&gt; - getOption("ffpagesize")==65536</span></span>
-<span><span class="co">#&gt; - getOption("ffcaching")=="mmnoflush"  -- consider "ffeachflush" if your system stalls on large writes</span></span>
-<span><span class="co">#&gt; - getOption("ffbatchbytes")==16777216 -- consider a different value for tuning your system</span></span>
-<span><span class="co">#&gt; - getOption("ffmaxbytes")==536870912 -- consider a different value for tuning your system</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'ff'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:utils':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     write.csv, write.csv2</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     is.factor, is.ordered</span></span>
-<span><span class="co">#&gt; RecordLinkage library</span></span>
-<span><span class="co">#&gt; [c] IMBEI Mainz</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'RecordLinkage'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:bit':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     clone</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     isFALSE</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fastLink</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
@@ -263,62 +223,10 @@ package.</p>
 <div class="section level2">
 <h2 id="usage-with-fastlink-package">Usage with <code>fastLink</code> package<a class="anchor" aria-label="anchor" href="#usage-with-fastlink-package"></a>
 </h2>
-<p>In order to use it with the <code>fastLink</code> package you need to
-add information on blocks to datasets and create appropriate subsets
-just like presented in the <code>blockData</code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>,</span>
-<span>                   y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>,</span>
-<span>                   <span class="co">#verbose = 1, </span></span>
-<span>                   seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">census</span><span class="op">[</span><span class="va">blocks</span><span class="op">$</span><span class="va">result</span>, on <span class="op">=</span> <span class="st">"x"</span>, <span class="va">block</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">i.block</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">cis</span><span class="op">[</span><span class="va">blocks</span><span class="op">$</span><span class="va">result</span>, on <span class="op">=</span> <span class="st">"y"</span>, <span class="va">block</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">i.block</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<p>Then you can use <code>blockData</code> function.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">blocked_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/fastLink/man/blockData.html" class="external-link">blockData</a></span><span class="op">(</span>dfA <span class="op">=</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>,</span>
-<span>                          dfB <span class="op">=</span>  <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>,</span>
-<span>                          varnames <span class="op">=</span> <span class="st">"block"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ==================== </span></span>
-<span><span class="co">#&gt; blockData(): Blocking Methods for Record Linkage</span></span>
-<span><span class="co">#&gt; ==================== </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Blocking variables.</span></span>
-<span><span class="co">#&gt;     Blocking variable block using exact blocking.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Combining blocked variables for final blocking assignments.</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">blocked_data</span><span class="op">$</span><span class="va">block.3</span></span>
-<span><span class="co">#&gt; $dfA.inds</span></span>
-<span><span class="co">#&gt; [1]   3 364 799 933</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $dfB.inds</span></span>
-<span><span class="co">#&gt; [1] 499</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dfA_block1</span> <span class="op">&lt;-</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span><span class="op">[</span><span class="va">blocked_data</span><span class="op">$</span><span class="va">block.3</span><span class="op">$</span><span class="va">dfA.inds</span>,<span class="op">]</span></span>
-<span><span class="va">dfB_block1</span> <span class="op">&lt;-</span> <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span><span class="op">[</span><span class="va">blocked_data</span><span class="op">$</span><span class="va">block.3</span><span class="op">$</span><span class="va">dfB.inds</span>,<span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage-with-recordlinkage-package">Usage with <code>RecordLinkage</code> package<a class="anchor" aria-label="anchor" href="#usage-with-recordlinkage-package"></a>
 </h2>
-<p>Te same can be done with the <code>RecordLinkage</code> package</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pairs</span> <span class="op">&lt;-</span> <span class="fu">RecordLinkage</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RecordLinkage/man/compare.html" class="external-link">compare.linkage</a></span><span class="op">(</span>dataset1 <span class="op">=</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span>,</span>
-<span>                                        dataset2 <span class="op">=</span> <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span>,</span>
-<span>                                        blockfld <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>,</span>
-<span>                                        strcmp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pername1"</span>, <span class="st">"pername2"</span>, <span class="st">"sex"</span>, <span class="st">"enumcap"</span>, <span class="st">"enumpc"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">pairs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Linkage Data Set</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 500 records in data set 1 </span></span>
-<span><span class="co">#&gt; 500 records in data set 2 </span></span>
-<span><span class="co">#&gt; 279 record pairs </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 0 matches</span></span>
-<span><span class="co">#&gt; 0 non-matches</span></span>
-<span><span class="co">#&gt; 279 pairs with unknown status</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

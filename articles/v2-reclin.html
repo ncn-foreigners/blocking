@@ -291,13 +291,13 @@ assessing the quality is described in detail in the other vignette.</p>
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 21389.</span></span>
+<span><span class="co">#&gt; Number of blocks: 21385.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 18472  2636   255    26 </span></span>
+<span><span class="co">#&gt; 18466  2636   257    26 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span></code></pre></div>
 <p>It seems that default parameters of the NND method result in FNR of
@@ -313,13 +313,13 @@ assessing the quality is described in detail in the other vignette.</p>
 <code class="sourceCode R"><span><span class="va">result3</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the hnsw method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 23985.</span></span>
+<span><span class="co">#&gt; Number of blocks: 23984.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 23373   597    14     1 </span></span>
+<span><span class="co">#&gt; 23371   598    14     1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span></code></pre></div>
 <p>It seems that the HNSW algorithm performed better with 0.62% FNR.

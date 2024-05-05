@@ -92,8 +92,7 @@ Beręsewicz</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ncn-foreigners/blocking" class="external-link">blocking</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djvanderlaan/reclin2" class="external-link">reclin2</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: data.table</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fastLink</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; Loading required package: data.table</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
@@ -223,10 +222,19 @@ package.</p>
 <div class="section level2">
 <h2 id="usage-with-fastlink-package">Usage with <code>fastLink</code> package<a class="anchor" aria-label="anchor" href="#usage-with-fastlink-package"></a>
 </h2>
+<p>Just use the <code>block</code> column in the function
+<code>fastLink::blockData()</code>. As a result you will obtain a list
+of records blocked for further processing.</p>
 </div>
 <div class="section level2">
 <h2 id="usage-with-recordlinkage-package">Usage with <code>RecordLinkage</code> package<a class="anchor" aria-label="anchor" href="#usage-with-recordlinkage-package"></a>
 </h2>
+<p>Just use the <code>block</code> column in the argument
+<code>blockfld</code> in the <code>compare.dedup()</code> or
+<code>compare.linkage()</code> function. Please note that
+<code>block</code> column for the <code>RecordLinkage</code> package
+should be stored as a <code>character</code> not a
+<code>numeric/integer</code> vector.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

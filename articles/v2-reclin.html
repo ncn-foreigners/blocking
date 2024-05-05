@@ -94,7 +94,8 @@ Beręsewicz</h4>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ncn-foreigners/blocking" class="external-link">blocking</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/djvanderlaan/reclin2" class="external-link">reclin2</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: data.table</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jlmelville.github.io/rnndescent/" class="external-link">rnndescent</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
@@ -198,72 +199,68 @@ replace <code>NA</code>s with <code>''</code>.</p>
 <p>The goal of this exercise is to link units from the CIS dataset to
 the CENSUS dataset.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
 <span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1079) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
-<p>Distribution of distances for pairs</p>
+<p>Distribution of distances for each pair.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">dist</span>, main <span class="op">=</span> <span class="st">"Distribution of distances between pairs"</span>, xlab <span class="op">=</span> <span class="st">"Distances"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v2-reclin_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<p>Example pairs</p>
+<p>Example pairs.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">result</span>, n<span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         x     y block       dist</span></span>
 <span><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:     3 20590 17979 0.01290381</span></span>
-<span><span class="co">#&gt;  2:     4 18456 16292 0.07158586</span></span>
-<span><span class="co">#&gt;  3:     5 17257 15354 0.05370842</span></span>
-<span><span class="co">#&gt;  4:     6 19868 17425 0.05675775</span></span>
-<span><span class="co">#&gt;  5:     7 11183 10246 0.00000000</span></span>
-<span><span class="co">#&gt;  6:    10  9370  8668 0.08233700</span></span>
-<span><span class="co">#&gt;  7:    10  9785  8668 0.66230919</span></span>
-<span><span class="co">#&gt;  8:    11  7247  6794 0.04881026</span></span>
-<span><span class="co">#&gt;  9:    11  7249  6794 0.39135537</span></span>
-<span><span class="co">#&gt; 10:    13  5852  5555 0.00000000</span></span></code></pre></div>
-<p>Let’s look at the first pair. Clearly there is a typo on the
-<code>pername1</code> but all other variables are the same so it seems
-that this is a match.</p>
+<span><span class="co">#&gt;  1:     1  8152  7613 0.02941162</span></span>
+<span><span class="co">#&gt;  2:     2  8584  8014 0.04878049</span></span>
+<span><span class="co">#&gt;  3:     3 20590 17964 0.01290381</span></span>
+<span><span class="co">#&gt;  4:     4 18456 16275 0.07158586</span></span>
+<span><span class="co">#&gt;  5:     5 17257 15339 0.05370842</span></span>
+<span><span class="co">#&gt;  6:     6 19868 17399 0.05675775</span></span>
+<span><span class="co">#&gt;  7:     7 11183 10283 0.00000000</span></span>
+<span><span class="co">#&gt;  8:    10   432   432 0.61050958</span></span>
+<span><span class="co">#&gt;  9:    10  9370   432 0.08233700</span></span>
+<span><span class="co">#&gt; 10:    11  7247  6825 0.04881026</span></span></code></pre></div>
+<p>Let’s take a look at the first pair. Obviously there is a typo in the
+<code>pername1</code>, but all the other variables are the same, so it
+appears to be a match.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">census</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;       person_id pername1 pername2    sex dob_day dob_mon dob_year</span></span>
-<span><span class="co">#&gt;          &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;char&gt;   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1: DE03US001001    COUIE    PRICE      M       1       6     1960</span></span>
-<span><span class="co">#&gt;           enumcap enumpc                                   txt</span></span>
-<span><span class="co">#&gt;            &lt;char&gt; &lt;char&gt;                                &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: 1 WINDSOR ROAD DE03US COUIEPRICEM1619601 WINDSOR ROADDE03US</span></span>
-<span><span class="va">cis</span><span class="op">[</span><span class="fl">8152</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;    person_id pername1 pername2    sex dob_day dob_mon dob_year        enumcap</span></span>
-<span><span class="co">#&gt;       &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;char&gt;   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;         &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:      &lt;NA&gt;    LOUIE    PRICE      M       1       6     1960 1 WINDSOR ROAD</span></span>
-<span><span class="co">#&gt;    enumpc                                   txt</span></span>
-<span><span class="co">#&gt;    &lt;char&gt;                                &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: DE03US LOUIEPRICEM1619601 WINDSOR ROADDE03US</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">census</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">cis</span><span class="op">[</span><span class="fl">8152</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           [,1]             [,2]            </span></span>
+<span><span class="co">#&gt; person_id "DE03US001001"   NA              </span></span>
+<span><span class="co">#&gt; pername1  "COUIE"          "LOUIE"         </span></span>
+<span><span class="co">#&gt; pername2  "PRICE"          "PRICE"         </span></span>
+<span><span class="co">#&gt; sex       "M"              "M"             </span></span>
+<span><span class="co">#&gt; dob_day   "1"              "1"             </span></span>
+<span><span class="co">#&gt; dob_mon   "6"              "6"             </span></span>
+<span><span class="co">#&gt; dob_year  "1960"           "1960"          </span></span>
+<span><span class="co">#&gt; enumcap   "1 WINDSOR ROAD" "1 WINDSOR ROAD"</span></span>
+<span><span class="co">#&gt; enumpc    "DE03US"         "DE03US"</span></span></code></pre></div>
 <p>Now, let’s look at the 7th pair with the largest distance from the
 first 10 rows. This seems to be a non-match because only
 <code>pername2</code> and <code>sex</code> are the same.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">census</span><span class="op">[</span><span class="fl">8</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;       person_id pername1 pername2    sex dob_day dob_mon dob_year</span></span>
-<span><span class="co">#&gt;          &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;char&gt;   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1: DE03US003001   NATMAN  RUSSELL      M      11      11     1934</span></span>
-<span><span class="co">#&gt;           enumcap enumpc                                        txt</span></span>
-<span><span class="co">#&gt;            &lt;char&gt; &lt;char&gt;                                     &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: 3 WINDSOR ROAD DE03US NATMANRUSSELLM111119343 WINDSOR ROADDE03US</span></span>
-<span><span class="va">cis</span><span class="op">[</span><span class="fl">3901</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt;    person_id pername1 pername2    sex dob_day dob_mon dob_year      enumcap</span></span>
-<span><span class="co">#&gt;       &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;char&gt;   &lt;int&gt;   &lt;int&gt;    &lt;int&gt;       &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:      &lt;NA&gt;    AYAAN  RUSSELL      M      10      10     1943 112 KINGSWAY</span></span>
-<span><span class="co">#&gt;     enumpc                                      txt</span></span>
-<span><span class="co">#&gt;     &lt;char&gt;                                   &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: SO879UN AYAANRUSSELLM10101943112 KINGSWAYSO879UN</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">census</span><span class="op">[</span><span class="fl">8</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">cis</span><span class="op">[</span><span class="fl">3901</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           [,1]             [,2]          </span></span>
+<span><span class="co">#&gt; person_id "DE03US003001"   NA            </span></span>
+<span><span class="co">#&gt; pername1  "NATMAN"         "AYAAN"       </span></span>
+<span><span class="co">#&gt; pername2  "RUSSELL"        "RUSSELL"     </span></span>
+<span><span class="co">#&gt; sex       "M"              "M"           </span></span>
+<span><span class="co">#&gt; dob_day   "11"             "10"          </span></span>
+<span><span class="co">#&gt; dob_mon   "11"             "10"          </span></span>
+<span><span class="co">#&gt; dob_year  "1934"           "1943"        </span></span>
+<span><span class="co">#&gt; enumcap   "3 WINDSOR ROAD" "112 KINGSWAY"</span></span>
+<span><span class="co">#&gt; enumpc    "DE03US"         "SO879UN"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="assessing-the-quality">Assessing the quality<a class="anchor" aria-label="anchor" href="#assessing-the-quality"></a>
 </h3>
-<p>For some records we have information on the correct linkage. We can
-use this information to assess our approach but note that information on
-assessing the quality is described in detail in the other vignette.</p>
+<p>For some records, we have information about the correct linkage. We
+can use this information to evaluate our approach, but note that the
+information for evaluating quality is described in detail in the other
+vignette.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>x<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">.N</span>, <span class="va">person_id</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>                 y <span class="op">=</span> <span class="va">cis</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">.N</span>, <span class="va">person_id</span><span class="op">)</span><span class="op">]</span>,</span>
@@ -281,7 +278,8 @@ assessing the quality is described in detail in the other vignette.</p>
 <span><span class="co">#&gt; 6: DE125LU016001   126 11309     6</span></span></code></pre></div>
 <p>So in our example we have 971 pairs.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>, seed <span class="op">=</span> <span class="fl">2024</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                    true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>, n_threads <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
 <span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1079) =====</span></span>
@@ -291,46 +289,89 @@ assessing the quality is described in detail in the other vignette.</p>
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 21385.</span></span>
+<span><span class="co">#&gt; Number of blocks: 21290.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
-<span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 18466  2636   257    26 </span></span>
+<span><span class="co">#&gt;     2     3     4     5     6 </span></span>
+<span><span class="co">#&gt; 18333  2627   297    30     3 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span></code></pre></div>
-<p>It seems that default parameters of the NND method result in FNR of
-16% which is quite large. Let’s compare to HNSW algorithm.</p>
+<p>It seems that the default parameters of the NND method result in an
+FNR of 16.9%, which is quite large. We can see if increasing the number
+of <code>k</code> (and thus <code>max_candidates</code>) as suggested in
+the <a href="https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html" class="external-link">Nearest
+Neighbor Descent</a> vignette will help.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, seed <span class="op">=</span> <span class="fl">2024</span>, verbose <span class="op">=</span> <span class="fl">1</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">ann_control_pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/controls_ann.html">controls_ann</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">ann_control_pars</span><span class="op">$</span><span class="va">nnd</span><span class="op">$</span><span class="va">k_build</span> <span class="op">&lt;-</span> <span class="fl">60</span></span>
+<span></span>
+<span><span class="va">result3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>                    true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>, n_threads <span class="op">=</span> <span class="fl">4</span>, </span>
-<span>                    ann <span class="op">=</span> <span class="st">"hnsw"</span><span class="op">)</span></span>
+<span>                    control_ann <span class="op">=</span> <span class="va">ann_control_pars</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
-<span><span class="co">#&gt; ===== starting search (hnsw, x, y: 25343, 24613, t: 1079) =====</span></span>
+<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1079) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
+<p>Changing the <code>k_build</code> parameter from 30 to 60 decreased
+the FDR to 8.3%.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result3</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
+<span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
+<span><span class="co">#&gt; Number of blocks: 22430.</span></span>
+<span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
+<span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
+<span><span class="co">#&gt; ========================================================</span></span>
+<span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
+<span><span class="co">#&gt;     2     3     4     5     6 </span></span>
+<span><span class="co">#&gt; 20392  1908   116    13     1 </span></span>
+<span><span class="co">#&gt; ========================================================</span></span>
+<span><span class="co">#&gt; Evaluation metrics (standard):</span></span></code></pre></div>
+<p>Finally, compare the NND and HNSW algorithm for this example.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>                    true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>, n_threads <span class="op">=</span> <span class="fl">4</span>, </span>
+<span>                    ann <span class="op">=</span> <span class="st">"hnsw"</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ===== creating tokens =====</span></span>
+<span><span class="co">#&gt; ===== starting search (hnsw, x, y: 25343, 24613, t: 1079) =====</span></span>
+<span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
+<p>It seems that the HNSW algorithm performed better with 0.62% FNR.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result4</span></span>
+<span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the hnsw method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 23984.</span></span>
+<span><span class="co">#&gt; Number of blocks: 23985.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 23371   598    14     1 </span></span>
+<span><span class="co">#&gt; 23373   597    14     1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span></code></pre></div>
-<p>It seems that the HNSW algorithm performed better with 0.62% FNR.
-This however comes with cost, in particupar computational cost:</p>
+<p>However, this comes at a cost, especially in terms of
+computation:</p>
 <ol style="list-style-type: decimal">
-<li>the HNSW does not handle sparse matrices so sparse matrix of tokens
-is converted to dense.</li>
-<li>HNSW algorithm is slower than NND.</li>
+<li>the HNSW does not handle sparse matrices, so a sparse matrix of
+tokens must be converted to dense or provided line by line.</li>
+<li>The HNSW algorithm is slower than NND.</li>
 </ol>
-<p>Computational times are: 16 seconds for NND and about 60 HNSW (on M2
-MacBook AIR).</p>
+<p>Computation times are: 16 seconds for NND and about 60 for HNSW (on
+M2 MacBook AIR). We can improve the time by changing the parameters
+<code>M</code> and <code>ef_s</code> in the <code><a href="../reference/controls_ann.html">controls_ann()</a></code>
+function (e.g. setting <code>M=16</code> and <code>ef_s=15</code> leads
+to about 16 seconds with 1% FNR).</p>
+</div>
+<div class="section level3">
+<h3 id="compare-results">Compare results<a class="anchor" aria-label="anchor" href="#compare-results"></a>
+</h3>
+<p>Finally, we can compare the results of two ANN algorithms. The
+overlap between neighbours is given by</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result3</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span>
+<span><span class="co">#&gt; [1] 91.8864</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

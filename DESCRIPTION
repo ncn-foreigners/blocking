@@ -30,7 +30,5 @@ Suggests:
     tinytest,
     reclin2,
     knitr,
-    rmarkdown,
-    fastLink,
-    RecordLinkage
+    rmarkdown
 VignetteBuilder: knitr

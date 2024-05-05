@@ -33,6 +33,7 @@ Read required packages
 library(blocking)
 library(reclin2)
 library(data.table)
+library(rnndescent)
 ```
 
 # Data
@@ -99,39 +100,38 @@ cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, 
 The goal of this exercise is to link units from the CIS dataset to the CENSUS dataset. 
 
 ```{r}
-result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1, seed = 2024)
+set.seed(2024)
+result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1)
 ```
 
-Distribution of distances for pairs
+Distribution of distances for each pair.
 
 ```{r}
 hist(result1$result$dist, main = "Distribution of distances between pairs", xlab = "Distances")
 ```
 
-Example pairs
+Example pairs.
 
 ```{r}
 head(result1$result, n= 10)
 ```
 
-Let's look at the first pair. Clearly there is a typo on the `pername1` but all other variables are the same so it seems that this is a match.
+Let's take a look at the first pair. Obviously there is a typo in the `pername1`, but all the other variables are the same, so it appears to be a match.
 
 ```{r}
-census[1, ]
-cis[8152, ]
+cbind(t(census[1, 1:9]), t(cis[8152, 1:9]))
 ```
 
 Now, let's look at the 7th pair with the largest distance from the first 10 rows. This seems to be a non-match because only `pername2` and `sex` are the same.
 
 ```{r}
-census[8, ]
-cis[3901, ]
+cbind( t(census[8, 1:9]), t(cis[3901, 1:9]))
 ```
 
 
 ## Assessing the quality
 
-For some records we have information on the correct linkage. We can use this information to assess our approach but note that information on assessing the quality is described in detail in the other vignette. 
+For some records, we have information about the correct linkage. We can use this information to evaluate our approach, but note that the information for evaluating quality is described in detail in the other vignette. 
 
 ```{r}
 matches <- merge(x = census[, .(x=1:.N, person_id)],
@@ -140,10 +140,12 @@ matches <- merge(x = census[, .(x=1:.N, person_id)],
 matches[, block:=1:.N]
 head(matches)
 ```
+
 So in our example we have `r nrow(matches)` pairs.
 
 ```{r}
-result2 <- blocking(x = census$txt, y = cis$txt, verbose = 1, seed = 2024,
+set.seed(2024)
+result2 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
                     true_blocks = matches[, .(x, y, block)], n_threads = 4)
 ```
 
@@ -153,23 +155,52 @@ Let's see how our approach handled this problem.
 result2
 ```
 
-It seems that default parameters of the NND method result in FNR of 16% which is quite large. Let's compare to HNSW algorithm.
+It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.1f",result2$metrics["fnr"]*100)`%, which is quite large. We can see if increasing the number of `k` (and thus `max_candidates`) as suggested in the [Nearest Neighbor Descent
+](https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html) vignette will help. 
+
 
 ```{r}
-result3 <- blocking(x = census$txt, y = cis$txt, seed = 2024, verbose = 1, 
+set.seed(2024)
+ann_control_pars <- controls_ann()
+ann_control_pars$nnd$k_build <- 60
+
+result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], n_threads = 4, 
-                    ann = "hnsw")
+                    control_ann = ann_control_pars)
 ```
+
+Changing the `k_build` parameter from 30 to 60 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3
 ```
 
-It seems that the HNSW algorithm performed better with 0.62% FNR. This however comes with cost, in particupar computational cost:
+Finally, compare the NND and HNSW algorithm for this example.
 
-1. the HNSW does not handle sparse matrices so sparse matrix of tokens is converted to dense.
-2. HNSW algorithm is slower than NND. 
+```{r}
+result4 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
+                    true_blocks = matches[, .(x, y, block)], n_threads = 4, 
+                    ann = "hnsw", seed = 2024)
+```
 
-Computational times are: 16 seconds for NND and about 60 HNSW (on M2 MacBook AIR).
+It seems that the HNSW algorithm performed better with `r sprintf("%.2f",result4$metrics["fnr"]*100)`% FNR. 
 
+```{r}
+result4
+```
+
+However, this comes at a cost, especially in terms of computation:
+
+1. the HNSW does not handle sparse matrices, so a sparse matrix of tokens must be converted to dense or provided line by line.
+2. The HNSW algorithm is slower than NND. 
+
+Computation times are: 16 seconds for NND and about 60 for HNSW (on M2 MacBook AIR). We can improve the time by changing the parameters `M` and `ef_s` in the `controls_ann()` function (e.g. setting `M=16` and `ef_s=15` leads to about 16 seconds with 1\% FNR).
+
+## Compare results
+
+Finally, we can compare the results of two ANN algorithms. The overlap between neighbours is given by
+
+```{r}
+mean(result3$result[order(y)]$x == result4$result[order(y)]$x)*100
+```
 

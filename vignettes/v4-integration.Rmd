@@ -29,7 +29,6 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(blocking)
 library(reclin2)
-library(fastLink)
 ```
 
 # Data
@@ -81,10 +80,11 @@ pair_ann(x = census[1:1000],
 
 # Usage with `fastLink` package
 
+Just use the `block` column in the function `fastLink::blockData()`. As a result you will obtain a list of records blocked for further processing. 
 
 # Usage with `RecordLinkage` package
 
-
+Just use the `block` column in the argument `blockfld` in the `compare.dedup()` or `compare.linkage()` function. Please note that `block` column for the `RecordLinkage` package should be stored as a `character` not a `numeric/integer` vector.
 
 
 

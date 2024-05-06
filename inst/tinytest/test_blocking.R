@@ -6,6 +6,23 @@ expect_silent(
 
 
 expect_equal(
+  blocking(x = df_example$txt)$result$block,
+  c(1, 1, 1, 2, 2, 2)
+)
+
+
+expect_equal(
+  blocking(x = df_example$txt, ann = "hnsw")$result$block,
+  c(1, 1, 1, 2, 2, 2)
+)
+
+expect_equal(
+  blocking(x = df_example$txt, ann = "annoy")$result$block,
+  c(1, 1, 1, 2, 2, 2)
+)
+
+
+expect_equal(
   blocking(x = df_example$txt, ann = "lsh")$result$block,
   c(1, 1, 1, 2, 2, 2)
 )
@@ -15,11 +32,29 @@ expect_equal(
   c(1, 1, 1, 2, 2, 2)
 )
 
-
 expect_silent(
   blocking(x = df_base$txt, y = df_example$txt)
 )
 
+expect_equal(
+  blocking(x = df_base$txt, y = df_example$txt)$result$block,
+  c(rep(2,4),rep(1,4))
+)
+
+expect_equal(
+  blocking(x = df_base$txt, y = df_example$txt, ann = "hnsw")$result$block,
+  c(rep(2,4),rep(1,4))
+)
+
+expect_equal(
+  blocking(x = df_base$txt, y = df_example$txt, ann = "annoy")$result$block,
+  c(rep(2,4),rep(1,4))
+)
+
+expect_equal(
+  blocking(x = df_base$txt, y = df_example$txt, ann = "lsh")$result$block,
+  c(rep(2,3),rep(1,4), 3)
+)
 
 expect_silent(
   blocking(x = mat_y)

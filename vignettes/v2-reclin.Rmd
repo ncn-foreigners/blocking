@@ -122,12 +122,6 @@ Let's take a look at the first pair. Obviously there is a typo in the `pername1`
 cbind(t(census[1, 1:9]), t(cis[8152, 1:9]))
 ```
 
-Now, let's look at the 7th pair with the largest distance from the first 10 rows. This seems to be a non-match because only `pername2` and `sex` are the same.
-
-```{r}
-cbind( t(census[8, 1:9]), t(cis[3901, 1:9]))
-```
-
 
 ## Assessing the quality
 
@@ -155,13 +149,14 @@ Let's see how our approach handled this problem.
 result2
 ```
 
-It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.1f",result2$metrics["fnr"]*100)`%, which is quite large. We can see if increasing the number of `k` (and thus `max_candidates`) as suggested in the [Nearest Neighbor Descent
+It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.2f",result2$metrics["fnr"]*100)`%, which is quite large. We can see if increasing the number of `k` (and thus `max_candidates`) as suggested in the [Nearest Neighbor Descent
 ](https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html) vignette will help. 
 
 
 ```{r}
 set.seed(2024)
 ann_control_pars <- controls_ann()
+ann_control_pars$k_search <- 60
 ann_control_pars$nnd$k_build <- 60
 
 result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
@@ -201,6 +196,7 @@ Computation times are: 16 seconds for NND and about 60 for HNSW (on M2 MacBook A
 Finally, we can compare the results of two ANN algorithms. The overlap between neighbours is given by
 
 ```{r}
-mean(result3$result[order(y)]$x == result4$result[order(y)]$x)*100
+c("no tuning" = mean(result2$result[order(y)]$x == result4$result[order(y)]$x)*100,
+  "with tuning" = mean(result3$result[order(y)]$x == result4$result[order(y)]$x)*100)
 ```
 

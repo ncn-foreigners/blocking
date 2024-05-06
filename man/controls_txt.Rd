@@ -16,9 +16,9 @@ controls_txt(
 
 \item{n_chunks}{passed to (default \code{10L}),}
 
-\item{lowercase}{should the caracters be made lowercase? (default \code{TRUE})}
+\item{lowercase}{should the characters be made lowercase? (default \code{TRUE}),}
 
-\item{strip_non_alphanum}{should punctuation and white space be stripped? (default \code{TRUE})}
+\item{strip_non_alphanum}{should punctuation and white space be stripped? (default \code{TRUE}).}
 }
 \value{
 Returns a list with parameters.

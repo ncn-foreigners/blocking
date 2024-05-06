@@ -11,7 +11,7 @@ df_example <- data.frame(txt = c(
   "cyrkmontypython",
   "monty"
 ))
-df_base <- data.frame(txt = c("montypython", "kowalskijan", "other"))
+df_base <- data.frame(txt = c("montypython", "kowalskijan", "somethingcompletelydifferent"))
 
 
 

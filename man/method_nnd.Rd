@@ -4,7 +4,7 @@
 \alias{method_nnd}
 \title{An internal function to use the NN descent algorithm via the \link{rnndescent} package.}
 \usage{
-method_nnd(x, y, k, distance, verbose, n_threads, control)
+method_nnd(x, y, k, distance, deduplication, verbose, n_threads, control)
 }
 \arguments{
 \item{x}{deduplication or reference data,}
@@ -14,6 +14,8 @@ method_nnd(x, y, k, distance, verbose, n_threads, control)
 \item{k}{number of neighbours to return,}
 
 \item{distance}{type of distance to calculate,}
+
+\item{deduplication}{whether the deduplication is applied,}
 
 \item{verbose}{if TRUE, log messages to the console,}
 

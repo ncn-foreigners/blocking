@@ -10,6 +10,7 @@
 #' @param y query data,
 #' @param k number of neighbours to return,
 #' @param distance 	type of distance to calculate,
+#' @param deduplication whether the deduplication is applied,
 #' @param verbose if TRUE, log messages to the console,
 #' @param n_threads maximum number of threads to use,
 #' @param control controls for the NN descent algorithm.
@@ -22,12 +23,13 @@ method_nnd <- function(x,
                        y,
                        k,
                        distance,
+                       deduplication,
                        verbose,
                        n_threads,
                        control) {
 
   l_ind <- rnndescent::rnnd_build(data = x,
-                                  k = if (nrow(x) < control$nnd$k_build) nrow(x) else control$nnd$k_build,
+                                  k = if (nrow(x) < control$nnd$k_build) nrow(x)-1 else control$nnd$k_build,
                                   metric = distance,
                                   verbose = verbose,
                                   n_threads = n_threads,
@@ -49,10 +51,22 @@ method_nnd <- function(x,
                                   progress = control$nnd$progress,
                                   obs = control$nnd$obs)
 
-  ## query
+  ## query k dependent on the study
+  ## there is a problem when dataset is small
+
+  if (deduplication == T) {
+    k_nnd_query <- k
+  } else if (nrow(x) < 10) {
+    k_nnd_query <- k
+  } else if (nrow(x) < control$k_search) {
+    k_nnd_query <- nrow(x)
+  } else {
+    k_nnd_query <- control$k_search
+  }
+
   l_1nn <- rnndescent::rnnd_query(index = l_ind,
                                   query = y,
-                                  k = k,
+                                  k = k_nnd_query,
                                   epsilon = 0.1,
                                   max_search_fraction = 1,
                                   init = NULL,

@@ -44,14 +44,14 @@ expect_equal(
     list(x = c(1, 1, 1, 2, 2, 2, 2, 3),
          y = c(5L, 6L, 7L, 1L, 2L, 3L, 4L, 8L),
          block = c(2, 2, 2, 1, 1, 1, 1, 3),
-         dist = c(0, 1, 0, 1, 0, 1, 4, 5)),
+         dist = c(0, 1, 0, 1, 0, 1, 4, 4)),
     row.names = c(NA, -8L),
     class = c("data.table", "data.frame")),
     method = "annoy",
     deduplication = FALSE,
     metrics = NULL,
-    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt",
-                 "ow", "py", "sk", "ty", "wa", "yp", "yt", "on",  "th"),
+    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "ow",
+                 "py", "sk", "ty", "wa", "yp", "yt", "nt", "on", "th"),
     graph = NULL),
     class = "blocking")
 )

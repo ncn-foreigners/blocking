@@ -54,9 +54,12 @@ method_hnsw <- function(x,
 
     l_ind$setEf(control$hnsw$ef_s)
 
+    ## this does not handle the control$k_search parameter
     l_1nn_m <- list()
     for (i in 1:nrow(y)) {
-      l_1nn_m[[i]] <- l_ind$getNNsList(y[i,], k, TRUE)
+      l_1nn_m[[i]] <- l_ind$getNNsList(y[i,],
+                                       k,
+                                       TRUE)
     }
 
     l_1nn <- list(idx = do.call("rbind",lapply(l_1nn_m, "[[", "item")),
@@ -76,7 +79,7 @@ method_hnsw <- function(x,
     ## query
     l_1nn <- RcppHNSW::hnsw_search(X = y,
                                    ann = l_ind,
-                                   k = k,
+                                   k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
                                    ef = control$hnsw$ef_s,
                                    verbose = verbose,
                                    n_threads = n_threads)

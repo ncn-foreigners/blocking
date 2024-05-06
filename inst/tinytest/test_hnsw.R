@@ -25,8 +25,8 @@ expect_equal(
     method = "hnsw",
     deduplication = FALSE,
     metrics = NULL,
-    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt", "ow",
-                 "py", "sk", "ty", "wa", "yp", "yt", "on", "th"),
+    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "ow",
+                 "py", "sk", "ty", "wa", "yp", "yt", "nt", "on", "th"),
     graph = NULL),
     class = "blocking")
 )
@@ -56,8 +56,8 @@ expect_equal(
     method = "hnsw",
     deduplication = FALSE,
     metrics = NULL,
-    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt", "ow",
-                 "py", "sk", "ty", "wa", "yp", "yt", "on", "th"),
+    colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "nt",
+                 "ow", "py", "sk", "ty", "wa", "yp", "yt", "on", "th"),
     graph = NULL),
     class = "blocking")
 )

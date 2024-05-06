@@ -6,6 +6,7 @@
 \usage{
 controls_ann(
   sparse = FALSE,
+  k_search = 30,
   nnd = list(k_build = 30, use_alt_metric = TRUE, init = "tree", n_trees = NULL,
     leaf_size = NULL, max_tree_depth = 200, margin = "auto", n_iters = NULL, delta =
     0.001, max_candidates = NULL, low_memory = TRUE, n_search_trees = 1,
@@ -14,23 +15,25 @@ controls_ann(
   hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
   lsh = list(bucket_size = 500, hash_width = 10, num_probes = 0, projections = 10, tables
     = 30),
-  annoy = list(n_trees = 250, build_on_disk = FALSE),
   kd = list(algorithm = "dual_tree", epsilon = 0, leaf_size = 20, random_basis = FALSE,
-    rho = 0.7, tau = 0, tree_type = "kd")
+    rho = 0.7, tau = 0, tree_type = "kd"),
+  annoy = list(n_trees = 250, build_on_disk = FALSE)
 )
 }
 \arguments{
 \item{sparse}{whether sparse data should be used as an input for algorithms,}
 
-\item{nnd}{parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}},}
+\item{k_search}{number of neighbours to search,}
 
-\item{hnsw}{parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}},}
+\item{nnd}{list of parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}},}
 
-\item{lsh}{parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}},}
+\item{hnsw}{list of parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}},}
 
-\item{annoy}{parameters for \link{RcppAnnoy} package,}
+\item{lsh}{list of parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}},}
 
-\item{kd}{parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function.}
+\item{annoy}{list of parameters for \link{RcppAnnoy} package.}
+
+\item{lisf}{of kd parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function,}
 }
 \value{
 Returns a list with parameters

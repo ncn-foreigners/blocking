@@ -53,7 +53,7 @@ method_annoy <- function(x,
   }
   if (verbose) l_ind$setVerbose(1)
 
-  ## index - this does not require dense matrix (sparse can be used?)
+  ## index - this does not require dense matrix
   for (i in 1:nrow(x)) l_ind$addItem(i - 1, x[i,])
   l_ind$build(control$annoy$n_trees)
   l_ind_nns <- numeric(length = nrow(y))
@@ -61,7 +61,10 @@ method_annoy <- function(x,
 
   ## query
   for (i in 1:nrow(y)) {
-    annoy_res <- l_ind$getNNsByVectorList(y[i, ], k, -1, TRUE)
+    annoy_res <- l_ind$getNNsByVectorList(y[i, ],
+                                          if (nrow(x) < control$k_search) nrow(x) else control$k_search,
+                                          -1,
+                                          TRUE)
     l_ind_nns[i] <- annoy_res$item[k]
     l_ind_dist[i] <- annoy_res$distance[k]
   }

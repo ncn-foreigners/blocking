@@ -9,6 +9,11 @@ coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.
 
 # Overview
 
+## Warning!
+
+The package is under heavily development so the API as well as
+functionalities may change.
+
 ## Description
 
 This R package is designed to block records for data deduplication and

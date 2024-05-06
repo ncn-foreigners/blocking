@@ -18,6 +18,10 @@ knitr::opts_chunk$set(
 
 # Overview
 
+## Warning!
+
+The package is under heavily development so the API as well as functionalities may change.
+
 ## Description
 
 This R package is designed to block records for data deduplication and record linkage (also known as entity resolution) using [approximate nearest neighbours algorithms (ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search) and graphs (via the `igraph` package).

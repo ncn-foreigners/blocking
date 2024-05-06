@@ -20,7 +20,9 @@ print.blocking <- function(x,...) {
   if (!is.null(x$metrics)) {
     cat("========================================================\n")
     cat("Evaluation metrics (standard):\n" )
-    sprintf("%.4f", x$metrics*100)
+    metrics <- as.numeric(sprintf("%.4f", x$metrics*100))
+    names(metrics)  <- names(result2$metrics)
+    print(metrics)
 
   }
   invisible(x)

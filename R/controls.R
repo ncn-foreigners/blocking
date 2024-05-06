@@ -9,8 +9,8 @@
 #' @param k_search number of neighbours to search,
 #' @param nnd list of parameters for [rnndescent::rnnd_build()] and [rnndescent::rnnd_query()],
 #' @param hnsw list of parameters for [RcppHNSW::hnsw_build()] and [RcppHNSW::hnsw_search()],
-#' @param lsh list of parameters for [mlpack::lsh()],
-#' @param lisf of kd parameters for [mlpack::knn()] function,
+#' @param lsh list of parameters for [mlpack::lsh()] function,
+#' @param kd list of kd parameters for [mlpack::knn()] function,
 #' @param annoy list of parameters for [RcppAnnoy] package.
 #'
 #' @returns Returns a list with parameters

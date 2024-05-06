@@ -29,11 +29,11 @@ controls_ann(
 
 \item{hnsw}{list of parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}},}
 
-\item{lsh}{list of parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}},}
+\item{lsh}{list of parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}} function,}
+
+\item{kd}{list of kd parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function,}
 
 \item{annoy}{list of parameters for \link{RcppAnnoy} package.}
-
-\item{lisf}{of kd parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function,}
 }
 \value{
 Returns a list with parameters

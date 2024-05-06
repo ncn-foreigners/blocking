@@ -157,14 +157,13 @@ It seems that the default parameters of the NND method result in an FNR of `r sp
 set.seed(2024)
 ann_control_pars <- controls_ann()
 ann_control_pars$k_search <- 60
-ann_control_pars$nnd$k_build <- 60
 
 result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], n_threads = 4, 
                     control_ann = ann_control_pars)
 ```
 
-Changing the `k_build` parameter from 30 to 60 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
+Changing the `k_search` parameter from 30 to 60 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3

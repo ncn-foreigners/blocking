@@ -86,7 +86,6 @@ Deduplication using the `blocking` function. Output contains information:
 
 ```{r}
 blocking_result <- blocking(x = df_example$txt)
-## data frame with indices and block 
 blocking_result
 ```
 

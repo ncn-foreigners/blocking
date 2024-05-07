@@ -29,7 +29,7 @@ method_nnd <- function(x,
                        control) {
 
   l_ind <- rnndescent::rnnd_build(data = x,
-                                  k = if (nrow(x) < control$nnd$k_build) nrow(x)-1 else control$nnd$k_build,
+                                  k = if (nrow(x) < control$nnd$k_build) nrow(x) else control$nnd$k_build,
                                   metric = distance,
                                   verbose = verbose,
                                   n_threads = n_threads,

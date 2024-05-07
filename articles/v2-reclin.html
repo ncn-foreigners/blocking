@@ -213,16 +213,16 @@ the CENSUS dataset.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">result</span>, n<span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         x     y block          dist</span></span>
 <span><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:     1  8152  8020  2.941167e-02</span></span>
-<span><span class="co">#&gt;  2:     2  8584  8441  4.878050e-02</span></span>
-<span><span class="co">#&gt;  3:     3 20590 19940  1.290381e-02</span></span>
-<span><span class="co">#&gt;  4:     4 18456 17933  7.158583e-02</span></span>
-<span><span class="co">#&gt;  5:     5 17257 16800  5.370837e-02</span></span>
-<span><span class="co">#&gt;  6:     6 19868 19264  5.675775e-02</span></span>
-<span><span class="co">#&gt;  7:     7 11183 10960 -1.192093e-07</span></span>
-<span><span class="co">#&gt;  8:    10  9370  9206  8.233702e-02</span></span>
-<span><span class="co">#&gt;  9:    11  7247  7140  4.881024e-02</span></span>
-<span><span class="co">#&gt; 10:    12 10622 10420  2.777779e-02</span></span></code></pre></div>
+<span><span class="co">#&gt;  1:     1  8152  8021  2.941167e-02</span></span>
+<span><span class="co">#&gt;  2:     2  8584  8442  4.878050e-02</span></span>
+<span><span class="co">#&gt;  3:     3 20590 19946  1.290381e-02</span></span>
+<span><span class="co">#&gt;  4:     4 18456 17939  7.158583e-02</span></span>
+<span><span class="co">#&gt;  5:     5 17257 16806  5.370837e-02</span></span>
+<span><span class="co">#&gt;  6:     6 19868 19268  5.675775e-02</span></span>
+<span><span class="co">#&gt;  7:     7 11183 10963 -1.192093e-07</span></span>
+<span><span class="co">#&gt;  8:    10  9370  9209  8.233702e-02</span></span>
+<span><span class="co">#&gt;  9:    11  7247  7141  4.881024e-02</span></span>
+<span><span class="co">#&gt; 10:    12 10622 10422  2.777779e-02</span></span></code></pre></div>
 <p>Let’s take a look at the first pair. Obviously there is a typo in the
 <code>pername1</code>, but all the other variables are the same, so it
 appears to be a match.</p>
@@ -274,19 +274,19 @@ vignette.</p>
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 23789.</span></span>
+<span><span class="co">#&gt; Number of blocks: 23788.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 22992   772    23     2 </span></span>
+<span><span class="co">#&gt; 22990   774    21     3 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
-<span><span class="co">#&gt;     98.6612     98.6612      0.0007      1.3388     99.9987     99.9993</span></span></code></pre></div>
+<span><span class="co">#&gt;     98.5582     98.5582      0.0007      1.4418     99.9986     99.9993</span></span></code></pre></div>
 <p>It seems that the default parameters of the NND method result in an
-FNR of 1.34%. We can see if increasing the number of <code>k</code> (and
+FNR of 1.44%. We can see if increasing the number of <code>k</code> (and
 thus <code>max_candidates</code>) as suggested in the <a href="https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html" class="external-link">Nearest
 Neighbor Descent</a> vignette will help.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -312,7 +312,7 @@ the FDR to 0.9%.</p>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 23157   694    20     2 </span></span>
+<span><span class="co">#&gt; 23154   700    17     2 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
@@ -363,7 +363,7 @@ overlap between neighbours is given by</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no tuning"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result2</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>,</span>
 <span>  <span class="st">"with tuning"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result3</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   no tuning with tuning </span></span>
-<span><span class="co">#&gt;    99.07366    99.47182</span></span></code></pre></div>
+<span><span class="co">#&gt;    99.05335    99.45964</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

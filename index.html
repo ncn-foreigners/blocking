@@ -177,11 +177,11 @@
 <code class="sourceCode R"><span><span class="va">blocking_result</span><span class="op">$</span><span class="va">result</span></span>
 <span><span class="co">#&gt;        x     y block       dist</span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:     1     2     1 0.10000005</span></span>
-<span><span class="co">#&gt; 2:     1     3     1 0.14188367</span></span>
-<span><span class="co">#&gt; 3:     1     4     1 0.28286284</span></span>
-<span><span class="co">#&gt; 4:     5     6     2 0.08333336</span></span>
-<span><span class="co">#&gt; 5:     5     7     2 0.13397458</span></span>
+<span><span class="co">#&gt; 1:     1     2     1 0.10000002</span></span>
+<span><span class="co">#&gt; 2:     2     3     1 0.14188367</span></span>
+<span><span class="co">#&gt; 3:     2     4     1 0.28286284</span></span>
+<span><span class="co">#&gt; 4:     5     6     2 0.08333331</span></span>
+<span><span class="co">#&gt; 5:     5     7     2 0.13397455</span></span>
 <span><span class="co">#&gt; 6:     5     8     2 0.27831215</span></span></code></pre></div>
 <p>Deduplication using the <code>pair_ann</code> function for integration with the <code>reclin2</code> package. Use the pipeline with the <code>reclin2</code> package.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -190,17 +190,19 @@
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/score_simple.html" class="external-link">score_simple</a></span><span class="op">(</span><span class="st">"score"</span>, on <span class="op">=</span> <span class="st">"txt"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/select_threshold.html" class="external-link">select_threshold</a></span><span class="op">(</span><span class="st">"threshold"</span>, score <span class="op">=</span> <span class="st">"score"</span>, threshold <span class="op">=</span> <span class="fl">0.55</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/link.html" class="external-link">link</a></span><span class="op">(</span>selection <span class="op">=</span> <span class="st">"threshold"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Total number of pairs: 6 pairs</span></span>
+<span><span class="co">#&gt;   Total number of pairs: 8 pairs</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Key: &lt;.y&gt;</span></span>
 <span><span class="co">#&gt;       .y    .x       txt.x           txt.y</span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt;      &lt;char&gt;          &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:     2     1 jankowalski     kowalskijan</span></span>
 <span><span class="co">#&gt; 2:     3     1 jankowalski    kowalskimjan</span></span>
-<span><span class="co">#&gt; 3:     4     1 jankowalski        kowaljan</span></span>
-<span><span class="co">#&gt; 4:     6     5 montypython     pythonmonty</span></span>
-<span><span class="co">#&gt; 5:     7     5 montypython cyrkmontypython</span></span>
-<span><span class="co">#&gt; 6:     8     5 montypython           monty</span></span></code></pre></div>
+<span><span class="co">#&gt; 3:     3     2 kowalskijan    kowalskimjan</span></span>
+<span><span class="co">#&gt; 4:     4     1 jankowalski        kowaljan</span></span>
+<span><span class="co">#&gt; 5:     4     2 kowalskijan        kowaljan</span></span>
+<span><span class="co">#&gt; 6:     6     5 montypython     pythonmonty</span></span>
+<span><span class="co">#&gt; 7:     7     5 montypython cyrkmontypython</span></span>
+<span><span class="co">#&gt; 8:     8     5 montypython           monty</span></span></code></pre></div>
 <p>Linking records using the same function where <code>df_base</code> is the “register” and <code>df_example</code> is the reference (data).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df_base</span>, y <span class="op">=</span> <span class="va">df_example</span>, on <span class="op">=</span> <span class="st">"txt"</span>, deduplication <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>

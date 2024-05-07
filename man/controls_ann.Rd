@@ -7,7 +7,7 @@
 controls_ann(
   sparse = FALSE,
   k_search = 30,
-  nnd = list(k_build = 30, use_alt_metric = TRUE, init = "tree", n_trees = NULL,
+  nnd = list(k_build = 30, use_alt_metric = FALSE, init = "tree", n_trees = NULL,
     leaf_size = NULL, max_tree_depth = 200, margin = "auto", n_iters = NULL, delta =
     0.001, max_candidates = NULL, low_memory = TRUE, n_search_trees = 1,
     pruning_degree_multiplier = 1.5, diversify_prob = 1, weight_by_degree = FALSE,

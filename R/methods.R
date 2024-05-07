@@ -21,7 +21,7 @@ print.blocking <- function(x,...) {
     cat("========================================================\n")
     cat("Evaluation metrics (standard):\n" )
     metrics <- as.numeric(sprintf("%.4f", x$metrics*100))
-    names(metrics)  <- names(result2$metrics)
+    names(metrics)  <- names(x$metrics)
     print(metrics)
 
   }

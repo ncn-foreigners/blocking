@@ -20,7 +20,7 @@ controls_ann <- function(
     sparse = FALSE,
     k_search = 30,
     nnd = list(k_build = 30,
-               use_alt_metric = TRUE,
+               use_alt_metric = FALSE,
                init = "tree",
                n_trees = NULL,
                leaf_size = NULL,

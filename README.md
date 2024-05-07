@@ -131,11 +131,11 @@ Table with blocking results contains:
 blocking_result$result
 #>        x     y block       dist
 #>    <int> <int> <num>      <num>
-#> 1:     1     2     1 0.10000005
-#> 2:     1     3     1 0.14188367
-#> 3:     1     4     1 0.28286284
-#> 4:     5     6     2 0.08333336
-#> 5:     5     7     2 0.13397458
+#> 1:     1     2     1 0.10000002
+#> 2:     2     3     1 0.14188367
+#> 3:     2     4     1 0.28286284
+#> 4:     5     6     2 0.08333331
+#> 5:     5     7     2 0.13397455
 #> 6:     5     8     2 0.27831215
 ```
 
@@ -148,17 +148,19 @@ pair_ann(x = df_example, on = "txt") |>
   score_simple("score", on = "txt") |>
   select_threshold("threshold", score = "score", threshold = 0.55) |>
   link(selection = "threshold")
-#>   Total number of pairs: 6 pairs
+#>   Total number of pairs: 8 pairs
 #> 
 #> Key: <.y>
 #>       .y    .x       txt.x           txt.y
 #>    <int> <int>      <char>          <char>
 #> 1:     2     1 jankowalski     kowalskijan
 #> 2:     3     1 jankowalski    kowalskimjan
-#> 3:     4     1 jankowalski        kowaljan
-#> 4:     6     5 montypython     pythonmonty
-#> 5:     7     5 montypython cyrkmontypython
-#> 6:     8     5 montypython           monty
+#> 3:     3     2 kowalskijan    kowalskimjan
+#> 4:     4     1 jankowalski        kowaljan
+#> 5:     4     2 kowalskijan        kowaljan
+#> 6:     6     5 montypython     pythonmonty
+#> 7:     7     5 montypython cyrkmontypython
+#> 8:     8     5 montypython           monty
 ```
 
 Linking records using the same function where `df_base` is the

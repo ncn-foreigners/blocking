@@ -9,7 +9,7 @@
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
-#' @importFrom utils combn
+#' @importFrom RcppAlgos comboGeneral
 #'
 #'
 #' @title Block records based on text data.
@@ -41,6 +41,7 @@
 #' \itemize{
 #' \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 #' \item{\code{method} -- name of the ANN algorithm used,}
+#' \item{\code{deduplication} -- information whether deduplication was applied,}
 #' \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
 #' \item{\code{colnames} -- variable names (colnames) used for search,}
 #' \item{\code{graph} -- \code{igraph} class object.}
@@ -96,12 +97,11 @@ blocking <- function(x,
               is.character(x) | is.matrix(x) | inherits(x, "Matrix"))
 
   ## assuming rows (for nnd)
-  stopifnot("Minimum 3 cases required for x" = NROW(x) > 2)
-
-  if (!is.null(y)) {
-    stopifnot("Minimum 3 cases required for y" = NROW(y) > 2)
-  }
-
+  # stopifnot("Minimum 3 cases required for x" = NROW(x) > 2)
+  #
+  # if (!is.null(y)) {
+  #   stopifnot("Minimum 3 cases required for y" = NROW(y) > 2)
+  # }
 
   if (!is.null(ann_write)) {
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
@@ -314,11 +314,10 @@ blocking <- function(x,
 
     }
 
-    #consider using RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
-    candidate_pairs <- utils::combn(nrow(pairs_to_eval_long), 2)
+    candidate_pairs <- RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
 
-    same_block <- pairs_to_eval_long$block_id[candidate_pairs[1, ]] == pairs_to_eval_long$block_id[candidate_pairs[2, ]]
-    same_truth <- pairs_to_eval_long$true_id[candidate_pairs[1, ]] == pairs_to_eval_long$true_id[candidate_pairs[2, ]]
+    same_block <- pairs_to_eval_long$block_id[candidate_pairs[, 1]] == pairs_to_eval_long$block_id[candidate_pairs[,2]]
+    same_truth <- pairs_to_eval_long$true_id[candidate_pairs[,1]] == pairs_to_eval_long$true_id[candidate_pairs[,2]]
 
     confusion <- table(same_block, same_truth)
 
@@ -343,6 +342,7 @@ blocking <- function(x,
       method = ann,
       deduplication = deduplication,
       metrics = if (is.null(true_blocks)) NULL else eval_metrics,
+      confusion = if (is.null(true_blocks)) NULL else confusion,
       colnames = colnames_xy,
       graph = if (graph) {
         igraph::graph_from_data_frame(x_df[, c("x", "y")], directed = F)

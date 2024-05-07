@@ -53,7 +53,7 @@ expect_equal(
 
 expect_equal(
   blocking(x = df_base$txt, y = df_example$txt, ann = "lsh")$result$block,
-  c(rep(2,3),rep(1,4), 3)
+  c(rep(2,3),rep(1,4),3)
 )
 
 expect_silent(

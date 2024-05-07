@@ -54,19 +54,19 @@ method_nnd <- function(x,
   ## query k dependent on the study
   ## there is a problem when dataset is small
 
-  if (deduplication == T) {
-    k_nnd_query <- k
-  } else if (nrow(x) < 10) {
-    k_nnd_query <- k
-  } else if (nrow(x) < control$k_search) {
-    k_nnd_query <- nrow(x)
-  } else {
-    k_nnd_query <- control$k_search
-  }
+#   if (deduplication == T) {
+#     k_nnd_query <- k
+#   } else if (nrow(x) < 10) {
+#     k_nnd_query <- k
+#   } else if (nrow(x) < control$k_search) {
+#     k_nnd_query <- nrow(x)
+#   } else {
+#     k_nnd_query <- control$k_search
+#   }
 
   l_1nn <- rnndescent::rnnd_query(index = l_ind,
                                   query = y,
-                                  k = k_nnd_query,
+                                  k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
                                   epsilon = 0.1,
                                   max_search_fraction = 1,
                                   init = NULL,

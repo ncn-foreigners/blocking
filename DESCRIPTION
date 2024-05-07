@@ -25,6 +25,7 @@ Imports:
   rnndescent,
   igraph,
   data.table,
+  RcppAlgos,
   methods
 Suggests: 
     tinytest,

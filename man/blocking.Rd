@@ -61,6 +61,7 @@ Returns a list with containing:\cr
 \itemize{
 \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 \item{\code{method} -- name of the ANN algorithm used,}
+\item{\code{deduplication} -- information whether deduplication was applied,}
 \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
 \item{\code{colnames} -- variable names (colnames) used for search,}
 \item{\code{graph} -- \code{igraph} class object.}

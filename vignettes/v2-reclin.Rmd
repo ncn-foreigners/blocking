@@ -157,14 +157,14 @@ It seems that the default parameters of the NND method result in an FNR of `r sp
 ```{r}
 set.seed(2024)
 ann_control_pars <- controls_ann()
-ann_control_pars$k_search <- 60
+ann_control_pars$nnd$epsilon <- 0.2
 
 result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], n_threads = 8, 
                     control_ann = ann_control_pars)
 ```
 
-Changing the `k_search` parameter from 30 to 60 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
+Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3
@@ -184,12 +184,6 @@ It seems that the HNSW algorithm performed better with `r sprintf("%.2f",result4
 result4
 ```
 
-However, this comes at a cost, especially in terms of computation:
-
-1. the HNSW does not handle sparse matrices, so a sparse matrix of tokens must be converted to dense or provided line by line.
-2. The HNSW algorithm is slower than NND. 
-
-Computation times are: 16 seconds for NND and about 60 for HNSW (on M2 MacBook AIR). We can improve the time by changing the parameters `M` and `ef_s` in the `controls_ann()` function (e.g. setting `M=16` and `ef_s=15` leads to about 16 seconds with 1\% FNR).
 
 ## Compare results
 

@@ -67,12 +67,12 @@ method_nnd <- function(x,
   l_1nn <- rnndescent::rnnd_query(index = l_ind,
                                   query = y,
                                   k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
-                                  epsilon = 0.1,
-                                  max_search_fraction = 1,
+                                  epsilon = control$nnd$epsilon,
+                                  max_search_fraction = control$nnd$max_search_fraction,
                                   init = NULL,
                                   verbose = verbose,
                                   n_threads = n_threads,
-                                  obs = "R")
+                                  obs = control$nnd$obs)
 
   # if (!is.null(path)) {
   #   if (grepl("(/|\\\\)$", path)) {

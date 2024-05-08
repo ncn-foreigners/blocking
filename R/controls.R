@@ -36,7 +36,10 @@ controls_ann <- function(
                weight_by_degree = FALSE,
                prune_reverse = FALSE,
                progress = "bar",
-               obs = "R"),
+               obs = "R",
+               ##
+               max_search_fraction = 1,
+               epsilon = 0.1),
     hnsw = list(M = 25,
                 ef_c = 200,
                 ef_s = 200,

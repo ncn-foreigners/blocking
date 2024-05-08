@@ -96,17 +96,10 @@ blocking <- function(x,
   stopifnot("Only character, dense or sparse (dgCMatrix) matrix x is supported" =
               is.character(x) | is.matrix(x) | inherits(x, "Matrix"))
 
-  ## assuming rows (for nnd)
-  # stopifnot("Minimum 3 cases required for x" = NROW(x) > 2)
-  #
-  # if (!is.null(y)) {
-  #   stopifnot("Minimum 3 cases required for y" = NROW(y) > 2)
-  # }
 
   if (!is.null(ann_write)) {
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
   }
-
 
   if (ann == "hnsw") {
     stopifnot("Distance for HNSW should be `l2, euclidean, cosine, ip`" =
@@ -118,23 +111,6 @@ blocking <- function(x,
                 distance %in% c("euclidean", "manhatan", "hamming", "angular"))
   }
 
-
-
-  if (!is.null(true_blocks)) {
-    if (is.data.frame(true_blocks)) {
-      stopifnot("`true blocks` should be a data.frame with columns: x, y, block" =
-                  !is.null(true_blocks) &
-                  is.data.frame(true_blocks) &
-                  length(colnames(true_blocks)) == 3,
-                all(colnames(true_blocks) == c("x", "y", "block")))
-    }
-    if (is.vector(true_blocks)) {
-      stopifnot("`true blocks` should be a vector with elements equal to nrow(x)" =
-                  NROW(true_blocks) == NROW(x))
-    }
-  }
-
-
   if (!is.null(y)) {
     deduplication <- FALSE
     y_default <- FALSE
@@ -144,6 +120,24 @@ blocking <- function(x,
     y <- x
     k <- 2L
   }
+
+
+  if (!is.null(true_blocks)) {
+
+    stopifnot("`true_blocks` should be a data.frame" = is.data.frame(true_blocks))
+
+    if (deduplication == FALSE) {
+      stopifnot("`true blocks` should be a data.frame with columns: x, y, block" =
+                  length(colnames(true_blocks)) == 3,
+                all(colnames(true_blocks) == c("x", "y", "block")))
+    }
+    if (deduplication) {
+      stopifnot("`true blocks` should be a data.frame with columns: x, block" =
+                  length(colnames(true_blocks)) == 2,
+                all(colnames(true_blocks) == c("x", "block")))
+    }
+  }
+
 
   ## add verification if x and y is a sparse matrix
   if (is.matrix(x) | inherits(x, "Matrix")) {
@@ -281,19 +275,17 @@ blocking <- function(x,
 
     setDT(true_blocks)
 
-    #true_blocks_copy <- copy(true_blocks)
-
-    pairs_to_eval <- x_df[y %in% true_blocks$y, c("x", "y", "block")]
-    pairs_to_eval[true_blocks, on = c("x", "y"), both := 0L]
-    pairs_to_eval[is.na(both), both := -1L]
-
-    true_blocks[pairs_to_eval, on = c("x", "y"), both := 0L]
-    true_blocks[is.na(both), both := 1L]
-    true_blocks[, block:=block+max(pairs_to_eval$block)]
-
-    pairs_to_eval <- rbind(pairs_to_eval, true_blocks[both == 1L, .(x,y,block, both)])
-
     if (!deduplication) {
+
+      pairs_to_eval <- x_df[y %in% true_blocks$y, c("x", "y", "block")]
+      pairs_to_eval[true_blocks, on = c("x", "y"), both := 0L]
+      pairs_to_eval[is.na(both), both := -1L]
+
+      true_blocks[pairs_to_eval, on = c("x", "y"), both := 0L]
+      true_blocks[is.na(both), both := 1L]
+      true_blocks[, block:=block+max(pairs_to_eval$block)]
+
+      pairs_to_eval <- rbind(pairs_to_eval, true_blocks[both == 1L, .(x,y,block, both)])
 
       pairs_to_eval[, row_id := 1:.N]
       pairs_to_eval[, x2:=x+max(y)]
@@ -313,15 +305,11 @@ blocking <- function(x,
 
     } else {
 
-      ## this does not work yet
-      pairs_to_eval[, row_id := 1:.N]
-      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x, row_id, block, both)], id.vars = c("block", "both"))
-      pairs_to_eval_long[!is.na(both), block_id := .GRP, block]
-      block_id_max <- max(pairs_to_eval_long$block_id, na.rm = T)
-      pairs_to_eval_long[is.na(both), block_id:= block_id_max + .GRP, row_id]
-      pairs_to_eval_long[both == TRUE | is.na(both), true_id := .GRP, block]
-      true_id_max <- max(pairs_to_eval_long$true_id, na.rm = T)
-      pairs_to_eval_long[both==FALSE, true_id := true_id_max + .GRP, row_id]
+      #true_blocks <- data.frame(x=1:NROW(identity.RLdata500), block = identity.RLdata500)
+
+      pairs_to_eval_long <- melt(x_df[, .(x,y,block)], id.vars = c("block"))
+      pairs_to_eval_long <- unique(pairs_to_eval_long[, .(block_id=block, x=value)])
+      pairs_to_eval_long[true_blocks, on = "x", true_id := i.block]
 
     }
 

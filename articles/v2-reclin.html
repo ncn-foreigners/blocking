@@ -119,10 +119,8 @@ in cis the person_id is also available. This information can be used to
 evaluate the linkage (assuming these records from the cis are representable 
 all records in the cis). </code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">census</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv"</span><span class="op">)</span></span>
-<span><span class="va">cis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">census</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">cis</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">census</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv"</span><span class="op">)</span></span>
+<span><span class="va">cis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv"</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>
 <code>census</code> object has 25343 rows and 9,</li>
@@ -171,21 +169,15 @@ all records in the cis). </code></pre>
 <code>pername1</code> to <code>enumpc</code>. In the first step we
 replace <code>NA</code>s with <code>''</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, <span class="va">dob_day</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(census, is.na(dob_day), `:=`(dob_day, "")): Coercing</span></span>
-<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 5 named 'dob_day'.</span></span>
+<code class="sourceCode R"><span><span class="va">census</span><span class="op">[</span>, <span class="st">":="</span><span class="op">(</span>dob_day<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, dob_mon<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, dob_year<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dob_year</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">cis</span><span class="op">[</span>, <span class="st">":="</span><span class="op">(</span>dob_day<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, dob_mon<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>,dob_year<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">dob_year</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, <span class="va">dob_day</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, <span class="va">dob_mon</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_year</span><span class="op">)</span>, <span class="va">dob_year</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(census, is.na(dob_year), `:=`(dob_year, "")):</span></span>
-<span><span class="co">#&gt; Coercing 'character' RHS to 'integer' to match the type of column 7 named</span></span>
-<span><span class="co">#&gt; 'dob_year'.</span></span>
 <span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, <span class="va">dob_day</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(cis, is.na(dob_day), `:=`(dob_day, "")): Coercing</span></span>
-<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 5 named 'dob_day'.</span></span>
 <span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, <span class="va">dob_mon</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_year</span><span class="op">)</span>, <span class="va">dob_year</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
-<span><span class="co">#&gt; Warning in `[.data.table`(cis, is.na(dob_year), `:=`(dob_year, "")): Coercing</span></span>
-<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 7 named 'dob_year'.</span></span>
 <span></span>
 <span><span class="va">census</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">cis</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
@@ -202,7 +194,7 @@ the CENSUS dataset.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="va">result1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>, n_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
-<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1079) =====</span></span>
+<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1072) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
 <p>Distribution of distances for each pair.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -213,16 +205,16 @@ the CENSUS dataset.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">result</span>, n<span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         x     y block          dist</span></span>
 <span><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;num&gt;         &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:     1  8152  8021  2.941167e-02</span></span>
-<span><span class="co">#&gt;  2:     2  8584  8442  4.878050e-02</span></span>
-<span><span class="co">#&gt;  3:     3 20590 19946  1.290381e-02</span></span>
-<span><span class="co">#&gt;  4:     4 18456 17939  7.158583e-02</span></span>
+<span><span class="co">#&gt;  1:     1  8152  8022  2.941167e-02</span></span>
+<span><span class="co">#&gt;  2:     2  8584  8446  4.878050e-02</span></span>
+<span><span class="co">#&gt;  3:     3 20590 19944  1.290381e-02</span></span>
+<span><span class="co">#&gt;  4:     4 18456 17940  7.158583e-02</span></span>
 <span><span class="co">#&gt;  5:     5 17257 16806  5.370837e-02</span></span>
 <span><span class="co">#&gt;  6:     6 19868 19268  5.675775e-02</span></span>
-<span><span class="co">#&gt;  7:     7 11183 10963 -1.192093e-07</span></span>
-<span><span class="co">#&gt;  8:    10  9370  9209  8.233702e-02</span></span>
-<span><span class="co">#&gt;  9:    11  7247  7141  4.881024e-02</span></span>
-<span><span class="co">#&gt; 10:    12 10622 10422  2.777779e-02</span></span></code></pre></div>
+<span><span class="co">#&gt;  7:     7 11183 10962 -1.192093e-07</span></span>
+<span><span class="co">#&gt;  8:    10  9370  9211  8.233702e-02</span></span>
+<span><span class="co">#&gt;  9:    11  7247  7143  4.881024e-02</span></span>
+<span><span class="co">#&gt; 10:    12 10622 10423  2.777779e-02</span></span></code></pre></div>
 <p>Let’s take a look at the first pair. Obviously there is a typo in the
 <code>pername1</code>, but all the other variables are the same, so it
 appears to be a match.</p>
@@ -267,7 +259,7 @@ vignette.</p>
 <span><span class="va">result2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                    true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>, n_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
-<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1079) =====</span></span>
+<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1072) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
 <p>Let’s see how our approach handled this problem.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -275,12 +267,12 @@ vignette.</p>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
 <span><span class="co">#&gt; Number of blocks: 23788.</span></span>
-<span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
+<span><span class="co">#&gt; Number of columns used for blocking: 1072.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 22990   774    21     3 </span></span>
+<span><span class="co">#&gt; 22987   778    22     1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
@@ -298,7 +290,7 @@ Neighbor Descent</a> vignette will help.</p>
 <span>                    true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>, n_threads <span class="op">=</span> <span class="fl">8</span>, </span>
 <span>                    control_ann <span class="op">=</span> <span class="va">ann_control_pars</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
-<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1079) =====</span></span>
+<span><span class="co">#&gt; ===== starting search (nnd, x, y: 25343, 24613, t: 1072) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
 <p>Changing the <code>k_search</code> parameter from 30 to 60 decreased
 the FDR to 0.9%.</p>
@@ -306,13 +298,13 @@ the FDR to 0.9%.</p>
 <code class="sourceCode R"><span><span class="va">result3</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 23873.</span></span>
-<span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
+<span><span class="co">#&gt; Number of blocks: 23897.</span></span>
+<span><span class="co">#&gt; Number of columns used for blocking: 1072.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 23154   700    17     2 </span></span>
+<span><span class="co">#&gt; 23200   679    17     1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
@@ -323,24 +315,24 @@ the FDR to 0.9%.</p>
 <span>                    true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>, n_threads <span class="op">=</span> <span class="fl">8</span>, </span>
 <span>                    ann <span class="op">=</span> <span class="st">"hnsw"</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
-<span><span class="co">#&gt; ===== starting search (hnsw, x, y: 25343, 24613, t: 1079) =====</span></span>
+<span><span class="co">#&gt; ===== starting search (hnsw, x, y: 25343, 24613, t: 1072) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
-<p>It seems that the HNSW algorithm performed better with 0.62% FNR.</p>
+<p>It seems that the HNSW algorithm performed better with 0.51% FNR.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result4</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the hnsw method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 23984.</span></span>
-<span><span class="co">#&gt; Number of columns used for blocking: 1079.</span></span>
+<span><span class="co">#&gt; Number of blocks: 23994.</span></span>
+<span><span class="co">#&gt; Number of columns used for blocking: 1072.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 1.0000.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;     2     3     4     5 </span></span>
-<span><span class="co">#&gt; 23371   598    14     1 </span></span>
+<span><span class="co">#&gt; 23390   590    13     1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
-<span><span class="co">#&gt;     99.3821     99.3821      0.0003      0.6179     99.9994     99.9997</span></span></code></pre></div>
+<span><span class="co">#&gt;     99.4851     99.4851      0.0003      0.5149     99.9995     99.9997</span></span></code></pre></div>
 <p>However, this comes at a cost, especially in terms of
 computation:</p>
 <ol style="list-style-type: decimal">
@@ -363,7 +355,7 @@ overlap between neighbours is given by</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no tuning"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result2</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>,</span>
 <span>  <span class="st">"with tuning"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result3</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   no tuning with tuning </span></span>
-<span><span class="co">#&gt;    99.05335    99.45964</span></span></code></pre></div>
+<span><span class="co">#&gt;    98.99240    99.49214</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

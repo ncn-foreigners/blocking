@@ -144,13 +144,14 @@ row.</p>
 <code>blocking</code> function. If we specify verbose, we get
 information about the progress.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">txt</span>, ann <span class="op">=</span> <span class="st">"nnd"</span>, verbose <span class="op">=</span> <span class="fl">1</span>, graph <span class="op">=</span> <span class="cn">TRUE</span>, seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">df_blocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blocking.html">blocking</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">txt</span>, ann <span class="op">=</span> <span class="st">"nnd"</span>, verbose <span class="op">=</span> <span class="fl">1</span>, graph <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ===== creating tokens =====</span></span>
 <span><span class="co">#&gt; ===== starting search (nnd, x, y: 500, 500, t: 429) =====</span></span>
 <span><span class="co">#&gt; ===== creating graph =====</span></span></code></pre></div>
 <p>Results are as follows:</p>
 <ul>
-<li>based in <code>rnndescent</code> we have created 153 blocks,</li>
+<li>based in <code>rnndescent</code> we have created 156 blocks,</li>
 <li>it was based on 429 columns (2 character shingles),</li>
 <li>we have 93 blocks of 2 elements, 38 blocks of 3 elements, …, 3 block
 of 6 elements.</li>
@@ -159,13 +160,13 @@ of 6 elements.</li>
 <code class="sourceCode R"><span><span class="va">df_blocks</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 153.</span></span>
+<span><span class="co">#&gt; Number of blocks: 156.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 429.</span></span>
-<span><span class="co">#&gt; Reduction ratio: 0.9950.</span></span>
+<span><span class="co">#&gt; Reduction ratio: 0.9952.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;  2  3  4  5  6 </span></span>
-<span><span class="co">#&gt; 89 38 16  7  3</span></span></code></pre></div>
+<span><span class="co">#&gt; 95 34 18  7  2</span></span></code></pre></div>
 <p>Structure of the object is as follows:</p>
 <ul>
 <li>
@@ -188,7 +189,7 @@ visualisation.</li>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">df_blocks</span>,<span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 7</span></span>
-<span><span class="co">#&gt;  $ result       :Classes 'data.table' and 'data.frame':  256 obs. of  4 variables:</span></span>
+<span><span class="co">#&gt;  $ result       :Classes 'data.table' and 'data.frame':  255 obs. of  4 variables:</span></span>
 <span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
 <span><span class="co">#&gt;  $ method       : chr "nnd"</span></span>
 <span><span class="co">#&gt;  $ deduplication: logi TRUE</span></span>
@@ -221,9 +222,9 @@ contain all units of <code>df</code>,</li>
 <span><span class="co">#&gt; 1:     2    43     4 0.08074528</span></span>
 <span><span class="co">#&gt; 2:     2   486     4 0.41023219</span></span>
 <span><span class="co">#&gt; 3:     5   128    24 0.51333570</span></span>
-<span><span class="co">#&gt; 4:     5   439    24 0.51333570</span></span>
-<span><span class="co">#&gt; 5:     7    20     1 0.27246720</span></span>
-<span><span class="co">#&gt; 6:     7    28     1 0.45405132</span></span></code></pre></div>
+<span><span class="co">#&gt; 4:     7    20     1 0.27246720</span></span>
+<span><span class="co">#&gt; 5:     7    28     1 0.45405132</span></span>
+<span><span class="co">#&gt; 6:     9   255    64 0.36754447</span></span></code></pre></div>
 <p>Create long <code>data.table</code> with information on blocks and
 units from original dataset.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -236,8 +237,8 @@ units from original dataset.</p>
 <span><span class="co">#&gt; 2:      5    24</span></span>
 <span><span class="co">#&gt; 3:      7     1</span></span>
 <span><span class="co">#&gt; 4:      9    64</span></span>
-<span><span class="co">#&gt; 5:     10    50</span></span>
-<span><span class="co">#&gt; 6:     11   106</span></span></code></pre></div>
+<span><span class="co">#&gt; 5:     10    49</span></span>
+<span><span class="co">#&gt; 6:     11   107</span></span></code></pre></div>
 <p>We add block information to the final dataset.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span><span class="va">df_block_melted_rec_block</span>, on <span class="op">=</span> <span class="st">"rec_id"</span>, <span class="va">block_id</span> <span class="op">:=</span> <span class="va">i.block</span><span class="op">]</span></span>

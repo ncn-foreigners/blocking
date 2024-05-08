@@ -20,6 +20,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Setup
+
 ```{r setup}
 library(blocking)
 ```
+
+# Methodology
+
+The package implements the following measures of assessing the quality of blocking
+
+# 

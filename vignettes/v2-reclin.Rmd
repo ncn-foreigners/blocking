@@ -58,10 +58,8 @@ all records in the cis).
 ```
 
 ```{r}
-census <- read.csv("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv")
-cis <- read.csv("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv")
-setDT(census)
-setDT(cis)
+census <- fread("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv")
+cis <- fread("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv")
 ```
 
 + `census` object has `r nrow(census)` rows and `r ncol(census)`,
@@ -81,6 +79,9 @@ head(cis)
 We need to create new columns that concatanates variables from `pername1` to `enumpc`. In the first step we replace `NA`s with `''`. 
 
 ```{r}
+census[, ":="(dob_day=as.character(dob_day), dob_mon=as.character(dob_mon), dob_year=as.character(dob_year))]
+cis[, ":="(dob_day=as.character(dob_day), dob_mon=as.character(dob_mon),dob_year=as.character(dob_year))]
+
 census[is.na(dob_day), dob_day := ""]
 census[is.na(dob_mon), dob_mon := ""]
 census[is.na(dob_year), dob_year := ""]

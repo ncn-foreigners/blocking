@@ -279,38 +279,49 @@ blocking <- function(x,
   ## if true are given
   if (!is.null(true_blocks)) {
 
-    setDT(true_blocks) ## move it somewhere else
+    setDT(true_blocks)
+
+    #true_blocks_copy <- copy(true_blocks)
 
     pairs_to_eval <- x_df[y %in% true_blocks$y, c("x", "y", "block")]
-    pairs_to_eval[true_blocks, on = c("x", "y"), both := TRUE]
-    pairs_to_eval[is.na(both), both := FALSE]
+    pairs_to_eval[true_blocks, on = c("x", "y"), both := 0L]
+    pairs_to_eval[is.na(both), both := -1L]
 
-    true_blocks[pairs_to_eval, on = c("x", "y"), both := TRUE]
-    true_blocks[is.na(both), both := FALSE]
+    true_blocks[pairs_to_eval, on = c("x", "y"), both := 0L]
+    true_blocks[is.na(both), both := 1L]
     true_blocks[, block:=block+max(pairs_to_eval$block)]
 
-    pairs_to_eval <- rbind(pairs_to_eval, true_blocks[both == FALSE, .(x,y,block)], fill = TRUE)
+    pairs_to_eval <- rbind(pairs_to_eval, true_blocks[both == 1L, .(x,y,block, both)])
 
     if (!deduplication) {
 
+      pairs_to_eval[, row_id := 1:.N]
       pairs_to_eval[, x2:=x+max(y)]
-      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x2, block, both)], id.vars = c("block", "both"))
-      pairs_to_eval_long[!is.na(both), block_id := .GRP, block]
-      block_id_max <- max(pairs_to_eval_long$block_id, na.rm = T)
-      pairs_to_eval_long[is.na(both), block_id:=block_id_max + rleid(block)]
-      pairs_to_eval_long[both == TRUE | is.na(both), true_id := .GRP, block]
-      true_id_max <- max(pairs_to_eval_long$true_id, na.rm = T)
-      pairs_to_eval_long[both==FALSE, true_id := true_id_max+rleid(block)]
+
+      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x2, row_id, block, both)], id.vars = c("row_id", "block", "both"))
+      pairs_to_eval_long[both == 0L, ":="(block_id = .GRP, true_id = .GRP), block]
+
+      block_id_max <- max(pairs_to_eval_long$block_id, na.rm = TRUE)
+      pairs_to_eval_long[both == -1L, block_id:= block_id_max + .GRP, row_id]
+      block_id_max <- max(pairs_to_eval_long$block_id, na.rm = TRUE)
+      pairs_to_eval_long[both == 1L & is.na(block_id), block_id := block_id_max + rleid(row_id)]
+
+      true_id_max <- max(pairs_to_eval_long$true_id, na.rm = TRUE)
+      pairs_to_eval_long[both == 1L, true_id:= true_id_max + .GRP, row_id]
+      true_id_max <- max(pairs_to_eval_long$true_id, na.rm = TRUE)
+      pairs_to_eval_long[both == -1L & is.na(true_id), true_id := true_id_max + rleid(row_id)]
 
     } else {
 
-      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x, block, both)], id.vars = c("block", "both"))
+      ## this does not work yet
+      pairs_to_eval[, row_id := 1:.N]
+      pairs_to_eval_long <- melt(pairs_to_eval[, .(y, x, row_id, block, both)], id.vars = c("block", "both"))
       pairs_to_eval_long[!is.na(both), block_id := .GRP, block]
       block_id_max <- max(pairs_to_eval_long$block_id, na.rm = T)
-      pairs_to_eval_long[is.na(both), block_id:=block_id_max + rleid(block)]
+      pairs_to_eval_long[is.na(both), block_id:= block_id_max + .GRP, row_id]
       pairs_to_eval_long[both == TRUE | is.na(both), true_id := .GRP, block]
       true_id_max <- max(pairs_to_eval_long$true_id, na.rm = T)
-      pairs_to_eval_long[both==FALSE, true_id := true_id_max+rleid(block)]
+      pairs_to_eval_long[both==FALSE, true_id := true_id_max + .GRP, row_id]
 
     }
 

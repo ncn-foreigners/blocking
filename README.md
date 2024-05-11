@@ -11,8 +11,8 @@ coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.
 
 ## Warning!
 
-The package is under heavy development, so both the API and the
-functionality are subject to change.
+The package is under heavily development so the API as well as
+functionalities may change.
 
 ## Description
 
@@ -108,7 +108,6 @@ information:
 
 ``` r
 blocking_result <- blocking(x = df_example$txt)
-## data frame with indices and block 
 blocking_result
 #> ========================================================
 #> Blocking based on the nnd method.

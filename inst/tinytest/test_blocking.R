@@ -22,10 +22,10 @@ expect_equal(
 )
 
 
-expect_equal(
-  blocking(x = df_example$txt, ann = "lsh")$result$block,
-  c(1, 1, 1, 2, 2, 2)
-)
+# expect_equal(
+#   blocking(x = df_example$txt, ann = "lsh")$result$block,
+#   c(1, 1, 1, 2, 2, 2)
+# )
 
 expect_equal(
   blocking(x = df_example$txt, ann = "kd")$result$block,

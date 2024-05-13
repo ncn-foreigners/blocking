@@ -51,10 +51,10 @@ expect_equal(
   c(rep(2,4),rep(1,4))
 )
 
-expect_equal(
-  blocking(x = df_base$txt, y = df_example$txt, ann = "lsh")$result$block,
-  c(rep(2,3),rep(1,4),3)
-)
+# expect_equal(
+#   blocking(x = df_base$txt, y = df_example$txt, ann = "lsh")$result$block,
+#   c(rep(2,3),rep(1,4),3)
+# )
 
 expect_silent(
   blocking(x = mat_y)

@@ -106,20 +106,24 @@ records for record linkage</em> vignette.</p>
 <span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">cis</span><span class="op">)</span></span>
 <span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, <span class="va">dob_day</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Warning in `[.data.table`(census, is.na(dob_day), `:=`(dob_day, "")): Coercing</span></span>
-<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 5 named 'dob_day'.</span></span>
-<span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, <span class="va">dob_mon</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
+<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 5 named 'dob_day'.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, <span class="va">dob_mon</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_year</span><span class="op">)</span>, <span class="va">dob_year</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Warning in `[.data.table`(census, is.na(dob_year), `:=`(dob_year, "")):</span></span>
 <span><span class="co">#&gt; Coercing 'character' RHS to 'integer' to match the type of column 7 named</span></span>
-<span><span class="co">#&gt; 'dob_year'.</span></span>
-<span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, <span class="va">dob_day</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
+<span><span class="co">#&gt; 'dob_year'.</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_day</span><span class="op">)</span>, <span class="va">dob_day</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Warning in `[.data.table`(cis, is.na(dob_day), `:=`(dob_day, "")): Coercing</span></span>
-<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 5 named 'dob_day'.</span></span>
-<span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, <span class="va">dob_mon</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
+<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 5 named 'dob_day'.</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_mon</span><span class="op">)</span>, <span class="va">dob_mon</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dob_year</span><span class="op">)</span>, <span class="va">dob_year</span> <span class="op">:=</span> <span class="st">""</span><span class="op">]</span></span>
 <span><span class="co">#&gt; Warning in `[.data.table`(cis, is.na(dob_year), `:=`(dob_year, "")): Coercing</span></span>
-<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 7 named 'dob_year'.</span></span>
-<span><span class="va">census</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; 'character' RHS to 'integer' to match the type of column 7 named 'dob_year'.</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">census</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">cis</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">census</span><span class="op">[</span>, <span class="va">x</span><span class="op">:=</span><span class="fl">1</span><span class="op">:</span><span class="va">.N</span><span class="op">]</span></span>
 <span><span class="va">cis</span><span class="op">[</span>, <span class="va">y</span><span class="op">:=</span><span class="fl">1</span><span class="op">:</span><span class="va">.N</span><span class="op">]</span></span></code></pre></div>
@@ -130,7 +134,7 @@ records for record linkage</em> vignette.</p>
 <p>The package contains function <code>pair_ann</code> which aims at
 integration with <code>reclin2</code> package. This function works as
 follows</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
 <span>         y <span class="op">=</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
 <span>         on <span class="op">=</span> <span class="st">"txt"</span>, </span>
@@ -156,7 +160,7 @@ follows</p>
 <p>Which provides you information on the total number of pairs. This can
 be further included in the pipeline of the <code>reclin2</code>
 package.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
 <span>         y <span class="op">=</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
 <span>         on <span class="op">=</span> <span class="st">"txt"</span>, </span>
@@ -223,7 +227,7 @@ package.</p>
 <h2 id="usage-with-fastlink-package">Usage with <code>fastLink</code> package<a class="anchor" aria-label="anchor" href="#usage-with-fastlink-package"></a>
 </h2>
 <p>Just use the <code>block</code> column in the function
-<code><a href="https://rdrr.io/pkg/fastLink/man/blockData.html" class="external-link">fastLink::blockData()</a></code>. As a result you will obtain a list
+<code>fastLink::blockData()</code>. As a result you will obtain a list
 of records blocked for further processing.</p>
 </div>
 <div class="section level2">

@@ -11,8 +11,8 @@ coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.
 
 ## Warning!
 
-The package is under heavily development so the API as well as
-functionalities may change.
+The package is still being developed, so the API and features may
+change.
 
 ## Description
 

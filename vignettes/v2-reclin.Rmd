@@ -159,7 +159,6 @@ set.seed(2024)
 ann_control_pars <- controls_ann()
 ann_control_pars$nnd$epsilon <- 0.2
 
-
 result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], n_threads = 8, 
                     control_ann = ann_control_pars)

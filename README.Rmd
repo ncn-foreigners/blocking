@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Warning!
 
-The package is under heavily development so the API as well as functionalities may change.
+The package is still being developed, so the API and features may change.
 
 ## Description
 

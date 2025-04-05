@@ -13,7 +13,7 @@ controls_ann(
     pruning_degree_multiplier = 1.5, diversify_prob = 1, weight_by_degree = FALSE,
     prune_reverse = FALSE, progress = "bar", obs = "R", max_search_fraction = 1, epsilon
     = 0.1),
-  hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
+  hnsw = controls_hnsw(),
   lsh = list(bucket_size = 500, hash_width = 10, num_probes = 0, projections = 10, tables
     = 30),
   kd = list(algorithm = "dual_tree", epsilon = 0, leaf_size = 20, random_basis = FALSE,

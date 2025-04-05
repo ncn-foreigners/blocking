@@ -3,6 +3,7 @@
 S3method(print,blocking)
 export(blocking)
 export(controls_ann)
+export(controls_hnsw)
 export(controls_txt)
 export(pair_ann)
 import(data.table)

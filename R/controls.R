@@ -1,3 +1,15 @@
+#' @title Controls for HNSW
+#'
+#' @export
+controls_hnsw <- function(M = 25,
+                          ef_c = 200,
+                          ef_s = 200,
+                          grain_size = 1,
+                          byrow = TRUE,
+                          ...){
+  append(list(M = M, ef_c = ef_c, ef_s = ef_s, grain_size = grain_size, byrow = byrow), list(...))
+}
+
 #' @title Controls for approximate nearest neighbours algorithms
 #'
 #' @author Maciej Beręsewicz
@@ -40,11 +52,7 @@ controls_ann <- function(
                ##
                max_search_fraction = 1,
                epsilon = 0.1),
-    hnsw = list(M = 25,
-                ef_c = 200,
-                ef_s = 200,
-                grain_size = 1,
-                byrow = TRUE),
+    hnsw = controls_hnsw(),
     lsh = list(bucket_size = 500,
                hash_width = 10,
                num_probes = 0,

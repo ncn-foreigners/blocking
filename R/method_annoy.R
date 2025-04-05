@@ -37,10 +37,10 @@ method_annoy <- function(x,
   ncols <- ncol(x)
 
   l_ind <- switch(distance,
-                  "euclidean" = methods::new(RcppAnnoy::AnnoyManhattan, ncols),
+                  "euclidean" = methods::new(RcppAnnoy::AnnoyEuclidean, ncols),
                   "manhatan"  = methods::new(RcppAnnoy::AnnoyManhattan, ncols),
-                  "hamming"   = methods::new(RcppAnnoy::AnnoyHamming,   ncols),
-                  "angular"   = methods::new(RcppAnnoy::AnnoyAngular,   ncols)
+                  "hamming"   = methods::new(RcppAnnoy::AnnoyHamming, ncols),
+                  "angular"   = methods::new(RcppAnnoy::AnnoyAngular, ncols)
   )
 
   l_ind$setSeed(seed)

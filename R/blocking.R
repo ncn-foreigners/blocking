@@ -101,6 +101,15 @@ blocking <- function(x,
     stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
   }
 
+  if (ann == "nnd") {
+    stopifnot("Distance for NND should be `euclidean, cosine, manhatan, hamming`" =
+                distance %in% c("euclidean", "cosine","manhatan", "hamming"))
+  }
+
+  if ((ann == "nnd") & (distance == "manhatan")) {
+    distance <- "manhattan"
+  }
+
   if (ann == "hnsw") {
     stopifnot("Distance for HNSW should be `l2, euclidean, cosine, ip`" =
                 distance %in% c("l2", "euclidean", "cosine", "ip"))

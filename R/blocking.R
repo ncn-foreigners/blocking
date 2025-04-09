@@ -106,7 +106,7 @@ blocking <- function(x,
                 distance %in% c("euclidean", "cosine","manhatan", "hamming"))
   }
 
-  if ((ann == "nnd") & (distance == "manhatan")) {
+  if ((ann == "nnd") && (distance == "manhatan")) {
     distance <- "manhattan"
   }
 

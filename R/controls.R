@@ -1,7 +1,7 @@
 #' @title Controls for HNSW
 #'
 #' @export
-controls_hnsw <- function(M = 25,
+control_hnsw <- function(M = 25,
                           ef_c = 200,
                           ef_s = 200,
                           grain_size = 1,
@@ -18,7 +18,7 @@ controls_hnsw <- function(M = 25,
 #' @title Controls for NND
 #'
 #' @export
-controls_nnd <- function(k_build = 30,
+control_nnd <- function(k_build = 30,
                          use_alt_metric = FALSE,
                          init = "tree",
                          n_trees = NULL,
@@ -65,12 +65,12 @@ controls_nnd <- function(k_build = 30,
 #' @title Controls for LSH
 #'
 #' @export
-controls_lsh <- function(bucket_size = 500,
-                         hash_width = 10,
-                         num_probes = 0,
-                         projections = 10,
-                         tables = 30,
-                         ...){
+control_lsh <- function(bucket_size = 10,
+                        hash_width = 6,
+                        num_probes = 5,
+                        projections = 10,
+                        tables = 30,
+                        ...){
   append(list(bucket_size = bucket_size,
               hash_width = hash_width,
               num_probes = num_probes,
@@ -82,7 +82,7 @@ controls_lsh <- function(bucket_size = 500,
 #' @title Controls for Annoy
 #'
 #' @export
-controls_annoy <- function(n_trees = 250,
+control_annoy <- function(n_trees = 250,
                            build_on_disk = FALSE,
                            ...){
   append(list(n_trees = n_trees,
@@ -93,7 +93,7 @@ controls_annoy <- function(n_trees = 250,
 #' @title Controls for KD
 #'
 #' @export
-controls_kd <- function(algorithm = "dual_tree",
+control_kd <- function(algorithm = "dual_tree",
                         epsilon = 0,
                         leaf_size = 20,
                         random_basis = FALSE,
@@ -132,42 +132,11 @@ controls_kd <- function(algorithm = "dual_tree",
 controls_ann <- function(
     sparse = FALSE,
     k_search = 30,
-    nnd = list(k_build = 30,
-               use_alt_metric = FALSE,
-               init = "tree",
-               n_trees = NULL,
-               leaf_size = NULL,
-               max_tree_depth = 200,
-               margin = "auto",
-               n_iters = NULL,
-               delta = 0.001,
-               max_candidates = NULL,
-               low_memory = TRUE,
-               n_search_trees = 1,
-               pruning_degree_multiplier = 1.5,
-               diversify_prob = 1,
-               weight_by_degree = FALSE,
-               prune_reverse = FALSE,
-               progress = "bar",
-               obs = "R",
-               ##
-               max_search_fraction = 1,
-               epsilon = 0.1),
-    hnsw = controls_hnsw(),
-    lsh = list(bucket_size = 500,
-               hash_width = 10,
-               num_probes = 0,
-               projections = 10,
-               tables = 30),
-    kd = list(algorithm = "dual_tree",
-              epsilon = 0,
-              leaf_size = 20,
-              random_basis = FALSE,
-              rho = 0.7,
-              tau = 0,
-              tree_type = "kd"),
-    annoy = list(n_trees = 250,
-                 build_on_disk = FALSE)
+    nnd = control_nnd(),
+    hnsw = control_hnsw(),
+    lsh = control_lsh(),
+    kd = control_kd(),
+    annoy = control_annoy()
     ) {
 
    list(sparse = sparse,

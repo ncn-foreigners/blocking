@@ -7,7 +7,108 @@ controls_hnsw <- function(M = 25,
                           grain_size = 1,
                           byrow = TRUE,
                           ...){
-  append(list(M = M, ef_c = ef_c, ef_s = ef_s, grain_size = grain_size, byrow = byrow), list(...))
+  append(list(M = M,
+              ef_c = ef_c,
+              ef_s = ef_s,
+              grain_size = grain_size,
+              byrow = byrow),
+         list(...))
+}
+
+#' @title Controls for NND
+#'
+#' @export
+controls_nnd <- function(k_build = 30,
+                         use_alt_metric = FALSE,
+                         init = "tree",
+                         n_trees = NULL,
+                         leaf_size = NULL,
+                         max_tree_depth = 200,
+                         margin = "auto",
+                         n_iters = NULL,
+                         delta = 0.001,
+                         max_candidates = NULL,
+                         low_memory = TRUE,
+                         n_search_trees = 1,
+                         pruning_degree_multiplier = 1.5,
+                         diversify_prob = 1,
+                         weight_by_degree = FALSE,
+                         prune_reverse = FALSE,
+                         progress = "bar",
+                         obs = "R",
+                         max_search_fraction = 1,
+                         epsilon = 0.1,
+                         ...){
+  append(list(k_build = k_build,
+              use_alt_metric = use_alt_metric,
+              init = init,
+              n_trees = n_trees,
+              leaf_size = leaf_size,
+              max_tree_depth = max_tree_depth,
+              margin = margin,
+              n_iters = n_iters,
+              delta = delta,
+              max_candidates = max_candidates,
+              low_memory = low_memory,
+              n_search_trees = n_search_trees,
+              pruning_degree_multiplier = pruning_degree_multiplier,
+              diversify_prob = diversify_prob,
+              weight_by_degree = weight_by_degree,
+              prune_reverse = prune_reverse,
+              progress = progress,
+              obs = obs,
+              max_search_fraction = max_search_fraction,
+              epsilon = epsilon),
+         list(...))
+}
+
+#' @title Controls for LSH
+#'
+#' @export
+controls_lsh <- function(bucket_size = 500,
+                         hash_width = 10,
+                         num_probes = 0,
+                         projections = 10,
+                         tables = 30,
+                         ...){
+  append(list(bucket_size = bucket_size,
+              hash_width = hash_width,
+              num_probes = num_probes,
+              projections = projections,
+              tables = tables),
+         list(...))
+}
+
+#' @title Controls for Annoy
+#'
+#' @export
+controls_annoy <- function(n_trees = 250,
+                           build_on_disk = FALSE,
+                           ...){
+  append(list(n_trees = n_trees,
+              build_on_disk = build_on_disk),
+         list(...))
+}
+
+#' @title Controls for KD
+#'
+#' @export
+controls_kd <- function(algorithm = "dual_tree",
+                        epsilon = 0,
+                        leaf_size = 20,
+                        random_basis = FALSE,
+                        rho = 0.7,
+                        tau = 0,
+                        tree_type = "kd",
+                        ...){
+  append(list(algorithm = algorithm,
+              epsilon = epsilon,
+              leaf_size = leaf_size,
+              random_basis = random_basis,
+              rho = rho,
+              tau = tau,
+              tree_type = tree_type),
+         list(...))
 }
 
 #' @title Controls for approximate nearest neighbours algorithms

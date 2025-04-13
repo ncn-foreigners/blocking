@@ -4,7 +4,7 @@
 \alias{sentence_to_vector}
 \title{Sentence to vector with GloVe}
 \usage{
-sentence_to_vector(sentences)
+sentence_to_vector(sentences, model)
 }
 \description{
 Imports

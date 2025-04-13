@@ -148,110 +148,56 @@ blocking <- function(x,
   }
 
 
-  ## add verification if x and y is a sparse matrix
-  if (is.matrix(x) | inherits(x, "Matrix")) {
-    x_dtm <- x
-    y_dtm <- y
+  x_embeddings <- sentence_to_vector(x, glove_vectors)
+
+  if (is.null(y_default)) {
+    y_embeddings <- x_embeddings
   } else {
-
-    if (verbose %in% 1:2) cat("===== creating tokens =====\n")
-
-    ## tokens for x
-    if (.Platform$OS.type == "unix") {
-      x_tokens <- text2vec::itoken_parallel(
-        iterable = x,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                        n = control_txt$n_shingles,
-                                                                        lowercase = control_txt$lowercase,
-                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
-        n_chunks = control_txt$n_chunks,
-        progressbar = verbose)
-    } else {
-      x_tokens <- text2vec::itoken(
-        iterable = x,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                        n = control_txt$n_shingles,
-                                                                        lowercase = control_txt$lowercase,
-                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
-        n_chunks = control_txt$n_chunks,
-        progressbar = verbose)
-    }
-
-    x_voc <- text2vec::create_vocabulary(x_tokens)
-    x_vec <- text2vec::vocab_vectorizer(x_voc)
-    x_dtm <- text2vec::create_dtm(x_tokens, x_vec)
-
-    if (is.null(y_default)) {
-      y_dtm <- x_dtm
-    } else {
-      if (.Platform$OS.type == "unix") {
-      y_tokens <- text2vec::itoken_parallel(
-        iterable = y,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                        n = control_txt$n_shingles,
-                                                                        lowercase = control_txt$lowercase,
-                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
-        n_chunks = control_txt$n_chunks,
-        progressbar = verbose)
-      } else {
-        y_tokens <- text2vec::itoken(
-          iterable = y,
-          tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                          n = control_txt$n_shingles,
-                                                                          lowercase = control_txt$lowercase,
-                                                                          strip_non_alphanum = control_txt$strip_non_alphanum),
-          n_chunks = control_txt$n_chunks,
-          progressbar = verbose)
-      }
-      y_voc <- text2vec::create_vocabulary(y_tokens)
-      y_vec <- text2vec::vocab_vectorizer(y_voc)
-      y_dtm <- text2vec::create_dtm(y_tokens, y_vec)
-
-    }
+    y_embeddings <- sentence_to_vector(y, glove_vectors)
   }
 
-  colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
+  ## colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
 
-  if (verbose %in% 1:2) {
-    cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
-                ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
-  }
+  # if (verbose %in% 1:2) {
+  #   cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
+  #               ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
+  # }
 
   x_df <- switch(ann,
-                 "nnd" = method_nnd(x = x_dtm[, colnames_xy],
-                                    y = y_dtm[, colnames_xy],
+                 "nnd" = method_nnd(x = x_embeddings,
+                                    y = y_embeddings,
                                     k = k,
                                     distance = distance,
                                     deduplication = deduplication,
                                     verbose = if (verbose == 2) TRUE else FALSE,
                                     n_threads = n_threads,
                                     control = control_ann),
-                 "hnsw" = method_hnsw(x = x_dtm[, colnames_xy],
-                                      y = y_dtm[, colnames_xy],
+                 "hnsw" = method_hnsw(x = x_embeddings,
+                                      y = y_embeddings,
                                       k = k,
                                       distance = distance,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       n_threads = n_threads,
                                       path = ann_write,
                                       control = control_ann),
-                 "lsh" = method_mlpack(x = x_dtm[, colnames_xy],
-                                       y = y_dtm[, colnames_xy],
+                 "lsh" = method_mlpack(x = x_embeddings,
+                                       y = y_embeddings,
                                        algo = "lsh",
                                        k = k,
                                        verbose = if (verbose == 2) TRUE else FALSE,
                                        seed = seed,
                                        path = ann_write,
                                        control = control_ann),
-                 "kd" = method_mlpack(x = x_dtm[, colnames_xy],
-                                      y = y_dtm[, colnames_xy],
+                 "kd" = method_mlpack(x = x_embeddings,
+                                      y = y_embeddings,
                                       algo = "kd",
                                       k = k,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       seed = seed,
                                       path = ann_write,
                                       control = control_ann),
-                 "annoy" = method_annoy(x = x_dtm[, colnames_xy],
-                                        y = y_dtm[, colnames_xy],
+                 "annoy" = method_annoy(x = x_embeddings,
+                                        y = y_embeddings,
                                         k = k,
                                         distance  = distance,
                                         verbose = if (verbose == 2) TRUE else FALSE,
@@ -351,7 +297,7 @@ blocking <- function(x,
       deduplication = deduplication,
       metrics = if (is.null(true_blocks)) NULL else eval_metrics,
       confusion = if (is.null(true_blocks)) NULL else confusion,
-      colnames = colnames_xy,
+      #colnames = colnames_xy,
       graph = if (graph) {
         igraph::graph_from_data_frame(x_df[, c("x", "y")], directed = F)
         } else NULL

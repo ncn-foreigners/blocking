@@ -10,6 +10,16 @@
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
 #' @importFrom RcppAlgos comboGeneral
+#' @importFrom data.table data.table
+#' @importFrom dplyr %>%
+#' @importFrom dplyr arrange
+#' @importFrom dplyr rowwise
+#' @importFrom dplyr mutate
+#' @importFrom dplyr group_by
+#' @importFrom dplyr ungroup
+#' @importFrom dplyr filter
+#' @importFrom dplyr slice
+#' @importFrom dplyr select
 #'
 #'
 #' @title Block records based on text data.
@@ -210,7 +220,20 @@ blocking <- function(x,
 
   ## remove duplicated pairs
 
-  if (deduplication) x_df <- x_df[y > x]
+  if (deduplication){
+    x_df <- x_df %>%
+      arrange(x) %>%
+      rowwise() %>%
+      mutate(pair = paste(sort(c(x, y)), collapse = "_")) %>%
+      ungroup() %>%
+      group_by(pair) %>%
+      filter(dist == min(dist)) %>%
+      slice(1) %>%
+      ungroup() %>%
+      select(-pair) %>%
+      filter(x < y)
+    x_df <- data.table(x_df)
+  }
 
   if (deduplication) {
     x_df[, `:=`("query_g", paste0("q", y))]

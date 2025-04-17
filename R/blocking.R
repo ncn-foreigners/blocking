@@ -10,16 +10,8 @@
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
 #' @importFrom RcppAlgos comboGeneral
-#' @importFrom data.table data.table
-#' @importFrom dplyr %>%
-#' @importFrom dplyr arrange
-#' @importFrom dplyr rowwise
-#' @importFrom dplyr mutate
-#' @importFrom dplyr group_by
-#' @importFrom dplyr ungroup
-#' @importFrom dplyr filter
-#' @importFrom dplyr slice
-#' @importFrom dplyr select
+#' @importFrom readr read_table
+#' @import data.table
 #'
 #'
 #' @title Block records based on text data.
@@ -220,19 +212,14 @@ blocking <- function(x,
 
   ## remove duplicated pairs
 
-  if (deduplication){
-    x_df <- x_df %>%
-      arrange(x) %>%
-      rowwise() %>%
-      mutate(pair = paste(sort(c(x, y)), collapse = "_")) %>%
-      ungroup() %>%
-      group_by(pair) %>%
-      filter(dist == min(dist)) %>%
-      slice(1) %>%
-      ungroup() %>%
-      select(-pair) %>%
-      filter(x < y)
-    x_df <- data.table(x_df)
+  if (deduplication) {
+    setDT(x_df)
+    setorder(x_df, x)
+    x_df[, pair := sapply(seq_len(.N), function(i) paste(sort(c(x[i], y[i])), collapse = "_"))]
+    x_df <- x_df[, .SD[dist == min(dist)], by = pair]
+    x_df <- x_df[, .SD[1], by = pair]
+    x_df[, pair := NULL]
+    x_df <- x_df[x != y]
   }
 
   if (deduplication) {

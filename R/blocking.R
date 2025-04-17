@@ -10,6 +10,7 @@
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
 #' @importFrom RcppAlgos comboGeneral
+#' @importFrom readr read_table
 #'
 #'
 #' @title Block records based on text data.
@@ -17,11 +18,13 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the [rnndescent], RcppHNSW, [RcppAnnoy] and [mlpack] packages,
+#' Function creates shingles (strings with 2 characters, default) or vectors using a given model, applies approximate nearest neighbour (ANN) algorithms via the [rnndescent], RcppHNSW, [RcppAnnoy] and [mlpack] packages,
 #' and creates blocks using graphs via [igraph].
 #'
 #' @param x reference data (a character vector or a matrix),
 #' @param y query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,
+#' @param representation method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),
+#' @param model matrix containing word embeddings (e.g., GloVe), used only when \code{representation = "vectors"},
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param on variables for ANN search (currently not supported),
 #' @param on_blocking variables for blocking records before ANN search (currently not supported),
@@ -34,7 +37,7 @@
 #' @param graph whether a graph should be returned (default FALSE),
 #' @param seed seed for the algorithms (for reproducibility),
 #' @param n_threads number of threads used for the ANN algorithms and adding data for index and query,
-#' @param control_txt list of controls for text data (passed only to [text2vec::itoken_parallel] or [text2vec::itoken]),
+#' @param control_txt list of controls for text data (passed only to [text2vec::itoken_parallel] or [text2vec::itoken]), used only when \code{representation = "shingles"},
 #' @param control_ann list of controls for the ANN algorithms.
 #'
 #' @returns Returns a list with containing:\cr
@@ -42,6 +45,7 @@
 #' \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 #' \item{\code{method} -- name of the ANN algorithm used,}
 #' \item{\code{deduplication} -- information whether deduplication was applied,}
+#' \item{\code{representation} -- information whether shingles or vectors were used,}
 #' \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
 #' \item{\code{colnames} -- variable names (colnames) used for search,}
 #' \item{\code{graph} -- \code{igraph} class object.}
@@ -65,9 +69,12 @@
 #'                        ann = "lsh")
 #'
 #' result_lsh
+#'
 #' @export
 blocking <- function(x,
                      y = NULL,
+                     representation = c("shingles", "vectors"),
+                     model,
                      deduplication = TRUE,
                      on = NULL,
                      on_blocking = NULL,
@@ -84,6 +91,7 @@ blocking <- function(x,
                      control_ann = controls_ann()) {
 
   ## defaults
+  if (missing(representation)) representation <- "shingles"
   if (missing(verbose)) verbose <- 0
   if (missing(ann)) ann <- "nnd"
   if (missing(distance)) distance <- switch(ann,
@@ -156,46 +164,33 @@ blocking <- function(x,
 
     if (verbose %in% 1:2) cat("===== creating tokens =====\n")
 
-    ## tokens for x
-    if (.Platform$OS.type == "unix") {
-      x_tokens <- text2vec::itoken_parallel(
-        iterable = x,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                        n = control_txt$n_shingles,
-                                                                        lowercase = control_txt$lowercase,
-                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
-        n_chunks = control_txt$n_chunks,
-        progressbar = verbose)
-    } else {
-      x_tokens <- text2vec::itoken(
-        iterable = x,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                        n = control_txt$n_shingles,
-                                                                        lowercase = control_txt$lowercase,
-                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
-        n_chunks = control_txt$n_chunks,
-        progressbar = verbose)
-    }
+    ## vectors
 
-    x_voc <- text2vec::create_vocabulary(x_tokens)
-    x_vec <- text2vec::vocab_vectorizer(x_voc)
-    x_dtm <- text2vec::create_dtm(x_tokens, x_vec)
+    if (representation == "vectors"){
+      x_embeddings <- sentence_to_vector(x, model)
 
-    if (is.null(y_default)) {
-      y_dtm <- x_dtm
-    } else {
-      if (.Platform$OS.type == "unix") {
-      y_tokens <- text2vec::itoken_parallel(
-        iterable = y,
-        tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
-                                                                        n = control_txt$n_shingles,
-                                                                        lowercase = control_txt$lowercase,
-                                                                        strip_non_alphanum = control_txt$strip_non_alphanum),
-        n_chunks = control_txt$n_chunks,
-        progressbar = verbose)
+      if (is.null(y_default)) {
+        y_embeddings <- x_embeddings
       } else {
-        y_tokens <- text2vec::itoken(
-          iterable = y,
+        y_embeddings <- sentence_to_vector(y, model)
+      }
+    } else{
+
+      ## shingles
+
+      ## tokens for x
+      if (.Platform$OS.type == "unix") {
+        x_tokens <- text2vec::itoken_parallel(
+          iterable = x,
+          tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                          n = control_txt$n_shingles,
+                                                                          lowercase = control_txt$lowercase,
+                                                                          strip_non_alphanum = control_txt$strip_non_alphanum),
+          n_chunks = control_txt$n_chunks,
+          progressbar = verbose)
+      } else {
+        x_tokens <- text2vec::itoken(
+          iterable = x,
           tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
                                                                           n = control_txt$n_shingles,
                                                                           lowercase = control_txt$lowercase,
@@ -203,55 +198,94 @@ blocking <- function(x,
           n_chunks = control_txt$n_chunks,
           progressbar = verbose)
       }
-      y_voc <- text2vec::create_vocabulary(y_tokens)
-      y_vec <- text2vec::vocab_vectorizer(y_voc)
-      y_dtm <- text2vec::create_dtm(y_tokens, y_vec)
 
+      x_voc <- text2vec::create_vocabulary(x_tokens)
+      x_vec <- text2vec::vocab_vectorizer(x_voc)
+      x_dtm <- text2vec::create_dtm(x_tokens, x_vec)
+
+      if (is.null(y_default)) {
+        y_dtm <- x_dtm
+      } else {
+        if (.Platform$OS.type == "unix") {
+          y_tokens <- text2vec::itoken_parallel(
+            iterable = y,
+            tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                            n = control_txt$n_shingles,
+                                                                            lowercase = control_txt$lowercase,
+                                                                            strip_non_alphanum = control_txt$strip_non_alphanum),
+            n_chunks = control_txt$n_chunks,
+            progressbar = verbose)
+        } else {
+          y_tokens <- text2vec::itoken(
+            iterable = y,
+            tokenizer = function(x) tokenizers::tokenize_character_shingles(x,
+                                                                            n = control_txt$n_shingles,
+                                                                            lowercase = control_txt$lowercase,
+                                                                            strip_non_alphanum = control_txt$strip_non_alphanum),
+            n_chunks = control_txt$n_chunks,
+            progressbar = verbose)
+        }
+        y_voc <- text2vec::create_vocabulary(y_tokens)
+        y_vec <- text2vec::vocab_vectorizer(y_voc)
+        y_dtm <- text2vec::create_dtm(y_tokens, y_vec)
+
+      }
     }
+
+
   }
 
-  colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
+  if (representation == "shingles"){
+    colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
+  }
 
   if (verbose %in% 1:2) {
-    cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
-                ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
+
+    if (representation == "shingles") {
+      cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
+                  ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
+    } else {
+      cat(sprintf("===== starting search (%s, x, y: %d, %d) =====\n",
+                  ann, nrow(x_dtm), nrow(y_dtm)))
+    }
+
   }
 
   x_df <- switch(ann,
-                 "nnd" = method_nnd(x = x_dtm[, colnames_xy],
-                                    y = y_dtm[, colnames_xy],
+                 "nnd" = method_nnd(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
+                                    y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
                                     k = k,
                                     distance = distance,
                                     deduplication = deduplication,
                                     verbose = if (verbose == 2) TRUE else FALSE,
                                     n_threads = n_threads,
                                     control = control_ann),
-                 "hnsw" = method_hnsw(x = x_dtm[, colnames_xy],
-                                      y = y_dtm[, colnames_xy],
+                 "hnsw" = method_hnsw(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
+                                      y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
                                       k = k,
                                       distance = distance,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       n_threads = n_threads,
                                       path = ann_write,
                                       control = control_ann),
-                 "lsh" = method_mlpack(x = x_dtm[, colnames_xy],
-                                       y = y_dtm[, colnames_xy],
+                 "lsh" = method_mlpack(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
+                                       y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
                                        algo = "lsh",
                                        k = k,
                                        verbose = if (verbose == 2) TRUE else FALSE,
                                        seed = seed,
                                        path = ann_write,
                                        control = control_ann),
-                 "kd" = method_mlpack(x = x_dtm[, colnames_xy],
-                                      y = y_dtm[, colnames_xy],
+                 "kd" = method_mlpack(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
+                                      y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
                                       algo = "kd",
                                       k = k,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       seed = seed,
                                       path = ann_write,
                                       control = control_ann),
-                 "annoy" = method_annoy(x = x_dtm[, colnames_xy],
-                                        y = y_dtm[, colnames_xy],
+                 "annoy" = method_annoy(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
+                                        y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
                                         k = k,
                                         distance  = distance,
                                         verbose = if (verbose == 2) TRUE else FALSE,
@@ -264,7 +298,15 @@ blocking <- function(x,
 
   ## remove duplicated pairs
 
-  if (deduplication) x_df <- x_df[y > x]
+  if (deduplication) {
+    setDT(x_df)
+    setorder(x_df, x)
+    x_df[, pair := sapply(seq_len(.N), function(i) paste(sort(c(x[i], y[i])), collapse = "_"))]
+    x_df <- x_df[, .SD[dist == min(dist)], by = pair]
+    x_df <- x_df[, .SD[1], by = pair]
+    x_df[, pair := NULL]
+    x_df <- x_df[x != y]
+  }
 
   if (deduplication) {
     x_df[, `:=`("query_g", paste0("q", y))]
@@ -349,9 +391,10 @@ blocking <- function(x,
       result = x_df[, c("x", "y", "block", "dist")],
       method = ann,
       deduplication = deduplication,
+      representation = representation,
       metrics = if (is.null(true_blocks)) NULL else eval_metrics,
       confusion = if (is.null(true_blocks)) NULL else confusion,
-      colnames = colnames_xy,
+      colnames = if (exists("colnames_xy", where = environment())) colnames_xy else NULL,
       graph = if (graph) {
         igraph::graph_from_data_frame(x_df[, c("x", "y")], directed = F)
         } else NULL

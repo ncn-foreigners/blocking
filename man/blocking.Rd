@@ -7,6 +7,8 @@
 blocking(
   x,
   y = NULL,
+  representation = c("shingles", "vectors"),
+  model,
   deduplication = TRUE,
   on = NULL,
   on_blocking = NULL,
@@ -27,6 +29,10 @@ blocking(
 \item{x}{reference data (a character vector or a matrix),}
 
 \item{y}{query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,}
+
+\item{representation}{method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),}
+
+\item{model}{matrix containing word embeddings (e.g., GloVe), used only when \code{representation = "vectors"},}
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
@@ -52,7 +58,7 @@ blocking(
 
 \item{n_threads}{number of threads used for the ANN algorithms and adding data for index and query,}
 
-\item{control_txt}{list of controls for text data (passed only to \link[text2vec:itoken]{text2vec::itoken_parallel} or \link[text2vec:itoken]{text2vec::itoken}),}
+\item{control_txt}{list of controls for text data (passed only to \link[text2vec:itoken]{text2vec::itoken_parallel} or \link[text2vec:itoken]{text2vec::itoken}), used only when \code{representation = "shingles"},}
 
 \item{control_ann}{list of controls for the ANN algorithms.}
 }
@@ -62,13 +68,14 @@ Returns a list with containing:\cr
 \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 \item{\code{method} -- name of the ANN algorithm used,}
 \item{\code{deduplication} -- information whether deduplication was applied,}
+\item{\code{representation} -- information whether shingles or vectors were used,}
 \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
 \item{\code{colnames} -- variable names (colnames) used for search,}
 \item{\code{graph} -- \code{igraph} class object.}
 }
 }
 \description{
-Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
+Function creates shingles (strings with 2 characters, default) or vectors using a given model, applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
 and creates blocks using graphs via \link{igraph}.
 }
 \details{
@@ -92,6 +99,7 @@ result_lsh <- blocking(x = df_example$txt,
                        ann = "lsh")
 
 result_lsh
+
 }
 \author{
 Maciej Beręsewicz

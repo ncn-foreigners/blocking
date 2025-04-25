@@ -1,9 +1,11 @@
-#' Imports
+#'
 #' @importFrom text2vec space_tokenizer
 #'
-#' @title Sentence to vector with GloVe
+#' @title Sentence to vector
 #'
-#' @export
+#' @description
+#' Function creates a matrix with word embeddings using a given model.
+#'
 sentence_to_vector <- function(sentences, model) {
   tokens <- text2vec::space_tokenizer(tolower(sentences))
 

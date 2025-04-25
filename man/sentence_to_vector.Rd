@@ -2,10 +2,10 @@
 % Please edit documentation in R/sentence_to_vector.R
 \name{sentence_to_vector}
 \alias{sentence_to_vector}
-\title{Sentence to vector with GloVe}
+\title{Sentence to vector}
 \usage{
 sentence_to_vector(sentences, model)
 }
 \description{
-Imports
+Function creates a matrix with word embeddings using a given model.
 }

@@ -32,7 +32,7 @@ blocking(
 
 \item{representation}{method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),}
 
-\item{model}{matrix containing word embeddings (e.g., GloVe), used only when \code{representation = "vectors"},}
+\item{model}{matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},}
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
@@ -63,7 +63,7 @@ blocking(
 \item{control_ann}{list of controls for the ANN algorithms.}
 }
 \value{
-Returns a list with containing:\cr
+Returns a list containing:\cr
 \itemize{
 \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 \item{\code{method} -- name of the ANN algorithm used,}
@@ -75,21 +75,18 @@ Returns a list with containing:\cr
 }
 }
 \description{
-Function creates shingles (strings with 2 characters, default) or vectors using a given model, applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
+Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe), applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
 and creates blocks using graphs via \link{igraph}.
 }
-\details{
-Imports
-}
 \examples{
-
 ## an example using RcppHNSW
+
 df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
 result <- blocking(x = df_example$txt,
                    ann = "hnsw",
-                   control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
+                   control_ann = controls_ann(hnsw = control_hnsw(M = 5, ef_c = 10, ef_s = 10)))
 
 result
 
@@ -99,6 +96,32 @@ result_lsh <- blocking(x = df_example$txt,
                        ann = "lsh")
 
 result_lsh
+
+## an example using GloVe and RcppAnnoy
+
+options(timeout = 500)
+utils::download.file("https://nlp.stanford.edu/data/glove.6B.zip", destfile = "glove.6B.zip")
+utils::unzip("glove.6B.zip")
+
+glove_6B_50d <- readr::read_table("glove.6B.50d.txt",
+                                  col_names = FALSE,
+                                  show_col_types = FALSE)
+data.table::setDT(glove_6B_50d)
+
+glove_vectors <- glove_6B_50d[,-1]
+glove_vectors <- as.matrix(glove_vectors)
+rownames(glove_vectors) <- glove_6B_50d$X1
+
+## spaces between words are required
+df_example_spaces <- data.frame(txt = c("jan kowalski", "kowalski jan", "kowalskim jan",
+"kowal jan", "monty python", "python monty", "cyrk monty python", "monty"))
+
+result_annoy <- blocking(x = df_example_spaces$txt,
+                         ann = "annoy",
+                         representation = "vectors",
+                         model = glove_vectors)
+
+result_annoy
 
 }
 \author{

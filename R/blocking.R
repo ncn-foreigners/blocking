@@ -11,6 +11,9 @@
 #' @importFrom igraph compare
 #' @importFrom RcppAlgos comboGeneral
 #' @importFrom stats dist
+#' @importFrom readr read_table
+#' @importFrom utils download.file
+#' @importFrom utils unzip
 #'
 #'
 #' @title Block records based on text data.

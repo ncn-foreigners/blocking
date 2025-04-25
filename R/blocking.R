@@ -10,7 +10,6 @@
 #' @importFrom igraph make_clusters
 #' @importFrom igraph compare
 #' @importFrom RcppAlgos comboGeneral
-#' @importFrom readr read_table
 #'
 #'
 #' @title Block records based on text data.

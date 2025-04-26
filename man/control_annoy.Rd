@@ -6,6 +6,16 @@
 \usage{
 control_annoy(n_trees = 250, build_on_disk = FALSE, ...)
 }
+\arguments{
+\item{n_trees}{An integer specifying the number of trees to build in the Annoy index.}
+
+\item{build_on_disk}{A logical value indicating whether to build the Annoy index on disk instead of in memory.}
+
+\item{...}{Additional arguments.}
+}
+\value{
+Returns a list with parameters.
+}
 \description{
-Controls for Annoy
+Controls for Annoy algorithm used in the package (see \link{RcppAnnoy} for details).
 }

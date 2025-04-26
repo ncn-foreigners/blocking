@@ -6,6 +6,9 @@
 #' @description
 #' Function creates a matrix with word embeddings using a given model.
 #'
+#' @param sentences a character vector,
+#' @param model a matrix containing word embeddings (e.g., GloVe).
+#'
 sentence_to_vector <- function(sentences, model) {
   tokens <- text2vec::space_tokenizer(tolower(sentences))
 

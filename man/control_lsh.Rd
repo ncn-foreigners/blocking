@@ -13,6 +13,22 @@ control_lsh(
   ...
 )
 }
+\arguments{
+\item{bucket_size}{The size of a bucket in the second level hash.}
+
+\item{hash_width}{The hash width for the first-level hashing in the LSH preprocessing.}
+
+\item{num_probes}{Number of additional probes for multiprobe LSH.}
+
+\item{projections}{The number of hash functions for each table.}
+
+\item{tables}{The number of hash tables to be used.}
+
+\item{...}{Additional arguments.}
+}
+\value{
+Returns a list with parameters.
+}
 \description{
-Controls for LSH
+Controls for LSH algorithm used in the package (see \code{\link[mlpack:lsh]{mlpack::lsh()}} for details).
 }

@@ -27,7 +27,7 @@
 #' @param x reference data (a character vector or a matrix),
 #' @param y query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,
 #' @param representation method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),
-#' @param model matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},
+#' @param model a matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param on variables for ANN search (currently not supported),
 #' @param on_blocking variables for blocking records before ANN search (currently not supported),

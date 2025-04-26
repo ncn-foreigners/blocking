@@ -6,6 +6,11 @@
 \usage{
 sentence_to_vector(sentences, model)
 }
+\arguments{
+\item{sentences}{a character vector,}
+
+\item{model}{a matrix containing word embeddings (e.g., GloVe).}
+}
 \description{
 Function creates a matrix with word embeddings using a given model.
 }

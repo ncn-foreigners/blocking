@@ -24,7 +24,7 @@ controls_txt(
 Returns a list with parameters.
 }
 \description{
-Controls for text data used in the \code{blocking} functions, passed to \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles}.
+Controls for text data used in the \code{blocking} function (if \code{representation = shingles}), passed to \link[tokenizers:shingle-tokenizers]{tokenizers::tokenize_character_shingles}.
 }
 \author{
 Maciej Beręsewicz

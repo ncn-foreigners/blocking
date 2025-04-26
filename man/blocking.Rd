@@ -32,7 +32,7 @@ blocking(
 
 \item{representation}{method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),}
 
-\item{model}{matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},}
+\item{model}{a matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},}
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 

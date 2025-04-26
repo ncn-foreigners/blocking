@@ -19,21 +19,21 @@ controls_ann(
 
 \item{k_search}{number of neighbours to search,}
 
-\item{nnd}{list of parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}},}
+\item{nnd}{parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}} (should be inside \link{control_nnd} function),}
 
-\item{hnsw}{list of parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}},}
+\item{hnsw}{parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}} (should be inside \link{control_hnsw} function),}
 
-\item{lsh}{list of parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}} function,}
+\item{lsh}{parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}} function (should be inside \link{control_lsh} function),}
 
-\item{kd}{list of kd parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function,}
+\item{kd}{kd parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function (should be inside \link{control_kd} function),}
 
-\item{annoy}{list of parameters for \link{RcppAnnoy} package.}
+\item{annoy}{parameters for \link{RcppAnnoy} package (should be inside \link{control_annoy} function).}
 }
 \value{
-Returns a list with parameters
+Returns a list with parameters.
 }
 \description{
-Controls for ANN algorithms used in the package
+Controls for ANN algorithms used in the package.
 }
 \author{
 Maciej Beręsewicz

@@ -15,6 +15,28 @@ control_kd(
   ...
 )
 }
+\arguments{
+\item{algorithm}{Type of neighbor search: \code{'naive'}, \code{'single_tree'}, \code{'dual_tree'}, \code{'greedy'}.}
+
+\item{epsilon}{If specified, will do approximate nearest neighbor search with given relative error.}
+
+\item{leaf_size}{Leaf size for tree building
+(used for kd-trees, vp trees, random projection trees, UB trees, R trees, R* trees, X trees, Hilbert R trees, R+ trees, R++ trees, spill trees, and octrees).}
+
+\item{random_basis}{Before tree-building, project the data onto a random orthogonal basis.}
+
+\item{rho}{Balance threshold (only valid for spill trees).}
+
+\item{tau}{Overlapping size (only valid for spill trees).}
+
+\item{tree_type}{Type of tree to use: \code{'kd'}, \code{'vp'}, \code{'rp'}, \code{'max-rp'}, \code{'ub'}, \code{'cover'}, \code{'r'}, \code{'r-star'},
+\code{'x'}, \code{'ball'}, \code{'hilbert-r'}, \code{'r-plus'}, \code{'r-plus-plus'}, \code{'spill'}, \code{'oct'}.}
+
+\item{...}{Additional arguments.}
+}
+\value{
+Returns a list with parameters.
+}
 \description{
-Controls for KD
+Controls for KD algorithm used in the package (see \code{\link[mlpack:knn]{mlpack::knn()}} for details).
 }

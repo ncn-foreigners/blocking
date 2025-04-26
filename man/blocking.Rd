@@ -98,7 +98,7 @@ result_lsh <- blocking(x = df_example$txt,
 result_lsh
 
 ## an example using GloVe and RcppAnnoy
-
+\dontrun{
 options(timeout = 500)
 utils::download.file("https://nlp.stanford.edu/data/glove.6B.zip", destfile = "glove.6B.zip")
 utils::unzip("glove.6B.zip")
@@ -122,6 +122,7 @@ result_annoy <- blocking(x = df_example_spaces$txt,
                          model = glove_vectors)
 
 result_annoy
+}
 
 }
 \author{

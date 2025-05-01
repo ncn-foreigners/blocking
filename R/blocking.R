@@ -385,6 +385,7 @@ blocking <- function(x,
       true_id_max <- max(pairs_to_eval_long$true_id, na.rm = TRUE)
       pairs_to_eval_long[both == -1L & is.na(true_id), true_id := true_id_max + rleid(row_id)]
 
+
     } else {
 
       #true_blocks <- data.frame(x=1:NROW(identity.RLdata500), block = identity.RLdata500)
@@ -392,6 +393,7 @@ blocking <- function(x,
       pairs_to_eval_long <- melt(x_df[, .(x,y,block)], id.vars = c("block"))
       pairs_to_eval_long <- unique(pairs_to_eval_long[, .(block_id=block, x=value)])
       pairs_to_eval_long[true_blocks, on = "x", true_id := i.block]
+
 
     }
 

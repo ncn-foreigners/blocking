@@ -51,9 +51,17 @@ pair_ann <- function(x,
                      add_xy = TRUE,
                      ...) {
 
+  stopifnot("Only data.frame or data.table is supported" =
+              is.data.frame(x) | is.data.table(x))
+
   stopifnot("Only one `on` is currently supported" = NROW(on) == 1)
 
   if (!is.null(y)) deduplication <- FALSE
+
+  if (!is.null(y)){
+    stopifnot("Only data.frame or data.table is supported" =
+                is.data.frame(y) | data.table::is.data.table(y))
+  }
 
   y <- if (deduplication) x else y
 

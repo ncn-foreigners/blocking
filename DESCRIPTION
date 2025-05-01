@@ -28,10 +28,10 @@ Imports:
     RcppAlgos,
     methods,
     readr,
-    knitr,
     utils
 Suggests: 
     tinytest,
     reclin2,
+    knitr,
     rmarkdown
 VignetteBuilder: knitr

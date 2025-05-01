@@ -1,14 +1,9 @@
-#' @importFrom knitr kable
 #' @method print blocking
 #' @exportS3Method
 print.blocking <- function(x,...) {
 
   blocks_tab <- table(x$result$block)
   block_ids <- rep(as.numeric(names(blocks_tab)), blocks_tab+1)
-  size_distribution <- data.table(
-    `Block Size` = as.numeric(names(table(table(block_ids)))),
-    `Number of Blocks` = as.vector(table(table(block_ids)))
-  )
 
   rr <- 1 - sum(choose(table(block_ids), 2))/choose(length(block_ids), 2)
   cat("========================================================\n")
@@ -22,8 +17,7 @@ print.blocking <- function(x,...) {
   cat("========================================================\n")
   cat("Distribution of the size of the blocks:")
 
-  #print(table(table(block_ids)))
-  print(knitr::kable(size_distribution))
+  print(table(table(block_ids)))
 
   if (!is.null(x$metrics)) {
     cat("========================================================\n")

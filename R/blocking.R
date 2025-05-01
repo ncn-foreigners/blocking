@@ -352,6 +352,7 @@ blocking <- function(x,
 
   x_df[, `:=`(block, x_block[names(x_block) %in% x_df$query_g])]
 
+
   ## if true are given
   if (!is.null(true_blocks)) {
 

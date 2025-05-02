@@ -28,7 +28,8 @@ Imports:
     RcppAlgos,
     methods,
     readr,
-    utils
+    utils,
+    Matrix
 Suggests: 
     tinytest,
     reclin2,

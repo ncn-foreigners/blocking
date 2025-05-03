@@ -1,8 +1,16 @@
 #' @importFrom Matrix sparseMatrix
 #'
-#' @title eval_rl
+#' @title Evaluation for record linkage
 #'
-#' @export
+#' @description
+#' Function calculates TP, FP, FN and TN for record linkage.
+#'
+#' @param pred_df Output from the blocking algorithm.
+#' @param true_df Ground-truth links (may be subset).
+#'
+#' @returns
+#' Returns a list containing TP, FP, FN and TN.
+#'
 eval_rl <- function(pred_df, true_df) {
 
   pred_x_map <- unique(pred_df[, .(x, block)])
@@ -59,9 +67,17 @@ eval_rl <- function(pred_df, true_df) {
               TN = TN))
 }
 
-#' @title eval_dedup
+#' @title Evaluation for deduplication
 #'
-#' @export
+#' @description
+#' Function calculates  TP, FP, FN and TN for deduplication.
+#'
+#' @param pred_df Output from the blocking algorithm.
+#' @param true_df Ground-truth links (may be subset).
+#'
+#' @returns
+#' Returns a list containing TP, FP, FN and TN.
+#'
 eval_dedup <- function(pred_df, true_df) {
 
   pred_lbl <- melt(pred_df,
@@ -107,14 +123,25 @@ eval_dedup <- function(pred_df, true_df) {
   ))
 }
 
-#' @title get_metrics
+#' @title Metrics for evaluating dedupliaction and record linkage
 #'
-#' @export
+#' @description
+#' Function calculates standard evaluation metrics.
+#'
+#' @param TP TP
+#' @param FP FP
+#' @param FN FN
+#' @param TN TN
+#'
+#' @returns
+#' Returns a list containing evaluation metrics.
+#'
 get_metrics <- function(TP, FP, FN, TN) {
 
   recall <- if (TP + FN != 0) TP / (TP + FN) else 0
   precision <- if (TP + FP != 0) TP / (TP + FP) else 0
   fpr <- if (FP + TN != 0) FP / (FP + TN) else 0
+  fnr <- if (FN + TP != 0) FN / (FN + TP) else 0
   accuracy <- if (TP + FP + FN + TN != 0) (TP + TN) / (TP + FP + FN + TN) else 0
   specificity <- if (TN + FP != 0) TN / (TN + FP) else 0
   f1_score <- if (precision + recall != 0) 2 * (precision * recall) / (precision + recall) else 0
@@ -122,14 +149,25 @@ get_metrics <- function(TP, FP, FN, TN) {
   return(list(recall = recall,
               precision = precision,
               fpr = fpr,
+              fnr = fnr,
               accuracy = accuracy,
               specificity = specificity,
               f1_score = f1_score))
 }
 
-#' @title get_confusion
+#' @title Confusion matrix
 #'
-#' @export
+#' @description
+#' Function creates a confusion matrix from raw counts.
+#'
+#' @param TP TP
+#' @param FP FP
+#' @param FN FN
+#' @param TN TN
+#'
+#' @returns
+#' Returns a confusion matrix.
+#'
 get_confusion <- function(TP, FP, FN, TN) {
 
   cm <- matrix(c(TP, FP, FN, TN), nrow = 2)

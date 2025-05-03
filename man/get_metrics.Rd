@@ -2,10 +2,22 @@
 % Please edit documentation in R/eval.R
 \name{get_metrics}
 \alias{get_metrics}
-\title{get_metrics}
+\title{Metrics for evaluating dedupliaction and record linkage}
 \usage{
 get_metrics(TP, FP, FN, TN)
 }
+\arguments{
+\item{TP}{TP}
+
+\item{FP}{FP}
+
+\item{FN}{FN}
+
+\item{TN}{TN}
+}
+\value{
+Returns a list containing evaluation metrics.
+}
 \description{
-get_metrics
+Function calculates standard evaluation metrics.
 }

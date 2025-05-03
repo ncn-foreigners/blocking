@@ -336,9 +336,9 @@ blocking <- function(x,
     x_df[, pair := NULL]
     x_df <- x_df[x != y]
   } else {
-    x_df <- x_df[order(dist)]
-    x_df <- x_df[!duplicated(y), ]
-    x_df <- x_df[!duplicated(x), ]
+    # x_df <- x_df[order(dist)]
+    # x_df <- x_df[!duplicated(y), ]
+    # x_df <- x_df[!duplicated(x), ]
   }
 
   x_df[, x := as.integer(x)]

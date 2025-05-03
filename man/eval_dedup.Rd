@@ -2,10 +2,18 @@
 % Please edit documentation in R/eval.R
 \name{eval_dedup}
 \alias{eval_dedup}
-\title{eval_dedup}
+\title{Evaluation for deduplication}
 \usage{
 eval_dedup(pred_df, true_df)
 }
+\arguments{
+\item{pred_df}{Output from the blocking algorithm.}
+
+\item{true_df}{Ground-truth links (may be subset).}
+}
+\value{
+Returns a list containing TP, FP, FN and TN.
+}
 \description{
-eval_dedup
+Function calculates  TP, FP, FN and TN for deduplication.
 }

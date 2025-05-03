@@ -2,10 +2,22 @@
 % Please edit documentation in R/eval.R
 \name{get_confusion}
 \alias{get_confusion}
-\title{get_confusion}
+\title{Confusion matrix}
 \usage{
 get_confusion(TP, FP, FN, TN)
 }
+\arguments{
+\item{TP}{TP}
+
+\item{FP}{FP}
+
+\item{FN}{FN}
+
+\item{TN}{TN}
+}
+\value{
+Returns a confusion matrix.
+}
 \description{
-get_confusion
+Function creates a confusion matrix from raw counts.
 }

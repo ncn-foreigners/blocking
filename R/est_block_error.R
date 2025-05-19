@@ -1,7 +1,61 @@
-#' @title Estimate record linkage errors
+#' @importFrom stats dpois
+#' @importFrom stats runif
+#'
+#' @title Estimate errors due to blocking in record linkage
+#'
+#' @description
+#' Function computes estimators for false positive rate (FPR) and false negative rate (FNR) due to blocking in record linkage,
+#' as proposed by Dasylva and Goussanou (2021). Assumes duplicate-free data sources,
+#' complete coverage of the reference data set and blocking decisions based solely on record pairs.
+#'
+#' @param x Reference data (required if `n` is not provided).
+#' @param y Query data (required if `n` is not provided).
+#' @param blocking_result Data.frame or data.table containing blocking results (required if `n` is not provided).
+#' @param n Integer vector of numbers of accepted pairs formed by each record in the query data set
+#' with records in the reference data set, based on blocking criteria (if `NULL`, derived from `blocking_result`).
+#' @param N Total number of records in the reference data set (if `NULL`, derived as `length(x)`).
+#' @param G Number of classes in the finite mixture model.
+#' @param alpha Numeric vector of initial class proportions (length `G`; if `NULL`, initialized as `rep(1/G, G)`).
+#' @param p Numeric vector of initial matching probabilities in each class of the mixture model
+#' (length `G`; if `NULL`, randomly initialized from `runif(G, 0.5, 1)`).
+#' @param lambda Numeric vector of initial Poisson distribution parameters for non-matching records in each class of the mixture model
+#' (length `G`; if `NULL`, randomly initialized from `runif(G, 0.1, 2)`).
+#' @param tol Convergence tolerance for the EM algorithm (default `10^(-6)`).
+#' @param maxiter Maximum number of iterations for the EM algorithm (default `1000`).
+#' @param sample_size Bootstrap sample (from `n`) size used for calculations (if `NULL`, uses all data).
+#'
+#' @returns Returns a list containing:\cr
+#' \itemize{
+#' \item{`FPR` -- false positive rate,}
+#' \item{`FNR` -- false negative rate,}
+#' \item{`iter` -- number of the EM algorithm iterations performed,}
+#' \item{`convergent` -- logical, indicating whether the EM algorithm converged within `maxiter` iterations.}
+#' }
+#'
+#' @references
+#' Dasylva, A., Goussanou, A. (2021). Estimating the false negatives due to blocking in record linkage.
+#' Survey Methodology, Statistics Canada, Catalogue No. 12-001-X, Vol. 47, No. 2.
+#'
+#' Dasylva, A., Goussanou, A. (2022). On the consistent estimation of linkage errors without training data.
+#' Jpn J Stat Data Sci 5, 181–216. \url{https://doi.org/10.1007/s42081-022-00153-3}
+#'
+#' @examples
+#' ## an example proposed by Dasylva and Goussanou (2021)
+#'
+#' set.seed(111)
+#'
+#' neighbors <- rep(0:5, c(1659, 53951, 6875, 603, 62, 5))
+#'
+#' errors <- est_block_error(n = neighbors,
+#'                           N = 63155,
+#'                           G = 2,
+#'                           tol = 10^(-3),
+#'                           maxiter = 50)
+#'
+#' errors
 #'
 #' @export
-estimate_errors <- function(x = NULL,
+est_block_error <- function(x = NULL,
                             y = NULL,
                             blocking_result = NULL,
                             n = NULL,
@@ -10,8 +64,9 @@ estimate_errors <- function(x = NULL,
                             alpha = NULL,
                             p = NULL,
                             lambda = NULL,
-                            tol = 10^(-10),
-                            maxiter = 1000) {
+                            tol = 10^(-6),
+                            maxiter = 1000,
+                            sample_size = NULL) {
 
   if (is.null(n)) {
     stopifnot("`x` should be a vector" = is.vector(x))
@@ -24,6 +79,10 @@ estimate_errors <- function(x = NULL,
     ))
 
     N <- length(x)
+  }
+
+  if (is.numeric(sample_size)) {
+    n <- sample(n, size = sample_size, replace = TRUE)
   }
 
   convergent <- FALSE
@@ -167,7 +226,7 @@ estimate_errors <- function(x = NULL,
     lambda <- colSums(E_c_n_U) / (m * alpha)
 
     ## check
-    print(l)
+
     if (l >= 2) {
       log_lik_old <- log_lik_new
       log_lik_new <- sum(log(probs_n_c %*% as.matrix(alpha)))
@@ -186,10 +245,13 @@ estimate_errors <- function(x = NULL,
   FNR <- 1 - sum(alpha * p)
   FPR <- sum(alpha * lambda) / (N - 1)
 
-  return(list(
+  return(structure(
+    list(
     FPR = FPR,
     FNR = FNR,
+    iter = l,
     convergent = convergent
-  ))
+  ),
+  class = "est_block_error"))
 
 }

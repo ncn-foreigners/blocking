@@ -18,7 +18,7 @@
 #'
 #' @title Block records based on text data.
 #'
-#' @author Maciej Beręsewicz
+#' @author Maciej Beręsewicz, Adam Struzik
 #'
 #' @description
 #' Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe), applies approximate nearest neighbour (ANN) algorithms via the [rnndescent], RcppHNSW, [RcppAnnoy] and [mlpack] packages,

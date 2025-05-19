@@ -126,5 +126,5 @@ result_annoy
 
 }
 \author{
-Maciej Beręsewicz
+Maciej Beręsewicz, Adam Struzik
 }

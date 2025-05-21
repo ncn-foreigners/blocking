@@ -7,7 +7,11 @@ Authors@R:
              family = "Beręsewicz",
              role = c("aut", "cre"),
              email = "maciej.beresewicz@ue.poznan.pl",
-             comment = c(ORCID = "0000-0002-8281-4301")))
+             comment = c(ORCID = "0000-0002-8281-4301")),
+   person(given = "Adam",
+             family = "Struzik",
+             role = c("aut", "ctr"),
+             email = "adastr5@st.amu.edu.pl"))
 Description: An R package that uses various approximate nearest neighbours algorithms and graphs to block records for data deduplication / record linkage / entity resolution.
 License: GPL-3
 Encoding: UTF-8

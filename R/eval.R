@@ -11,7 +11,7 @@
 #' @returns
 #' Returns a list containing TP, FP, FN and TN.
 #'
-eval_rl <- function(pred_df, true_df) {
+eval_reclin <- function(pred_df, true_df) {
 
   pred_x_map <- unique(pred_df[, .(x, block)])
   pred_y_map <- unique(pred_df[, .(y, block)])

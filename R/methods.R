@@ -39,7 +39,7 @@ print.est_block_error <- function(x, ...) {
 
   cat("========================================================\n")
 
-  if (x$convergent) {
+  if (x$convergence) {
     cat("EM algorithm converged successfully within", x$iter, "iterations.")
   } else {
     cat("EM algorithm did not converge within", x$iter, "iterations.")

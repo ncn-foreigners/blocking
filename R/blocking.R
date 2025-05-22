@@ -363,7 +363,7 @@ blocking <- function(x,
 
     if (!deduplication) {
 
-      eval <- eval_rl(x_df, true_blocks)
+      eval <- eval_reclin(x_df, true_blocks)
       eval_metrics <- unlist(get_metrics(TP = eval$TP,
                                   FP = eval$FP,
                                   FN = eval$FN,
@@ -455,3 +455,7 @@ blocking <- function(x,
    class = "blocking"
   )
 }
+
+utils::globalVariables(c("pair", "block", "both", ".", "row_id", "x2",
+                         "block_id", "true_id", "value", "i.block", "..on",
+                         ".x", ".y", "x", "y", "rec"))

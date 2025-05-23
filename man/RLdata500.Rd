@@ -3,9 +3,9 @@
 \docType{data}
 \name{RLdata500}
 \alias{RLdata500}
-\title{\code{RLdata500} data from \link[RecordLinkage:RLdata]{RecordLinkage::RLdata}}
+\title{\code{RLdata500} data from \pkg{RecordLinkage} package}
 \format{
-A character matrix with 500 records. Each row represents one record, with the following columns:
+A \code{data.table} with 500 records. Each row represents one record, with the following columns:
 
 \itemize{
 \item{\code{fname_cq} -- first name, first component,}
@@ -23,6 +23,9 @@ A character matrix with 500 records. Each row represents one record, with the fo
 RLdata500
 }
 \description{
+This data is taken from \pkg{RecordLinkage} R package developed by Murat Sariyar and Andreas Borg.
+The package is licensed under GPL-3 license.
+
 The \code{RLdata500} table contains artificial personal data.
 Some records have been duplicated with randomly generated errors. \code{RLdata500} contains fifty duplicates.
 }
@@ -31,5 +34,9 @@ Some records have been duplicated with randomly generated errors. \code{RLdata50
 data("RLdata500")
 head(RLdata500)
 
+}
+\references{
+Sariyar M., Borg A. (2022). RecordLinkage: Record Linkage Functions for Linking and Deduplicating Data Sets.
+R package version 0.4-12.4, \url{https://CRAN.R-project.org/package=RecordLinkage}
 }
 \keyword{datasets}

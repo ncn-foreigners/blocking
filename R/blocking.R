@@ -456,5 +456,3 @@ blocking <- function(x,
   )
 }
 
-# utils::globalVariables(c(".", "i.block",
-#                          ".x", ".y", "x", "y", "rec"))

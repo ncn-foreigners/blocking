@@ -80,46 +80,31 @@ and \eqn{n_{i|U}} is the number of unmatched neighbours, and let \eqn{c_{ig}} de
 the indicator that record \eqn{i} is from class \eqn{g}.
 For the E-step of the EM procedure, the equations are as follows
 \deqn{
-P(n_i | c_{ig} = 1) = I(n_i = 0)(1-p_g)e^{-\lambda_g}+I(n_i > 0)\Bigl(p_g+(1-p_g)\frac{\lambda_g}{n_i}\Bigr)\frac{e^{-\lambda_g}\lambda_g^{n_i-1}}{(n_i-1)!},
-}
-\deqn{
-P(c_{ig} = 1 | n_i) = \frac{\alpha_gP(n_i | c_{ig} = 1)}{\sum_{g'=1}^G\alpha_{g'}P(n_i | c_{ig'} = 1)},
-}
-\deqn{
-P(n_{i|M} = 1 | n_i,c_{ig} = 1) = \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g},
-}
-\deqn{
-P(n_{i|U} = n_i | n_i,c_{ig} = 1) = I(n_i = 0) + I(n_i > 0)\frac{(1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g},
-}
-\deqn{
-P(n_{i|U} = n_i-1 | n_i,c_{ig} = 1) = \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g},
-}
-\deqn{
-E[c_{ig}n_{i|M} | n_i] = P(c_{ig} = 1 | n_i)P(n_{i|M} = 1 | n_i,c_{ig} = 1),
-}
-\deqn{
-E[n_{i|U} | n_i,c_{ig} = 1] = \Bigl(\frac{p_g(n_i-1) + (1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g}\Bigr)n_i,
-}
-\deqn{
-E[c_{ig}n_{i|U} | n_i] = P(c_{ig} = 1 | n_i)E[n_{i|U} | n_i,c_{ig} = 1].
+\begin{aligned}
+P(n_i | c_{ig} = 1) &= I(n_i = 0)(1-p_g)e^{-\lambda_g}+I(n_i > 0)\Bigl(p_g+(1-p_g)\frac{\lambda_g}{n_i}\Bigr)\frac{e^{-\lambda_g}\lambda_g^{n_i-1}}{(n_i-1)!}, \\
+P(c_{ig} = 1 | n_i) &= \frac{\alpha_gP(n_i | c_{ig} = 1)}{\sum_{g'=1}^G\alpha_{g'}P(n_i | c_{ig'} = 1)}, \\
+P(n_{i|M} = 1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\s
+P(n_{i|U} = n_i | n_i,c_{ig} = 1) &= I(n_i = 0) + I(n_i > 0)\frac{(1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g}, \\
+P(n_{i|U} = n_i-1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\
+E[c_{ig}n_{i|M} | n_i] &= P(c_{ig} = 1 | n_i)P(n_{i|M} = 1 | n_i,c_{ig} = 1), \\
+E[n_{i|U} | n_i,c_{ig} = 1] &= \Bigl(\frac{p_g(n_i-1) + (1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g}\Bigr)n_i, \\
+E[c_{ig}n_{i|U} | n_i] &= P(c_{ig} = 1 | n_i)E[n_{i|U} | n_i,c_{ig} = 1].
+\end{aligned}
 }
 The M-step is given by following equations
 \deqn{
-\hat{p}_g = \frac{\sum_{i=1}^mE[c_{ig}n_{i|M} | n_i;\psi]}{\sum_{i=1}^mE[c_{ig} | n_i; \psi]},
+\begin{aligned}
+\hat{p}_g &= \frac{\sum_{i=1}^mE[c_{ig}n_{i|M} | n_i;\psi]}{\sum_{i=1}^mE[c_{ig} | n_i; \psi]}, \\
+\hat{\lambda}_g &= \frac{\sum_{i=1}^mE[c_{ig}n_{i|U} | n_i; \psi]}{\sum_{i=1}^mE[c_{ig} | n_i; \psi]}, \\
+\hat{\alpha}_g &= \frac{1}{m}\sum_{i=1}^mE[c_{ig} | n_i; \psi].
+\end{aligned}
 }
-\deqn{
-\hat{\lambda}_g = \frac{\sum_{i=1}^mE[c_{ig}n_{i|U} | n_i; \psi]}{\sum_{i=1}^mE[c_{ig} | n_i; \psi]},
-}
-\deqn{
-\hat{\alpha}_g = \frac{1}{m}\sum_{i=1}^mE[c_{ig} | n_i; \psi].
-}
-
 As \eqn{N \to \infty}, the error rates and the model parameters are related as follows
 \deqn{
-\text{FNR} \xrightarrow{p} 1 - E[p(v_i)],
-}
-\deqn{
-(N-1)\text{FPR} \xrightarrow{p} E[\lambda(v_i)],
+\begin{aligned}
+\text{FNR} &\xrightarrow{p} 1 - E[p(v_i)], \\
+(N-1)\text{FPR} &\xrightarrow{p} E[\lambda(v_i)],
+\end{aligned}
 }
 where \eqn{E[p(v_i)] = \sum_{g=1}^G\alpha_gp_g} and \eqn{E[\lambda(v_i)] = \sum_{g=1}^G\alpha_g\lambda_g}.
 }

@@ -13,11 +13,11 @@
 #'
 eval_reclin <- function(pred_df, true_df) {
 
-  pred_x_map <- unique(pred_df[, .(x, block)])
-  pred_y_map <- unique(pred_df[, .(y, block)])
+  pred_x_map <- unique(pred_df[, c("x", "block"), with = FALSE])
+  pred_y_map <- unique(pred_df[, c("y", "block"), with = FALSE])
 
-  true_x <- unique(true_df[, .(x, block)])
-  true_y <- unique(true_df[, .(y, block)])
+  true_x <- unique(true_df[, c("x", "block"), with = FALSE])
+  true_y <- unique(true_df[, c("y", "block"), with = FALSE])
 
   pred_x <- true_x
   pred_x$block <- pred_x_map$block[match(true_x$x, pred_x_map$x)]
@@ -83,12 +83,14 @@ eval_dedup <- function(pred_df, true_df) {
   pred_lbl <- melt(pred_df,
                    id.vars = "block",
                    measure.vars = c("x", "y"),
-                   value.name = "rec")[, .(rec, block)][!duplicated(rec)]
+                   value.name = "rec")[, c("rec", "block"), with = FALSE]
+  pred_lbl <- pred_lbl[!duplicated(pred_lbl[["rec"]])]
 
-  true_lbl <- true_df[, .(rec = x, block)]
+  true_lbl <- true_df[, c("x", "block"), with = FALSE]
+  setnames(true_lbl, "x", "rec")
 
-  setkey(pred_lbl, rec)
-  setkey(true_lbl, rec)
+  setkey(pred_lbl, "rec")
+  setkey(true_lbl, "rec")
 
   pred_lbl <- true_lbl[pred_lbl]
   pred_lbl <- pred_lbl[!is.na(pred_lbl$block)]
@@ -99,12 +101,12 @@ eval_dedup <- function(pred_df, true_df) {
                                                  length.out = length(sum(is.na(pred_lbl$i.block))))
   }
 
-  grouped <- pred_lbl[, .N, by = .(block, i.block)]
+  grouped <- pred_lbl[, list(N = .N), by = c("block", "i.block")]
 
   TP <- sum(grouped$N * (grouped$N - 1) / 2)
 
-  row_sum <- grouped[, .(row_sum = sum(N)), by = i.block]
-  col_sum <- grouped[, .(col_sum = sum(N)), by = block]
+  row_sum <- grouped[, list(row_sum = sum(N)), by = "i.block"]
+  col_sum <- grouped[, list(col_sum = sum(N)), by = "block"]
 
   pred_pairs <- sum(row_sum$row_sum * (row_sum$row_sum - 1) / 2)
   true_pairs <- sum(col_sum$col_sum * (col_sum$col_sum - 1) / 2)

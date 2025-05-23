@@ -1,5 +1,6 @@
 #' Imports
 #'
+#' @importFrom stats setNames
 #' @import data.table
 #'
 #' @title Integration with the reclin2 package
@@ -68,19 +69,19 @@ pair_ann <- function(x,
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
 
-  block_result  <- blocking::blocking(x = x[, ..on][[1]],
-                                      y = if (deduplication) NULL else y[, ..on][[1]],
+  block_result  <- blocking::blocking(x = x[[on]],
+                                      y = if (deduplication) NULL else y[[on]],
                                       deduplication = deduplication,
                                       ...)
 
-  a <- x[, ..on]
+  a <- x[, c(on), with = FALSE]
   a[, `:=`(".x", .I)]
-  a <- a[unique(block_result$result[,.(".x"=x, block)]), on = ".x"]
+  a <- a[unique(block_result$result[, c("x", "block"), with = FALSE]), on = setNames("x", ".x")]
   a[, `:=`((on), NULL)]
 
-  b <- y[, `..on`]
+  b <- y[, c(on), with = FALSE]
   b[, `:=`(".y", .I)]
-  b <- b[unique(block_result$result[,.(".y"=y, block)]), on = ".y"]
+  b <- b[unique(block_result$result[, c("y", "block"), with = FALSE]), on = setNames("y", ".y")]
   b[, `:=`((on), NULL)]
 
   pairs <- merge(a, b,
@@ -89,7 +90,7 @@ pair_ann <- function(x,
                  all.y = FALSE,
                  allow.cartesian = TRUE)
 
-  if (deduplication)  pairs <- pairs[.y > .x]
+  if (deduplication) pairs <- pairs[pairs[[".y"]] > pairs[[".x"]]]
 
   data.table::setkey(pairs, NULL)
   data.table::setattr(pairs, "class", c("pairs", class(pairs)))

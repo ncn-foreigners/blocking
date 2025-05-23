@@ -83,7 +83,7 @@ For the E-step of the EM procedure, the equations are as follows
 \begin{aligned}
 P(n_i | c_{ig} = 1) &= I(n_i = 0)(1-p_g)e^{-\lambda_g}+I(n_i > 0)\Bigl(p_g+(1-p_g)\frac{\lambda_g}{n_i}\Bigr)\frac{e^{-\lambda_g}\lambda_g^{n_i-1}}{(n_i-1)!}, \\
 P(c_{ig} = 1 | n_i) &= \frac{\alpha_gP(n_i | c_{ig} = 1)}{\sum_{g'=1}^G\alpha_{g'}P(n_i | c_{ig'} = 1)}, \\
-P(n_{i|M} = 1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\s
+P(n_{i|M} = 1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\
 P(n_{i|U} = n_i | n_i,c_{ig} = 1) &= I(n_i = 0) + I(n_i > 0)\frac{(1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g}, \\
 P(n_{i|U} = n_i-1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\
 E[c_{ig}n_{i|M} | n_i] &= P(c_{ig} = 1 | n_i)P(n_{i|M} = 1 | n_i,c_{ig} = 1), \\

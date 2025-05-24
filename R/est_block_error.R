@@ -8,9 +8,9 @@
 #' as proposed by Dasylva and Goussanou (2021). Assumes duplicate-free data sources,
 #' complete coverage of the reference data set and blocking decisions based solely on record pairs.
 #'
-#' @param x Reference data (required if `n` is not provided).
+#' @param x Reference data (required if `n` and `N` are not provided).
 #' @param y Query data (required if `n` is not provided).
-#' @param blocking_result Data.frame or data.table containing blocking results (required if `n` is not provided).
+#' @param blocking_result `data.frame` or `data.table` containing blocking results (required if `n` is not provided).
 #' @param n Integer vector of numbers of accepted pairs formed by each record in the query data set
 #' with records in the reference data set, based on blocking criteria (if `NULL`, derived from `blocking_result`).
 #' @param N Total number of records in the reference data set (if `NULL`, derived as `length(x)`).
@@ -24,12 +24,61 @@
 #' @param maxiter Maximum number of iterations for the EM algorithm (default `1000`).
 #' @param sample_size Bootstrap sample (from `n`) size used for calculations (if `NULL`, uses all data).
 #'
+#' @details
+#' Consider a large finite population that comprises of \eqn{N} individuals, and two duplicate-free data sources: a register and a file.
+#' Assume that the register has no undercoverage,
+#' i.e. each record from the file corresponds to exactly one record from the same individual in the register.
+#' Let \eqn{n_i} denote the number of register records which form an accepted (by the blocking criteria) pair with
+#' record \eqn{i} on the file. Assume that:\cr
+#' \itemize{
+#' \item two matched records are neighbours with a probability that is bounded away from \eqn{0} regardless of \eqn{N},
+#' \item two unmatched records are accidental neighbours with a probability of \eqn{O(\frac{1}{N})}.
+#' }
+#' The finite mixture model \eqn{n_i \sim \sum_{g=1}^G \alpha_g(\text{Bernoulli}(p_g) \ast \text{Poisson}(\lambda_g))} is assumed.
+#' When \eqn{G} is fixed, the unknown model parameters are given by the vector \eqn{\psi = [(\alpha_g, p_g, \lambda_g)]_{1 \leq g \leq G}}
+#' that may be estimated with the Expectation-Maximization (EM) procedure.
+#'
+#' Let \eqn{n_i = n_{i|M} + n_{i|U}}, where \eqn{n_{i|M}} is the number of matched neighbours
+#' and \eqn{n_{i|U}} is the number of unmatched neighbours, and let \eqn{c_{ig}} denote
+#' the indicator that record \eqn{i} is from class \eqn{g}.
+#' For the E-step of the EM procedure, the equations are as follows
+#' \deqn{
+#' \begin{aligned}
+#' P(n_i | c_{ig} = 1) &= I(n_i = 0)(1-p_g)e^{-\lambda_g}+I(n_i > 0)\Bigl(p_g+(1-p_g)\frac{\lambda_g}{n_i}\Bigr)\frac{e^{-\lambda_g}\lambda_g^{n_i-1}}{(n_i-1)!}, \\
+#' P(c_{ig} = 1 | n_i) &= \frac{\alpha_gP(n_i | c_{ig} = 1)}{\sum_{g'=1}^G\alpha_{g'}P(n_i | c_{ig'} = 1)}, \\
+#' P(n_{i|M} = 1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\
+#' P(n_{i|U} = n_i | n_i,c_{ig} = 1) &= I(n_i = 0) + I(n_i > 0)\frac{(1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g}, \\
+#' P(n_{i|U} = n_i-1 | n_i,c_{ig} = 1) &= \frac{p_gn_i}{p_gn_i + (1-p_g)\lambda_g}, \\
+#' E[c_{ig}n_{i|M} | n_i] &= P(c_{ig} = 1 | n_i)P(n_{i|M} = 1 | n_i,c_{ig} = 1), \\
+#' E[n_{i|U} | n_i,c_{ig} = 1] &= \Bigl(\frac{p_g(n_i-1) + (1-p_g)\lambda_g}{p_gn_i + (1-p_g)\lambda_g}\Bigr)n_i, \\
+#' E[c_{ig}n_{i|U} | n_i] &= P(c_{ig} = 1 | n_i)E[n_{i|U} | n_i,c_{ig} = 1].
+#' \end{aligned}
+#' }
+#' The M-step is given by following equations
+#' \deqn{
+#' \begin{aligned}
+#' \hat{p}_g &= \frac{\sum_{i=1}^mE[c_{ig}n_{i|M} | n_i;\psi]}{\sum_{i=1}^mE[c_{ig} | n_i; \psi]}, \\
+#' \hat{\lambda}_g &= \frac{\sum_{i=1}^mE[c_{ig}n_{i|U} | n_i; \psi]}{\sum_{i=1}^mE[c_{ig} | n_i; \psi]}, \\
+#' \hat{\alpha}_g &= \frac{1}{m}\sum_{i=1}^mE[c_{ig} | n_i; \psi].
+#' \end{aligned}
+#' }
+#' As \eqn{N \to \infty}, the error rates and the model parameters are related as follows
+#' \deqn{
+#' \begin{aligned}
+#' \text{FNR} &\xrightarrow{p} 1 - E[p(v_i)], \\
+#' (N-1)\text{FPR} &\xrightarrow{p} E[\lambda(v_i)],
+#' \end{aligned}
+#' }
+#' where \eqn{E[p(v_i)] = \sum_{g=1}^G\alpha_gp_g} and \eqn{E[\lambda(v_i)] = \sum_{g=1}^G\alpha_g\lambda_g}.
+#'
+#'
+#'
 #' @returns Returns a list containing:\cr
 #' \itemize{
-#' \item{`FPR` -- false positive rate,}
-#' \item{`FNR` -- false negative rate,}
+#' \item{`FPR` -- estimated false positive rate,}
+#' \item{`FNR` -- estimated false negative rate,}
 #' \item{`iter` -- number of the EM algorithm iterations performed,}
-#' \item{`convergent` -- logical, indicating whether the EM algorithm converged within `maxiter` iterations.}
+#' \item{`convergence` -- logical, indicating whether the EM algorithm converged within `maxiter` iterations.}
 #' }
 #'
 #' @references
@@ -85,7 +134,7 @@ est_block_error <- function(x = NULL,
     n <- sample(n, size = sample_size, replace = TRUE)
   }
 
-  convergent <- FALSE
+  convergence <- FALSE
   m <- length(n)
 
   if (is.null(alpha)) {
@@ -236,7 +285,7 @@ est_block_error <- function(x = NULL,
     }
 
     if (abs(log_lik_new - log_lik_old) <= tol) {
-      convergent <- TRUE
+      convergence <- TRUE
       break
     }
 
@@ -250,7 +299,7 @@ est_block_error <- function(x = NULL,
     FPR = FPR,
     FNR = FNR,
     iter = l,
-    convergent = convergent
+    convergence = convergence
   ),
   class = "est_block_error"))
 

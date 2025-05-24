@@ -36,18 +36,16 @@ library(reclin2)
 In the example we will use the same dataset as in the *Blocking records for record linkage* vignette.
 
 ```{r}
-census <- read.csv("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv")
-cis <- read.csv("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv")
-setDT(census)
-setDT(cis)
-census[is.na(dob_day), dob_day := ""]
-census[is.na(dob_mon), dob_mon := ""]
-census[is.na(dob_year), dob_year := ""]
-cis[is.na(dob_day), dob_day := ""]
-cis[is.na(dob_mon), dob_mon := ""]
-cis[is.na(dob_year), dob_year := ""]
-census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
-cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
+data(census)
+data(cis)
+census[is.na(DOB_DAY), DOB_DAY := ""]
+census[is.na(DOB_MON), DOB_MON := ""]
+census[is.na(DOB_YEAR), DOB_YEAR := ""]
+cis[is.na(DOB_DAY), DOB_DAY := ""]
+cis[is.na(DOB_MON), DOB_MON := ""]
+cis[is.na(DOB_YEAR), DOB_YEAR := ""]
+census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY, DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY, DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
 census[, x:=1:.N]
 cis[, y:=1:.N]
 ```

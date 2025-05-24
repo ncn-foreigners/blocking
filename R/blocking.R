@@ -330,10 +330,10 @@ blocking <- function(x,
   if (deduplication) {
     setDT(x_df)
     setorder(x_df, x)
-    x_df[, pair := sapply(seq_len(.N), function(i) paste(sort(c(x[i], y[i])), collapse = "_"))]
-    x_df <- x_df[, .SD[dist == min(dist)], by = pair]
-    x_df <- x_df[, .SD[1], by = pair]
-    x_df[, pair := NULL]
+    x_df[, "pair" := sapply(seq_len(.N), function(i) paste(sort(c(x[i], y[i])), collapse = "_"))]
+    x_df <- x_df[, .SD[dist == min(dist)], by = "pair"]
+    x_df <- x_df[, .SD[1], by = "pair"]
+    x_df[, "pair" := NULL]
     x_df <- x_df[x != y]
   } else {
     # x_df <- x_df[order(dist)]
@@ -354,7 +354,7 @@ blocking <- function(x,
   x_gr <- igraph::graph_from_data_frame(x_df[, c("query_g", "index_g")], directed = F)
   x_block <- igraph::components(x_gr, "weak")$membership
 
-  x_df[, `:=`(block, x_block[names(x_block) %in% x_df$query_g])]
+  x_df[, `:=`("block", x_block[names(x_block) %in% x_df$query_g])]
 
   ## if true are given
   if (!is.null(true_blocks)) {
@@ -363,7 +363,7 @@ blocking <- function(x,
 
     if (!deduplication) {
 
-      eval <- eval_rl(x_df, true_blocks)
+      eval <- eval_reclin(x_df, true_blocks)
       eval_metrics <- unlist(get_metrics(TP = eval$TP,
                                   FP = eval$FP,
                                   FN = eval$FN,
@@ -455,3 +455,4 @@ blocking <- function(x,
    class = "blocking"
   )
 }
+

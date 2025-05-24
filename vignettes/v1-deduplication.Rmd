@@ -33,14 +33,14 @@ library(reclin2)
 library(data.table)
 ```
 
-Read the `RLdata500` data from the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package from the [dblink](https://github.com/cleanzr/dblink) Github repository.
+Read the `RLdata500` data (taken from the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package).
 
 ```{r}
-df <- read.csv("https://raw.githubusercontent.com/cleanzr/dblink/dc3dd0daf55f8a303863423817a0f0042b3c275a/examples/RLdata500.csv")
-setDT(df)
+data("RLdata500")
+df <- RLdata500
 head(df)
 ```
-This dataset contains `r nrow(df)` with `r NROW(unique(df$ent_id))` entities.
+This dataset contains `r nrow(df)` rows with `r NROW(unique(df$ent_id))` entities.
 
 # Blocking for deduplication
 

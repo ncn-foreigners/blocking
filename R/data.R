@@ -78,3 +78,41 @@
 #' head(census)
 #'
 "census"
+
+#' `CIS` data
+#'
+#' @description
+#' This data set was created by Paula McLeod, Dick Heasman and Ian Forbes, ONS,
+#' for the ESSnet DI on-the-job training course, Southampton, 25-28 January 2011.
+#' It contains fictional observations from Customer Information System,
+#' which is combined administrative data from the tax and benefit systems.
+#'
+#' @format A `data.table` with 24613 records. Each row represents one record, with the following columns:
+#' \itemize{
+#' \item{`PERSON_ID` -- a unique number for each person, consisting of postcode, house number and person number,}
+#' \item{`PERNAME1` -- forename,}
+#' \item{`PERNAME2` -- surname,}
+#' \item{`SEX` -- gender (M/F),}
+#' \item{`DOB_DAY` -- day of birth,}
+#' \item{`DOB_MON` -- month of birth,}
+#' \item{`DOB_YEAR` -- year of birth,}
+#' \item{`ENUMCAP` -- an address consisting of house number and street name,}
+#' \item{`ENUMPC` -- postcode,}
+#' \item{`CIS_ID` -- person ID with "CIS" added in front.}
+#' }
+#'
+#' @references
+#' McLeod, P., Heasman, D., Forbes, I. (2011). Simulated data for the ESSnet DI on-the-job training course,
+#' Southampton, 25-28 January 2011.
+#' \url{https://wayback.archive-it.org/12090/20231221144450/https://cros-legacy.ec.europa.eu/content/job-training_en}
+#'
+#' @docType data
+#' @keywords datasets
+#' @name CIS
+#' @rdname CIS
+#' @examples
+#'
+#' data("CIS")
+#' head(CIS)
+#'
+"CIS"

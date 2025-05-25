@@ -50,6 +50,7 @@
 #' \item{\code{deduplication} -- information whether deduplication was applied,}
 #' \item{\code{representation} -- information whether shingles or vectors were used,}
 #' \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
+#' \item{\code{confusion} -- confusion matrix, if \code{true_blocks} is provided,}
 #' \item{\code{colnames} -- variable names (colnames) used for search,}
 #' \item{\code{graph} -- \code{igraph} class object.}
 #' }

@@ -29,7 +29,6 @@ Read required packages.
 
 ```{r setup}
 library(blocking)
-library(reclin2)
 library(data.table)
 ```
 

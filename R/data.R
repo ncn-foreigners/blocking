@@ -116,3 +116,32 @@
 #' head(cis)
 #'
 "cis"
+
+#' Population of foreigners in Poland 2024
+#'
+#' @description
+#' A fictional data set of the foreign population in Poland,
+#' generated based on publicly available information
+#' while maintaining the distributions from administrative registers.
+#'
+#' @format A `data.table` with 110000 records. Each row represents one record, with the following columns:
+#' \itemize{
+#' \item{`fname` -- first name,}
+#' \item{`sname` -- second name,}
+#' \item{`surname` -- surname,}
+#' \item{`date` -- date of birth,}
+#' \item{`region` -- region (county),}
+#' \item{`country` -- country,}
+#' \item{`true_id` -- person ID.}
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name foreigners
+#' @rdname foreigners
+#' @examples
+#'
+#' data("foreigners")
+#' head(foreigners)
+#'
+"foreigners"

@@ -1,4 +1,6 @@
 #' @importFrom Matrix sparseMatrix
+#' @importFrom Matrix rowSums
+#' @importFrom Matrix colSums
 #'
 #' @title Evaluation for record linkage
 #'
@@ -47,12 +49,12 @@ eval_reclin <- function(pred_df, true_df) {
 
   TP <- sum(cx * cy)
 
-  row_sum_x <- rowSums(as.matrix(cx))
-  row_sum_y <- rowSums(as.matrix(cy))
+  row_sum_x <- Matrix::rowSums(cx)
+  row_sum_y <- Matrix::rowSums(cy)
   true_pairs <- sum(row_sum_x * row_sum_y)
 
-  col_sum_x <- colSums(as.matrix(cx))
-  col_sum_y <- colSums(as.matrix(cy))
+  col_sum_x <- Matrix::colSums(cx)
+  col_sum_y <- Matrix::colSums(cy)
   pred_pairs <- sum(col_sum_x * col_sum_y)
 
   FP <- pred_pairs - TP

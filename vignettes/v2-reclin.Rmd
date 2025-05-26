@@ -77,8 +77,6 @@ head(cis)
 We need to create new columns that concatenate variables from `PERNAME1` to `ENUMPC`. In the first step we replace `NA`s with `''`. 
 
 ```{r}
-census[, ":="(DOB_DAY=as.character(DOB_DAY), DOB_MON=as.character(DOB_MON), DOB_YEAR=as.character(DOB_YEAR))]
-cis[, ":="(DOB_DAY=as.character(DOB_DAY), DOB_MON=as.character(DOB_MON), DOB_YEAR=as.character(DOB_YEAR))]
 census[is.na(DOB_DAY), DOB_DAY := ""]
 census[is.na(DOB_MON), DOB_MON := ""]
 census[is.na(DOB_YEAR), DOB_YEAR := ""]
@@ -122,7 +120,7 @@ cbind(t(census[1, 1:9]), t(cis[8152, 1:9]))
 
 ## Assessing the quality
 
-For some records, we have information about the correct linkage. We can use this information to evaluate our approach, but note that the information for evaluating quality is described in detail in the other vignette. 
+For some records, we have information about the correct linkage. We can use this information to evaluate our approach.
 
 ```{r}
 matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],

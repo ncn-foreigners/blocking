@@ -101,6 +101,33 @@
 #' result_annoy
 #' }
 #'
+#' ## an example with the NN descent algorithm and true blocks
+#'
+#' data(census)
+#' data(cis)
+#'
+#' census[is.na(DOB_DAY), DOB_DAY := ""]
+#' census[is.na(DOB_MON), DOB_MON := ""]
+#' census[is.na(DOB_YEAR), DOB_YEAR := ""]
+#' cis[is.na(DOB_DAY), DOB_DAY := ""]
+#' cis[is.na(DOB_MON), DOB_MON := ""]
+#' cis[is.na(DOB_YEAR), DOB_YEAR := ""]
+#' census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
+#'        DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+#' cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
+#'     DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+#'
+#' matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
+#'                  y = cis[, .(y = 1:.N, PERSON_ID)],
+#'                  by = "PERSON_ID")
+#' matches[, block:=1:.N]
+#'
+#' set.seed(2024)
+#' result_true_blocks <- blocking(x = census$txt, y = cis$txt, verbose = 1,
+#'                                true_blocks = matches[, .(x, y, block)])
+#'
+#' result_true_blocks
+#'
 #' @export
 blocking <- function(x,
                      y = NULL,

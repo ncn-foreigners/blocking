@@ -35,7 +35,7 @@ library(data.table)
 Read the `RLdata500` data (taken from the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package).
 
 ```{r}
-data("RLdata500")
+data(RLdata500)
 head(RLdata500)
 ```
 This dataset contains `r nrow(RLdata500)` rows with `r NROW(unique(RLdata500$ent_id))` entities.
@@ -63,7 +63,7 @@ df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE)
 
 Results are as follows:
 
-+ based in `rnndescent` we have created `r NROW(unique(df_blocks$result$block))` blocks,
++ based on `rnndescent` we have created `r NROW(unique(df_blocks$result$block))` blocks,
 + it was based on `r NROW(unique(df_blocks$colnames))` columns (2 character shingles),
 + we have 45 blocks of 2 elements, 33 blocks of 3 elements, ..., 1 block of 17 elements.
 
@@ -73,7 +73,7 @@ df_blocks
 
 Structure of the object is as follows:
 
-+ `result` -- a data.table with identifiers and block IDs,
++ `result` -- a `data.table` with identifiers and block IDs,
 + `method` -- the method used,
 + `deduplication` -- whether deduplication was applied,
 + `representation` -- whether shingles or vectors were used,
@@ -91,7 +91,7 @@ Plot connections.
 plot(df_blocks$graph, vertex.size=1, vertex.label = NA)
 ```
 
-The resulting data.table has three columns:
+The resulting `data.table` has four columns:
 
 + `x` -- reference dataset (i.e. `RLdata500`) -- this may not contain all units of `RLdata500`,
 + `y` - query (each row of `RLdata500`) -- this may not contain all units of `RLdata500`,

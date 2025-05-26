@@ -52,7 +52,7 @@ cis[, y:=1:.N]
 
 # Integration with the `reclin2` package
 
-The package contains function `pair_ann` which aims at integration with `reclin2` package. This function works as follows
+The package contains function `pair_ann` which aims at integration with `reclin2` package. This function works as follows.
 
 ```{r}
 pair_ann(x = census[1:1000], 

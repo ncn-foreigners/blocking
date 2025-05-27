@@ -25,18 +25,17 @@ knitr::opts_chunk$set(
 
 # Setup
 
-Read required packages
+Read required packages.
 
 ```{r setup}
 library(blocking)
-library(reclin2)
 library(data.table)
 ```
 
 Read the `RLdata500` data (taken from the [RecordLinkage](https://CRAN.R-project.org/package=RecordLinkage) package).
 
 ```{r}
-data("RLdata500")
+data(RLdata500)
 head(RLdata500)
 ```
 This dataset contains `r nrow(RLdata500)` rows with `r NROW(unique(RLdata500$ent_id))` entities.
@@ -64,9 +63,9 @@ df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE)
 
 Results are as follows:
 
-+ based in `rnndescent` we have created `r NROW(unique(df_blocks$result$block))` blocks,
++ based on `rnndescent` we have created `r NROW(unique(df_blocks$result$block))` blocks,
 + it was based on `r NROW(unique(df_blocks$colnames))` columns (2 character shingles),
-+ we have 93 blocks of 2 elements, 38 blocks of 3 elements, ..., 3 block of 6 elements.
++ we have 45 blocks of 2 elements, 33 blocks of 3 elements, ..., 1 block of 17 elements.
 
 ```{r}
 df_blocks
@@ -74,26 +73,28 @@ df_blocks
 
 Structure of the object is as follows:
 
-+ `result` - a data.table with identifiers and block IDs,
-+ `method` - the method used,
++ `result` -- a `data.table` with identifiers and block IDs,
++ `method` -- the method used,
 + `deduplication` -- whether deduplication was applied,
-+ `metrics` - standard metrics and based on the `igraph::compare` methods for comparing graphs (here NULL),
-+ `colnames` - column names used for the comparison,
++ `representation` -- whether shingles or vectors were used,
++ `metrics` -- standard metrics and based on the `igraph::compare` methods for comparing graphs (here NULL),
++ `confusion` -- confusion matrix (here NULL),
++ `colnames` -- column names used for the comparison,
 + `graph` -- an `igraph` object mainly for visualisation.
 
 ```{r}
 str(df_blocks,1)
 ```
-Plot connections
+Plot connections.
 
 ```{r}
 plot(df_blocks$graph, vertex.size=1, vertex.label = NA)
 ```
 
-The resulting data.table has three columns:
+The resulting `data.table` has four columns:
 
-+ `x` -- reference dataset (i.e. `df`) -- this may not contain all units of `df`,
-+ `y` - query (each row of `df`) -- this may not contain all units of `df`,
++ `x` -- reference dataset (i.e. `RLdata500`) -- this may not contain all units of `RLdata500`,
++ `y` - query (each row of `RLdata500`) -- this may not contain all units of `RLdata500`,
 + `block` -- the block ID,
 + `dist` -- distance between objects.
 
@@ -122,7 +123,7 @@ We can check in how many blocks the same entities (`ent_id`) are observed. In ou
 RLdata500[, .(uniq_blocks = uniqueN(block_id)), .(ent_id)][, .N, uniq_blocks]
 ```
 
-We can visualise the distances between units stored in the `df_blocks$result` data set. Clearly we a mixture of two groups: matches (close to 0) and non-matches (close to 1). 
+We can visualise the distances between units stored in the `df_blocks$result` data set. Clearly we have a mixture of two groups: matches (close to 0) and non-matches (close to 1). 
 
 ```{r}
 hist(df_blocks$result$dist, xlab = "Distances", ylab = "Frequency", breaks = "fd",

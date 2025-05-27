@@ -31,9 +31,7 @@ Read required packages
 
 ```{r setup}
 library(blocking)
-library(reclin2)
 library(data.table)
-library(rnndescent)
 ```
 
 # Data
@@ -62,8 +60,8 @@ data(census)
 data(cis)
 ```
 
-+ `census` object has `r nrow(census)` rows and `r ncol(census)`,
-+ `cis` object has `r nrow(census)` rows and `r ncol(census)`.
++ `census` object has `r nrow(census)` rows and `r ncol(census)` columns,
++ `cis` object has `r nrow(census)` rows and `r ncol(census)` columns.
 
 Census data
 
@@ -76,11 +74,9 @@ CIS data
 head(cis)
 ```
 
-We need to create new columns that concatanates variables from `pername1` to `enumpc`. In the first step we replace `NA`s with `''`. 
+We need to create new columns that concatenate variables from `PERNAME1` to `ENUMPC`. In the first step we replace `NA`s with `''`. 
 
 ```{r}
-census[, ":="(DOB_DAY=as.character(DOB_DAY), DOB_MON=as.character(DOB_MON), DOB_YEAR=as.character(DOB_YEAR))]
-cis[, ":="(DOB_DAY=as.character(DOB_DAY), DOB_MON=as.character(DOB_MON), DOB_YEAR=as.character(DOB_YEAR))]
 census[is.na(DOB_DAY), DOB_DAY := ""]
 census[is.na(DOB_MON), DOB_MON := ""]
 census[is.na(DOB_YEAR), DOB_YEAR := ""]
@@ -115,7 +111,7 @@ Example pairs.
 head(result1$result, n= 10)
 ```
 
-Let's take a look at the first pair. Obviously there is a typo in the `pername1`, but all the other variables are the same, so it appears to be a match.
+Let's take a look at the first pair. Obviously there is a typo in the `PERNAME1`, but all the other variables are the same, so it appears to be a match.
 
 ```{r}
 cbind(t(census[1, 1:9]), t(cis[8152, 1:9]))
@@ -124,7 +120,7 @@ cbind(t(census[1, 1:9]), t(cis[8152, 1:9]))
 
 ## Assessing the quality
 
-For some records, we have information about the correct linkage. We can use this information to evaluate our approach, but note that the information for evaluating quality is described in detail in the other vignette. 
+For some records, we have information about the correct linkage. We can use this information to evaluate our approach.
 
 ```{r}
 matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
@@ -162,7 +158,7 @@ result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
                     control_ann = ann_control_pars)
 ```
 
-Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
+Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FNR to `r sprintf("%.2f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3

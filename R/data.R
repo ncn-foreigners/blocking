@@ -1,5 +1,4 @@
-#' `RLdata500` data from \pkg{RecordLinkage} package
-#'
+#' @title RLdata500 dataset from the RecordLinkage package
 #'
 #' @description
 #'
@@ -39,7 +38,7 @@
 "RLdata500"
 
 
-#' `census` data
+#' @title Fictional census data
 #'
 #' @description
 #' This data set was created by Paula McLeod, Dick Heasman and Ian Forbes, ONS,
@@ -79,7 +78,7 @@
 #'
 "census"
 
-#' `cis` data
+#' @title Fictional customer data
 #'
 #' @description
 #' This data set was created by Paula McLeod, Dick Heasman and Ian Forbes, ONS,
@@ -116,3 +115,32 @@
 #' head(cis)
 #'
 "cis"
+
+#' Fictional 2024 population of foreigners in Poland
+#'
+#' @description
+#' A fictional data set of the foreign population in Poland,
+#' generated based on publicly available information
+#' while maintaining the distributions from administrative registers.
+#'
+#' @format A `data.table` with 110000 records. Each row represents one record, with the following columns:
+#' \itemize{
+#' \item{`fname` -- first name,}
+#' \item{`sname` -- second name,}
+#' \item{`surname` -- surname,}
+#' \item{`date` -- date of birth,}
+#' \item{`region` -- region (county),}
+#' \item{`country` -- country,}
+#' \item{`true_id` -- person ID.}
+#' }
+#'
+#' @docType data
+#' @keywords datasets
+#' @name foreigners
+#' @rdname foreigners
+#' @examples
+#'
+#' data("foreigners")
+#' head(foreigners)
+#'
+"foreigners"

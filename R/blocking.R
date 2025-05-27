@@ -50,6 +50,7 @@
 #' \item{\code{deduplication} -- information whether deduplication was applied,}
 #' \item{\code{representation} -- information whether shingles or vectors were used,}
 #' \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
+#' \item{\code{confusion} -- confusion matrix, if \code{true_blocks} is provided,}
 #' \item{\code{colnames} -- variable names (colnames) used for search,}
 #' \item{\code{graph} -- \code{igraph} class object.}
 #' }
@@ -99,6 +100,27 @@
 #'
 #' result_annoy
 #' }
+#'
+#' ## an example with the NN descent algorithm and true blocks
+#'
+#' data(census)
+#' data(cis)
+#'
+#' census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
+#'        DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+#' cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
+#'     DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+#'
+#' matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
+#'                  y = cis[, .(y = 1:.N, PERSON_ID)],
+#'                  by = "PERSON_ID")
+#' matches[, block:=1:.N]
+#'
+#' set.seed(2024)
+#' result_true_blocks <- blocking(x = census$txt, y = cis$txt, verbose = 1,
+#'                                true_blocks = matches[, .(x, y, block)])
+#'
+#' result_true_blocks
 #'
 #' @export
 blocking <- function(x,

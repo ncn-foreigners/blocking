@@ -38,12 +38,6 @@ In the example we will use the same dataset as in the *Blocking records for reco
 ```{r}
 data(census)
 data(cis)
-census[is.na(DOB_DAY), DOB_DAY := ""]
-census[is.na(DOB_MON), DOB_MON := ""]
-census[is.na(DOB_YEAR), DOB_YEAR := ""]
-cis[is.na(DOB_DAY), DOB_DAY := ""]
-cis[is.na(DOB_MON), DOB_MON := ""]
-cis[is.na(DOB_YEAR), DOB_YEAR := ""]
 census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY, DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
 cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY, DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
 census[, x:=1:.N]
@@ -52,13 +46,14 @@ cis[, y:=1:.N]
 
 # Integration with the `reclin2` package
 
-The package contains function `pair_ann` which aims at integration with `reclin2` package. This function works as follows
+The package contains function `pair_ann` which aims at integration with `reclin2` package. This function works as follows.
 
 ```{r}
 pair_ann(x = census[1:1000], 
          y = cis[1:1000], 
          on = "txt", 
-         deduplication = FALSE)
+         deduplication = FALSE) |>
+  head()
 ```
 
 Which provides you information on the total number of pairs. This can be further included in the pipeline of the `reclin2` package.

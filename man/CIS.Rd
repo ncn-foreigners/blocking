@@ -3,7 +3,7 @@
 \docType{data}
 \name{cis}
 \alias{cis}
-\title{\code{cis} data}
+\title{Fictional customer data}
 \format{
 A \code{data.table} with 24613 records. Each row represents one record, with the following columns:
 \itemize{

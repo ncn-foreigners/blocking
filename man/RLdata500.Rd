@@ -3,7 +3,7 @@
 \docType{data}
 \name{RLdata500}
 \alias{RLdata500}
-\title{\code{RLdata500} data from \pkg{RecordLinkage} package}
+\title{RLdata500 dataset from the RecordLinkage package}
 \format{
 A \code{data.table} with 500 records. Each row represents one record, with the following columns:
 

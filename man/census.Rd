@@ -3,7 +3,7 @@
 \docType{data}
 \name{census}
 \alias{census}
-\title{\code{census} data}
+\title{Fictional census data}
 \format{
 A \code{data.table} with 25343 records. Each row represents one record, with the following columns:
 \itemize{

@@ -130,12 +130,6 @@ result_annoy
 data(census)
 data(cis)
 
-census[is.na(DOB_DAY), DOB_DAY := ""]
-census[is.na(DOB_MON), DOB_MON := ""]
-census[is.na(DOB_YEAR), DOB_YEAR := ""]
-cis[is.na(DOB_DAY), DOB_DAY := ""]
-cis[is.na(DOB_MON), DOB_MON := ""]
-cis[is.na(DOB_YEAR), DOB_YEAR := ""]
 census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
        DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
 cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,

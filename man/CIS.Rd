@@ -7,16 +7,16 @@
 \format{
 A \code{data.table} with 24613 records. Each row represents one record, with the following columns:
 \itemize{
-\item{\code{PERSON_ID} -- a unique number for each person, consisting of postcode, house number and person number,}
-\item{\code{PERNAME1} -- forename,}
-\item{\code{PERNAME2} -- surname,}
-\item{\code{SEX} -- gender (M/F),}
-\item{\code{DOB_DAY} -- day of birth,}
-\item{\code{DOB_MON} -- month of birth,}
-\item{\code{DOB_YEAR} -- year of birth,}
-\item{\code{ENUMCAP} -- an address consisting of house number and street name,}
-\item{\code{ENUMPC} -- postcode,}
-\item{\code{CIS_ID} -- person ID with "CIS" added in front.}
+\item{\code{person_id} -- a unique number for each person, consisting of postcode, house number and person number,}
+\item{\code{pername1} -- forename,}
+\item{\code{pername2} -- surname,}
+\item{\code{sex} -- gender (M/F),}
+\item{\code{dob_day} -- day of birth,}
+\item{\code{dob_mon} -- month of birth,}
+\item{\code{dob_year} -- year of birth,}
+\item{\code{enumcap} -- an address consisting of house number and street name,}
+\item{\code{enumpc} -- postcode,}
+\item{\code{cis_id} -- person ID with "CIS" added in front.}
 }
 }
 \usage{

@@ -47,19 +47,19 @@
 #'
 #' @format A `data.table` with 25343 records. Each row represents one record, with the following columns:
 #' \itemize{
-#' \item{`PERSON_ID` -- a unique number for each person, consisting of postcode, house number and person number,}
-#' \item{`PERNAME1` -- forename,}
-#' \item{`PERNAME2` -- surname,}
-#' \item{`SEX` -- gender (M/F),}
-#' \item{`DOB_DAY` -- day of birth,}
-#' \item{`DOB_MON` -- month of birth,}
-#' \item{`DOB_YEAR` -- year of birth,}
+#' \item{`person_id` -- a unique number for each person, consisting of postcode, house number and person number,}
+#' \item{`pername1` -- forename,}
+#' \item{`pername2` -- surname,}
+#' \item{`sex` -- gender (M/F),}
+#' \item{`dob_day` -- day of birth,}
+#' \item{`dob_mon` -- month of birth,}
+#' \item{`dob_year` -- year of birth,}
 #' \item{`hse_num` -- house number, a numeric label for each house within a street,}
-#' \item{`ENUMCAP` -- an address consisting of house number and street name,}
-#' \item{`ENUMPC` -- postcode,}
+#' \item{`enumcap` -- an address consisting of house number and street name,}
+#' \item{`enumpc` -- postcode,}
 #' \item{`str_nam` -- street name of person's household's street,}
 #' \item{`cap_add` -- full address, consisting of house number, street name and postcode,}
-#' \item{`CENSUS_ID` -- person ID with "CENS" added in front.}
+#' \item{`census_id` -- person ID with "CENS" added in front.}
 #' }
 #'
 #' @references
@@ -88,16 +88,16 @@
 #'
 #' @format A `data.table` with 24613 records. Each row represents one record, with the following columns:
 #' \itemize{
-#' \item{`PERSON_ID` -- a unique number for each person, consisting of postcode, house number and person number,}
-#' \item{`PERNAME1` -- forename,}
-#' \item{`PERNAME2` -- surname,}
-#' \item{`SEX` -- gender (M/F),}
-#' \item{`DOB_DAY` -- day of birth,}
-#' \item{`DOB_MON` -- month of birth,}
-#' \item{`DOB_YEAR` -- year of birth,}
-#' \item{`ENUMCAP` -- an address consisting of house number and street name,}
-#' \item{`ENUMPC` -- postcode,}
-#' \item{`CIS_ID` -- person ID with "CIS" added in front.}
+#' \item{`person_id` -- a unique number for each person, consisting of postcode, house number and person number,}
+#' \item{`pername1` -- forename,}
+#' \item{`pername2` -- surname,}
+#' \item{`sex` -- gender (M/F),}
+#' \item{`dob_day` -- day of birth,}
+#' \item{`dob_mon` -- month of birth,}
+#' \item{`dob_year` -- year of birth,}
+#' \item{`enumcap` -- an address consisting of house number and street name,}
+#' \item{`enumpc` -- postcode,}
+#' \item{`cis_id` -- person ID with "CIS" added in front.}
 #' }
 #'
 #' @references

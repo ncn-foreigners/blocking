@@ -1,6 +1,6 @@
 Package: blocking
 Type: Package
-Title: Blocking Records for Record Linkage / Entity Resolution
+Title: Deduplication / Entity Resolution with Record Blocking
 Version: 0.1.0
 Authors@R: 
   c(person(given = "Maciej",

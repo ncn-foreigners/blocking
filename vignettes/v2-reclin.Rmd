@@ -83,11 +83,11 @@ set.seed(2024)
 cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
 ```
 
-We need to create new columns that concatenate variables from `PERNAME1` to `ENUMPC`. 
+We need to create new columns that concatenate variables from `pername1` to `enumpc`. 
 
 ```{r}
-census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY, DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
-cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY, DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
+cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
 ```
 
 
@@ -113,7 +113,7 @@ Example pairs.
 head(result1$result, n= 10)
 ```
 
-Let's take a look at the first pair. Obviously there is a typo in the `PERNAME1` but all the other variables are the same, so it appears to be a match.
+Let's take a look at the first pair. Obviously there is a typo in the `pername1` but all the other variables are the same, so it appears to be a match.
 
 ```{r}
 cbind(t(census[1, c(1:7, 9:10)]), t(cis[2606, 1:9]))
@@ -125,9 +125,9 @@ cbind(t(census[1, c(1:7, 9:10)]), t(cis[2606, 1:9]))
 For some records, we have information about the correct linkage. We can use this information to evaluate our approach.
 
 ```{r}
-matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
-                 y = cis[, .(y = 1:.N, PERSON_ID)],
-                 by = "PERSON_ID")
+matches <- merge(x = census[, .(x=1:.N, person_id)],
+                 y = cis[, .(y = 1:.N, person_id)],
+                 by = "person_id")
 matches[, block:=1:.N]
 head(matches)
 ```

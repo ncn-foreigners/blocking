@@ -112,10 +112,10 @@
 #' set.seed(2024)
 #' cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
 #'
-#' census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
-#'        DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
-#' cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
-#'     DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
+#' census[, txt:=paste0(pername1, pername2, sex,
+#'        dob_day, dob_mon, dob_year, enumcap, enumpc)]
+#' cis[, txt:=paste0(pername1, pername2, sex,
+#'     dob_day, dob_mon, dob_year, enumcap, enumpc)]
 #'
 #' matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
 #'                  y = cis[, .(y = 1:.N, PERSON_ID)],

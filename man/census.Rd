@@ -7,19 +7,19 @@
 \format{
 A \code{data.table} with 25343 records. Each row represents one record, with the following columns:
 \itemize{
-\item{\code{PERSON_ID} -- a unique number for each person, consisting of postcode, house number and person number,}
-\item{\code{PERNAME1} -- forename,}
-\item{\code{PERNAME2} -- surname,}
-\item{\code{SEX} -- gender (M/F),}
-\item{\code{DOB_DAY} -- day of birth,}
-\item{\code{DOB_MON} -- month of birth,}
-\item{\code{DOB_YEAR} -- year of birth,}
+\item{\code{person_id} -- a unique number for each person, consisting of postcode, house number and person number,}
+\item{\code{pername1} -- forename,}
+\item{\code{pername2} -- surname,}
+\item{\code{sex} -- gender (M/F),}
+\item{\code{dob_day} -- day of birth,}
+\item{\code{dob_mon} -- month of birth,}
+\item{\code{dob_year} -- year of birth,}
 \item{\code{hse_num} -- house number, a numeric label for each house within a street,}
-\item{\code{ENUMCAP} -- an address consisting of house number and street name,}
-\item{\code{ENUMPC} -- postcode,}
+\item{\code{enumcap} -- an address consisting of house number and street name,}
+\item{\code{enumpc} -- postcode,}
 \item{\code{str_nam} -- street name of person's household's street,}
 \item{\code{cap_add} -- full address, consisting of house number, street name and postcode,}
-\item{\code{CENSUS_ID} -- person ID with "CENS" added in front.}
+\item{\code{census_id} -- person ID with "CENS" added in front.}
 }
 }
 \usage{

@@ -117,8 +117,8 @@
 #' cis[, txt:=paste0(pername1, pername2, sex,
 #'     dob_day, dob_mon, dob_year, enumcap, enumpc)]
 #'
-#' matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
-#'                  y = cis[, .(y = 1:.N, PERSON_ID)],
+#' matches <- merge(x = census[, .(x=1:.N, person_id)],
+#'                  y = cis[, .(y = 1:.N, person_id)],
 #'                  by = "PERSON_ID")
 #' matches[, block:=1:.N]
 #'

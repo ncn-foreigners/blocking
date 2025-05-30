@@ -3,7 +3,7 @@
 #' @importFrom rnndescent rnnd_query
 #' @importFrom data.table data.table
 #'
-#' @title An internal function to use the NN descent algorithm via the [rnndescent] package.
+#' @title An internal function to use the NN descent algorithm via the \link[rnndescent]{rnndescent} package.
 #' @author Maciej Beręsewicz
 #'
 #' @param x deduplication or reference data,
@@ -16,7 +16,7 @@
 #' @param control controls for the NN descent algorithm.
 #'
 #' @description
-#' See details of [rnndescent::rnnd_build] and [rnndescent::rnnd_query].
+#' See details of \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query}.
 #'
 #'
 method_nnd <- function(x,

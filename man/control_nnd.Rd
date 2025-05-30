@@ -81,5 +81,5 @@ The default \code{R} means that observations are stored in each row.}
 Returns a list with parameters.
 }
 \description{
-Controls for NND algorithm used in the package (see \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}} for details).
+Controls for NND algorithm used in the package (see \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query} for details).
 }

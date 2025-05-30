@@ -31,7 +31,7 @@ control_hnsw <- function(M = 25,
 #' @title Controls for NND
 #'
 #' @description
-#' Controls for NND algorithm used in the package (see [rnndescent::rnnd_build()] and [rnndescent::rnnd_query()] for details).
+#' Controls for NND algorithm used in the package (see \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query} for details).
 #'
 #' @param k_build Number of nearest neighbors to build the index for.
 #' @param use_alt_metric If \code{TRUE}, use faster metrics that maintain the ordering of distances internally (e.g. squared Euclidean distances if using \code{metric = "euclidean"}),
@@ -111,7 +111,7 @@ control_nnd <- function(k_build = 30,
 #' @title Controls for LSH
 #'
 #' @description
-#' Controls for LSH algorithm used in the package (see [mlpack::lsh()] for details).
+#' Controls for LSH algorithm used in the package (see \link[mlpack]{lsh} for details).
 #'
 #' @param bucket_size The size of a bucket in the second level hash.
 #' @param hash_width The hash width for the first-level hashing in the LSH preprocessing.
@@ -140,7 +140,7 @@ control_lsh <- function(bucket_size = 10,
 #' @title Controls for Annoy
 #'
 #' @description
-#' Controls for Annoy algorithm used in the package (see [RcppAnnoy] for details).
+#' Controls for Annoy algorithm used in the package (see \link[RcppAnnoy]{RcppAnnoy} for details).
 #'
 #' @param n_trees An integer specifying the number of trees to build in the Annoy index.
 #' @param build_on_disk A logical value indicating whether to build the Annoy index on disk instead of in memory.
@@ -160,7 +160,7 @@ control_annoy <- function(n_trees = 250,
 #' @title Controls for KD
 #'
 #' @description
-#' Controls for KD algorithm used in the package (see [mlpack::knn()] for details).
+#' Controls for KD algorithm used in the package (see \link[mlpack]{knn} for details).
 #'
 #' @param algorithm Type of neighbor search: \code{'naive'}, \code{'single_tree'}, \code{'dual_tree'}, \code{'greedy'}.
 #' @param epsilon If specified, will do approximate nearest neighbor search with given relative error.
@@ -203,11 +203,11 @@ control_kd <- function(algorithm = "dual_tree",
 #'
 #' @param sparse whether sparse data should be used as an input for algorithms,
 #' @param k_search number of neighbours to search,
-#' @param nnd parameters for [rnndescent::rnnd_build()] and [rnndescent::rnnd_query()] (should be inside [control_nnd] function),
-#' @param hnsw parameters for [RcppHNSW::hnsw_build()] and [RcppHNSW::hnsw_search()] (should be inside [control_hnsw] function),
-#' @param lsh parameters for [mlpack::lsh()] function (should be inside [control_lsh] function),
-#' @param kd kd parameters for [mlpack::knn()] function (should be inside [control_kd] function),
-#' @param annoy parameters for [RcppAnnoy] package (should be inside [control_annoy] function).
+#' @param nnd parameters for \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query} (should be inside [control_nnd] function),
+#' @param hnsw parameters for \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search} (should be inside [control_hnsw] function),
+#' @param lsh parameters for \link[mlpack]{lsh} function (should be inside [control_lsh] function),
+#' @param kd kd parameters for \link[mlpack]{knn} function (should be inside [control_kd] function),
+#' @param annoy parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside [control_annoy] function).
 #'
 #' @returns Returns a list with parameters.
 #'
@@ -236,7 +236,7 @@ controls_ann <- function(
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Controls for text data used in the \code{blocking} function (if \code{representation = shingles}), passed to [tokenizers::tokenize_character_shingles].
+#' Controls for text data used in the \code{blocking} function (if \code{representation = shingles}), passed to \link[tokenizers]{tokenize_character_shingles}.
 #'
 #' @param n_shingles length of shingles (default `2L`),
 #' @param n_chunks passed to (default `10L`),

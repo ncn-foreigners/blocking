@@ -30,5 +30,5 @@ control_lsh(
 Returns a list with parameters.
 }
 \description{
-Controls for LSH algorithm used in the package (see \code{\link[mlpack:lsh]{mlpack::lsh()}} for details).
+Controls for LSH algorithm used in the package (see \link[mlpack]{lsh} for details).
 }

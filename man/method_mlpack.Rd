@@ -2,7 +2,7 @@
 % Please edit documentation in R/method_mlpack.R
 \name{method_mlpack}
 \alias{method_mlpack}
-\title{An internal function to use the LSH and KD-tree algorithm via the \link{mlpack} package.}
+\title{An internal function to use the LSH and KD-tree algorithm via the \link[mlpack]{mlpack} package.}
 \usage{
 method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, path, control)
 }
@@ -24,7 +24,7 @@ method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, path, control)
 \item{control}{controls for the \code{lsh} or \code{kd} algorithms.}
 }
 \description{
-See details of \link[mlpack:lsh]{mlpack::lsh} and \link[mlpack:knn]{mlpack::knn}
+See details of \link[mlpack]{lsh} and \link[mlpack]{knn}.
 }
 \author{
 Maciej Beręsewicz

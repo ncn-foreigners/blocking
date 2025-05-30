@@ -17,5 +17,5 @@ control_annoy(n_trees = 250, build_on_disk = FALSE, ...)
 Returns a list with parameters.
 }
 \description{
-Controls for Annoy algorithm used in the package (see \link{RcppAnnoy} for details).
+Controls for Annoy algorithm used in the package (see \link[RcppAnnoy]{RcppAnnoy} for details).
 }

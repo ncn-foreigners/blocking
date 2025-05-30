@@ -1,6 +1,6 @@
 Package: blocking
 Type: Package
-Title: Blocking records for record linkage / entity resolution
+Title: Blocking Records for Record Linkage / Entity Resolution
 Version: 0.1.0
 Authors@R: 
   c(person(given = "Maciej",
@@ -16,8 +16,8 @@ Description: An R package that uses various approximate nearest neighbours algor
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/ncn-foreigners/blocking, https://ncn-foreigners.github.io/blocking/
-BugReports: https://github.com/ncn-foreigners/blocking
+URL: https://github.com/ncn-foreigners/blocking, https://ncn-foreigners.ue.poznan.pl/blocking/
+BugReports: https://github.com/ncn-foreigners/blocking/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports: 
@@ -41,4 +41,4 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)

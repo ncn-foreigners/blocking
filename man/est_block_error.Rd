@@ -129,5 +129,5 @@ Dasylva, A., Goussanou, A. (2021). Estimating the false negatives due to blockin
 Survey Methodology, Statistics Canada, Catalogue No. 12-001-X, Vol. 47, No. 2.
 
 Dasylva, A., Goussanou, A. (2022). On the consistent estimation of linkage errors without training data.
-Jpn J Stat Data Sci 5, 181–216. \url{https://doi.org/10.1007/s42081-022-00153-3}
+Jpn J Stat Data Sci 5, 181–216. \doi{10.1007/s42081-022-00153-3}
 }

@@ -22,7 +22,7 @@
 #' @param control controls for the HNSW algorithm.
 #'
 #' @description
-#' See details of [RcppHNSW::hnsw_build] and [RcppHNSW::hnsw_search].
+#' See details of \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search}.
 #'
 #'
 method_hnsw <- function(x,

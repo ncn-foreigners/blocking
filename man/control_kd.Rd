@@ -38,5 +38,5 @@ control_kd(
 Returns a list with parameters.
 }
 \description{
-Controls for KD algorithm used in the package (see \code{\link[mlpack:knn]{mlpack::knn()}} for details).
+Controls for KD algorithm used in the package (see \link[mlpack]{knn} for details).
 }

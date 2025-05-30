@@ -48,7 +48,7 @@ blocking(
 
 \item{ann_colnames}{file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),}
 
-\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from \code{\link[igraph:compare]{igraph::compare()}} are returned).}
+\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from \link[igraph]{compare} are returned).}
 
 \item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),}
 
@@ -58,7 +58,7 @@ blocking(
 
 \item{n_threads}{number of threads used for the ANN algorithms and adding data for index and query,}
 
-\item{control_txt}{list of controls for text data (passed only to \link[text2vec:itoken]{text2vec::itoken_parallel} or \link[text2vec:itoken]{text2vec::itoken}), used only when \code{representation = "shingles"},}
+\item{control_txt}{list of controls for text data (passed only to \link[text2vec]{itoken_parallel} or \link[text2vec]{itoken}), used only when \code{representation = "shingles"},}
 
 \item{control_ann}{list of controls for the ANN algorithms.}
 }
@@ -76,8 +76,9 @@ Returns a list containing:\cr
 }
 }
 \description{
-Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe), applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
-and creates blocks using graphs via \link{igraph}.
+Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe),
+applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent}, \link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy} and \link[mlpack]{mlpack} packages,
+and creates blocks using graphs via \link[igraph]{igraph}.
 }
 \examples{
 ## an example using RcppHNSW
@@ -130,6 +131,11 @@ result_annoy
 data(census)
 data(cis)
 
+set.seed(2024)
+census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
+set.seed(2024)
+cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
+
 census[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
        DOB_MON, DOB_YEAR, ENUMCAP, ENUMPC)]
 cis[, txt:=paste0(PERNAME1, PERNAME2, SEX, DOB_DAY,
@@ -140,9 +146,9 @@ matches <- merge(x = census[, .(x=1:.N, PERSON_ID)],
                  by = "PERSON_ID")
 matches[, block:=1:.N]
 
-set.seed(2024)
 result_true_blocks <- blocking(x = census$txt, y = cis$txt, verbose = 1,
-                               true_blocks = matches[, .(x, y, block)])
+                               true_blocks = matches[, .(x, y, block)],
+                               seed = 2024)
 
 result_true_blocks
 

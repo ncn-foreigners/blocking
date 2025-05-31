@@ -29,3 +29,4 @@ See details of the \link[RcppAnnoy]{RcppAnnoy} package.
 \author{
 Maciej Beręsewicz
 }
+\keyword{internal}

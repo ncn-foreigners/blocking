@@ -14,3 +14,4 @@ sentence_to_vector(sentences, model)
 \description{
 Function creates a matrix with word embeddings using a given model.
 }
+\keyword{internal}

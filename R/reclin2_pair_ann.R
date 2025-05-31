@@ -1,13 +1,11 @@
-#' Imports
-#'
 #' @importFrom stats setNames
 #' @import data.table
 #'
-#' @title Integration with the reclin2 package
+#' @title Integration with the \pkg{reclin2} package
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function for the integration with the `reclin2` package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
+#' Function for the integration with the \pkg{reclin2} package. The function is based on \link[reclin2]{pair_minsim} and reuses some of its source code.
 #'
 #' @param x reference data (a data.frame or a data.table),
 #' @param y query data  (a data.frame or a data.table, default NULL),
@@ -16,10 +14,11 @@
 #' @param deduplication whether deduplication should be performed (default TRUE),
 #' @param keep_block whether to keep the block variable in the set,
 #' @param add_xy whether to add x and y,
-#' @param ... arguments passed to [blocking::blocking()] function.
+#' @param ... arguments passed to [blocking] function.
 #'
 #'
-#' @returns Returns a [data.table] with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. Returning data.table is also of a class \code{pairs} which allows for integration with the [reclin2::compare_pairs()] package.
+#' @returns Returns a \link[data.table]{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively.
+#' Returned `data.table` is also of a class \code{pairs} which allows for integration with the \link[reclin2]{compare_pairs} function.
 #'
 #' @examples
 #'

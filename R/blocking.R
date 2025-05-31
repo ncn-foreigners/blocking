@@ -119,7 +119,7 @@
 #'
 #' matches <- merge(x = census[, .(x=1:.N, person_id)],
 #'                  y = cis[, .(y = 1:.N, person_id)],
-#'                  by = "PERSON_ID")
+#'                  by = "person_id")
 #' matches[, block:=1:.N]
 #'
 #' result_true_blocks <- blocking(x = census$txt, y = cis$txt, verbose = 1,

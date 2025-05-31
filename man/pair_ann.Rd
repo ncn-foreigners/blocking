@@ -2,7 +2,7 @@
 % Please edit documentation in R/reclin2_pair_ann.R
 \name{pair_ann}
 \alias{pair_ann}
-\title{Integration with the reclin2 package}
+\title{Integration with the \pkg{reclin2} package}
 \usage{
 pair_ann(
   x,
@@ -30,16 +30,14 @@ pair_ann(
 
 \item{add_xy}{whether to add x and y,}
 
-\item{...}{arguments passed to \code{\link[=blocking]{blocking()}} function.}
+\item{...}{arguments passed to \link{blocking} function.}
 }
 \value{
-Returns a \link{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. Returning data.table is also of a class \code{pairs} which allows for integration with the \code{\link[reclin2:compare_pairs]{reclin2::compare_pairs()}} package.
+Returns a \link[data.table]{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively.
+Returned \code{data.table} is also of a class \code{pairs} which allows for integration with the \link[reclin2]{compare_pairs} function.
 }
 \description{
-Function for the integration with the \code{reclin2} package. The function is based on \code{\link[reclin2:pair_minsim]{reclin2::pair_minsim()}} and reuses some of its source code.
-}
-\details{
-Imports
+Function for the integration with the \pkg{reclin2} package. The function is based on \link[reclin2]{pair_minsim} and reuses some of its source code.
 }
 \examples{
 

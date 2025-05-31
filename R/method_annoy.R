@@ -21,8 +21,7 @@
 #' @description
 #' See details of the \link[RcppAnnoy]{RcppAnnoy} package.
 #'
-#'
-
+#' @keywords internal
 method_annoy <- function(x,
                          y,
                          k,

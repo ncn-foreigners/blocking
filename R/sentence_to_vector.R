@@ -9,6 +9,7 @@
 #' @param sentences a character vector,
 #' @param model a matrix containing word embeddings (e.g., GloVe).
 #'
+#' @keywords internal
 sentence_to_vector <- function(sentences, model) {
   tokens <- text2vec::space_tokenizer(tolower(sentences))
 

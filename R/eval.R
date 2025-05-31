@@ -13,6 +13,7 @@
 #' @returns
 #' Returns a list containing TP, FP, FN and TN.
 #'
+#' @keywords internal
 eval_reclin <- function(pred_df, true_df) {
 
   pred_x_map <- unique(pred_df[, c("x", "block"), with = FALSE])
@@ -80,6 +81,7 @@ eval_reclin <- function(pred_df, true_df) {
 #' @returns
 #' Returns a list containing TP, FP, FN and TN.
 #'
+#' @keywords internal
 eval_dedup <- function(pred_df, true_df) {
 
   pred_lbl <- melt(pred_df,
@@ -140,6 +142,7 @@ eval_dedup <- function(pred_df, true_df) {
 #' @returns
 #' Returns a list containing evaluation metrics.
 #'
+#' @keywords internal
 get_metrics <- function(TP, FP, FN, TN) {
 
   recall <- if (TP + FN != 0) TP / (TP + FN) else 0
@@ -172,6 +175,7 @@ get_metrics <- function(TP, FP, FN, TN) {
 #' @returns
 #' Returns a confusion matrix.
 #'
+#' @keywords internal
 get_confusion <- function(TP, FP, FN, TN) {
 
   cm <- matrix(c(TP, FP, FN, TN), nrow = 2)

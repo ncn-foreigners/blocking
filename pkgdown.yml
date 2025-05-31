@@ -1,14 +1,11 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   v1-deduplication: v1-deduplication.html
   v2-reclin: v2-reclin.html
-  v3-evaluation: v3-evaluation.html
-  v4-integration: v4-integration.html
-  v5-bigdata: v5-bigdata.html
-last_built: 2024-05-22T10:41Z
+  v3-integration: v3-integration.html
+last_built: 2025-05-31T08:37Z
 urls:
   reference: https://ncn-foreigners.github.io/blocking/reference
   article: https://ncn-foreigners.github.io/blocking/articles
-

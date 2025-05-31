@@ -1,60 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/404.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/articles/v1-deduplication.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/articles/v2-reclin.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/articles/v3-evaluation.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/articles/v4-integration.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/articles/v5-bigdata.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/blocking.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/controls_ann.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/controls_txt.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/method_annoy.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/method_hnsw.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/method_mlpack.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/method_nnd.html</loc>
-  </url>
-  <url>
-    <loc>https://ncn-foreigners.github.io/blocking/reference/pair_ann.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://ncn-foreigners.github.io/blocking/404.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/articles/index.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/articles/v1-deduplication.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/articles/v2-reclin.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/articles/v3-integration.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/authors.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/index.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/news/index.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/RLdata500.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/blocking.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/census.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/cis.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/control_annoy.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/control_hnsw.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/control_kd.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/control_lsh.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/control_nnd.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/controls_ann.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/controls_txt.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/est_block_error.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/eval_dedup.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/eval_reclin.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/foreigners.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/get_confusion.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/get_metrics.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/index.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/method_annoy.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/method_hnsw.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/method_mlpack.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/method_nnd.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/pair_ann.html</loc></url>
+<url><loc>https://ncn-foreigners.github.io/blocking/reference/sentence_to_vector.html</loc></url>
 </urlset>
+

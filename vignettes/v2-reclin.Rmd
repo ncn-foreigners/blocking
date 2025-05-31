@@ -31,9 +31,7 @@ Read required packages
 
 ```{r setup}
 library(blocking)
-library(reclin2)
 library(data.table)
-library(rnndescent)
 ```
 
 # Data
@@ -46,9 +44,9 @@ persons up to the date 31 December 2011.  Any years of birth captured as 2012
 are therefore in error.  Note that in the fictional Census data set, dates of
 birth between 27 March 2011 and 31 December 2011 are not necessarily in error.
 
-Census: A fictional data set to represent some observations from a
+census: A fictional data set to represent some observations from a
         decennial Census
-CIS: Fictional observations from Customer Information System, which is
+cis: Fictional observations from Customer Information System, which is
         combined administrative data from the tax and benefit systems
 
 In the dataset census all records contain a person_id. For some of the records
@@ -58,12 +56,12 @@ all records in the cis).
 ```
 
 ```{r}
-census <- fread("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/census.csv")
-cis <- fread("https://raw.githubusercontent.com/djvanderlaan/tutorial-reclin-uros2021/main/data/cis.csv")
+data(census)
+data(cis)
 ```
 
-+ `census` object has `r nrow(census)` rows and `r ncol(census)`,
-+ `cis` object has `r nrow(census)` rows and `r ncol(census)`.
++ `census` object has `r nrow(census)` rows and `r ncol(census)` columns,
++ `cis` object has `r nrow(cis)` rows and `r ncol(cis)` columns.
 
 Census data
 
@@ -76,19 +74,18 @@ CIS data
 head(cis)
 ```
 
-We need to create new columns that concatanates variables from `pername1` to `enumpc`. In the first step we replace `NA`s with `''`. 
+We randomly select `r as.integer(floor(nrow(census) / 2))` records from `census` and `r as.integer(floor(nrow(cis) / 2))` records from `cis`.
 
 ```{r}
-census[, ":="(dob_day=as.character(dob_day), dob_mon=as.character(dob_mon), dob_year=as.character(dob_year))]
-cis[, ":="(dob_day=as.character(dob_day), dob_mon=as.character(dob_mon),dob_year=as.character(dob_year))]
+set.seed(2024)
+census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
+set.seed(2024)
+cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
+```
 
-census[is.na(dob_day), dob_day := ""]
-census[is.na(dob_mon), dob_mon := ""]
-census[is.na(dob_year), dob_year := ""]
-cis[is.na(dob_day), dob_day := ""]
-cis[is.na(dob_mon), dob_mon := ""]
-cis[is.na(dob_year), dob_year := ""]
+We need to create new columns that concatenate variables from `pername1` to `enumpc`. 
 
+```{r}
 census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
 cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
 ```
@@ -101,8 +98,7 @@ cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, 
 The goal of this exercise is to link units from the CIS dataset to the CENSUS dataset. 
 
 ```{r}
-set.seed(2024)
-result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1, n_threads = 8)
+result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1, seed = 2024)
 ```
 
 Distribution of distances for each pair.
@@ -117,16 +113,16 @@ Example pairs.
 head(result1$result, n= 10)
 ```
 
-Let's take a look at the first pair. Obviously there is a typo in the `pername1`, but all the other variables are the same, so it appears to be a match.
+Let's take a look at the first pair. Obviously there is a typo in the `pername1` but all the other variables are the same, so it appears to be a match.
 
 ```{r}
-cbind(t(census[1, 1:9]), t(cis[8152, 1:9]))
+cbind(t(census[1, c(1:7, 9:10)]), t(cis[2606, 1:9]))
 ```
 
 
 ## Assessing the quality
 
-For some records, we have information about the correct linkage. We can use this information to evaluate our approach, but note that the information for evaluating quality is described in detail in the other vignette. 
+For some records, we have information about the correct linkage. We can use this information to evaluate our approach.
 
 ```{r}
 matches <- merge(x = census[, .(x=1:.N, person_id)],
@@ -139,9 +135,9 @@ head(matches)
 So in our example we have `r nrow(matches)` pairs.
 
 ```{r}
-set.seed(2024)
 result2 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
-                    true_blocks = matches[, .(x, y, block)], n_threads = 8)
+                    true_blocks = matches[, .(x, y, block)],
+                    seed = 2024)
 ```
 
 Let's see how our approach handled this problem.
@@ -150,21 +146,21 @@ Let's see how our approach handled this problem.
 result2
 ```
 
-It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.2f",result2$metrics["fnr"]*100)`%. We can see if increasing the number of `k` (and thus `max_candidates`) as suggested in the [Nearest Neighbor Descent
+It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.2f",result2$metrics["fnr"]*100)`%. We can see if decreasing the `epsilon` parameter as suggested in the [Nearest Neighbor Descent
 ](https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html) vignette will help. 
 
 
 ```{r}
-set.seed(2024)
 ann_control_pars <- controls_ann()
 ann_control_pars$nnd$epsilon <- 0.2
 
 result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
-                    true_blocks = matches[, .(x, y, block)], n_threads = 8, 
-                    control_ann = ann_control_pars)
+                    true_blocks = matches[, .(x, y, block)], 
+                    control_ann = ann_control_pars,
+                    seed = 2024)
 ```
 
-Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FDR to `r sprintf("%.1f",result3$metrics["fnr"]*100)`%.
+Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FNR to `r sprintf("%.2f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3
@@ -174,7 +170,7 @@ Finally, compare the NND and HNSW algorithm for this example.
 
 ```{r}
 result4 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
-                    true_blocks = matches[, .(x, y, block)], n_threads = 8, 
+                    true_blocks = matches[, .(x, y, block)], 
                     ann = "hnsw", seed = 2024)
 ```
 

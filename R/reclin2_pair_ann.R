@@ -1,12 +1,11 @@
-#' Imports
-#'
+#' @importFrom stats setNames
 #' @import data.table
 #'
-#' @title Integration with the reclin2 package
+#' @title Integration with the \pkg{reclin2} package
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function for the integration with the `reclin2` package. The function is based on [reclin2::pair_minsim()] and reuses some of its source code.
+#' Function for the integration with the \pkg{reclin2} package. The function is based on \link[reclin2]{pair_minsim} and reuses some of its source code.
 #'
 #' @param x reference data (a data.frame or a data.table),
 #' @param y query data  (a data.frame or a data.table, default NULL),
@@ -15,10 +14,11 @@
 #' @param deduplication whether deduplication should be performed (default TRUE),
 #' @param keep_block whether to keep the block variable in the set,
 #' @param add_xy whether to add x and y,
-#' @param ... arguments passed to [blocking::blocking()] function.
+#' @param ... arguments passed to [blocking] function.
 #'
 #'
-#' @returns Returns a [data.table] with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively. Returning data.table is also of a class \code{pairs} which allows for integration with the [reclin2::compare_pairs()] package.
+#' @returns Returns a \link[data.table]{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively.
+#' Returned `data.table` is also of a class \code{pairs} which allows for integration with the \link[reclin2]{compare_pairs} function.
 #'
 #' @examples
 #'
@@ -51,28 +51,36 @@ pair_ann <- function(x,
                      add_xy = TRUE,
                      ...) {
 
+  stopifnot("Only data.frame or data.table is supported" =
+              is.data.frame(x) | is.data.table(x))
+
   stopifnot("Only one `on` is currently supported" = NROW(on) == 1)
 
   if (!is.null(y)) deduplication <- FALSE
+
+  if (!is.null(y)){
+    stopifnot("Only data.frame or data.table is supported" =
+                is.data.frame(y) | data.table::is.data.table(y))
+  }
 
   y <- if (deduplication) x else y
 
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
 
-  block_result  <- blocking::blocking(x = x[, ..on][[1]],
-                                      y = if (deduplication) NULL else y[, ..on][[1]],
+  block_result  <- blocking::blocking(x = x[[on]],
+                                      y = if (deduplication) NULL else y[[on]],
                                       deduplication = deduplication,
                                       ...)
 
-  a <- x[, ..on]
+  a <- x[, c(on), with = FALSE]
   a[, `:=`(".x", .I)]
-  a <- a[unique(block_result$result[,.(".x"=x, block)]), on = ".x"]
+  a <- a[unique(block_result$result[, c("x", "block"), with = FALSE]), on = setNames("x", ".x")]
   a[, `:=`((on), NULL)]
 
-  b <- y[, `..on`]
+  b <- y[, c(on), with = FALSE]
   b[, `:=`(".y", .I)]
-  b <- b[unique(block_result$result[,.(".y"=y, block)]), on = ".y"]
+  b <- b[unique(block_result$result[, c("y", "block"), with = FALSE]), on = setNames("y", ".y")]
   b[, `:=`((on), NULL)]
 
   pairs <- merge(a, b,
@@ -81,7 +89,7 @@ pair_ann <- function(x,
                  all.y = FALSE,
                  allow.cartesian = TRUE)
 
-  if (deduplication)  pairs <- pairs[.y > .x]
+  if (deduplication) pairs <- pairs[pairs[[".y"]] > pairs[[".x"]]]
 
   data.table::setkey(pairs, NULL)
   data.table::setattr(pairs, "class", c("pairs", class(pairs)))

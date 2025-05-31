@@ -2,7 +2,7 @@
 % Please edit documentation in R/method_annoy.R
 \name{method_annoy}
 \alias{method_annoy}
-\title{An internal function to use Annoy algorithm via the \link{RcppAnnoy} package.}
+\title{An internal function to use Annoy algorithm via the \link[RcppAnnoy]{RcppAnnoy} package.}
 \usage{
 method_annoy(x, y, k, distance, verbose, path, seed, control)
 }
@@ -21,13 +21,10 @@ method_annoy(x, y, k, distance, verbose, path, seed, control)
 
 \item{seed}{seed for the pseudo-random numbers algorithm,}
 
-\item{control}{controls for \code{new} or \code{build} methods for \link{RcppAnnoy}.}
+\item{control}{controls for \code{new} or \code{build} methods for \link[RcppAnnoy]{RcppAnnoy}.}
 }
 \description{
-See details of the \link{RcppAnnoy} package.
-}
-\details{
-Imports
+See details of the \link[RcppAnnoy]{RcppAnnoy} package.
 }
 \author{
 Maciej Beręsewicz

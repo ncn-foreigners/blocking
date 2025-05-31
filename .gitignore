@@ -6,3 +6,5 @@ playground
 docs
 inst/doc
 misc
+vignettes/.*R
+vignettes/.*html

@@ -1,35 +1,44 @@
 Package: blocking
 Type: Package
-Title: Blocking records for record linkage / entity resolution
+Title: Deduplication / Entity Resolution with Record Blocking
 Version: 0.1.0
 Authors@R: 
   c(person(given = "Maciej",
              family = "Beręsewicz",
              role = c("aut", "cre"),
              email = "maciej.beresewicz@ue.poznan.pl",
-             comment = c(ORCID = "0000-0002-8281-4301")))
+             comment = c(ORCID = "0000-0002-8281-4301")),
+   person(given = "Adam",
+             family = "Struzik",
+             role = c("aut", "ctr"),
+             email = "adastr5@st.amu.edu.pl"))
 Description: An R package that uses various approximate nearest neighbours algorithms and graphs to block records for data deduplication / record linkage / entity resolution.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/ncn-foreigners/blocking, https://ncn-foreigners.github.io/blocking/
-BugReports: https://github.com/ncn-foreigners/blocking
+URL: https://github.com/ncn-foreigners/blocking, https://ncn-foreigners.ue.poznan.pl/blocking/
+BugReports: https://github.com/ncn-foreigners/blocking/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: 
-  text2vec,
-  tokenizers,
-  RcppHNSW,
-  RcppAnnoy,
-  mlpack,
-  rnndescent,
-  igraph,
-  data.table,
-  RcppAlgos,
-  methods
+    text2vec,
+    tokenizers,
+    RcppHNSW,
+    RcppAnnoy,
+    mlpack,
+    rnndescent,
+    igraph,
+    data.table,
+    RcppAlgos,
+    methods,
+    readr,
+    utils,
+    Matrix
 Suggests: 
     tinytest,
     reclin2,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Depends: 
+    R (>= 4.1.0)

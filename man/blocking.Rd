@@ -7,6 +7,8 @@
 blocking(
   x,
   y = NULL,
+  representation = c("shingles", "vectors"),
+  model,
   deduplication = TRUE,
   on = NULL,
   on_blocking = NULL,
@@ -28,6 +30,10 @@ blocking(
 
 \item{y}{query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,}
 
+\item{representation}{method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),}
+
+\item{model}{a matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},}
+
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
 \item{on}{variables for ANN search (currently not supported),}
@@ -42,7 +48,7 @@ blocking(
 
 \item{ann_colnames}{file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),}
 
-\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from \code{\link[igraph:compare]{igraph::compare()}} are returned).}
+\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from \link[igraph]{compare} are returned).}
 
 \item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),}
 
@@ -52,37 +58,37 @@ blocking(
 
 \item{n_threads}{number of threads used for the ANN algorithms and adding data for index and query,}
 
-\item{control_txt}{list of controls for text data (passed only to \link[text2vec:itoken]{text2vec::itoken_parallel} or \link[text2vec:itoken]{text2vec::itoken}),}
+\item{control_txt}{list of controls for text data (passed only to \link[text2vec]{itoken_parallel} or \link[text2vec]{itoken}), used only when \code{representation = "shingles"},}
 
 \item{control_ann}{list of controls for the ANN algorithms.}
 }
 \value{
-Returns a list with containing:\cr
+Returns a list containing:\cr
 \itemize{
 \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 \item{\code{method} -- name of the ANN algorithm used,}
 \item{\code{deduplication} -- information whether deduplication was applied,}
+\item{\code{representation} -- information whether shingles or vectors were used,}
 \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
+\item{\code{confusion} -- confusion matrix, if \code{true_blocks} is provided,}
 \item{\code{colnames} -- variable names (colnames) used for search,}
 \item{\code{graph} -- \code{igraph} class object.}
 }
 }
 \description{
-Function creates shingles (strings with 2 characters, default), applies approximate nearest neighbour (ANN) algorithms via the \link{rnndescent}, RcppHNSW, \link{RcppAnnoy} and \link{mlpack} packages,
-and creates blocks using graphs via \link{igraph}.
-}
-\details{
-Imports
+Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe),
+applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent}, \link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy} and \link[mlpack]{mlpack} packages,
+and creates blocks using graphs via \link[igraph]{igraph}.
 }
 \examples{
-
 ## an example using RcppHNSW
+
 df_example <- data.frame(txt = c("jankowalski", "kowalskijan", "kowalskimjan",
 "kowaljan", "montypython", "pythonmonty", "cyrkmontypython", "monty"))
 
 result <- blocking(x = df_example$txt,
                    ann = "hnsw",
-                   control_ann = controls_ann(hnsw = list(M = 5, ef_c = 10, ef_s = 10)))
+                   control_ann = controls_ann(hnsw = control_hnsw(M = 5, ef_c = 10, ef_s = 10)))
 
 result
 
@@ -92,7 +98,61 @@ result_lsh <- blocking(x = df_example$txt,
                        ann = "lsh")
 
 result_lsh
+
+## an example using GloVe and RcppAnnoy
+\dontrun{
+options(timeout = 500)
+utils::download.file("https://nlp.stanford.edu/data/glove.6B.zip", destfile = "glove.6B.zip")
+utils::unzip("glove.6B.zip")
+
+glove_6B_50d <- readr::read_table("glove.6B.50d.txt",
+                                  col_names = FALSE,
+                                  show_col_types = FALSE)
+data.table::setDT(glove_6B_50d)
+
+glove_vectors <- glove_6B_50d[,-1]
+glove_vectors <- as.matrix(glove_vectors)
+rownames(glove_vectors) <- glove_6B_50d$X1
+
+## spaces between words are required
+df_example_spaces <- data.frame(txt = c("jan kowalski", "kowalski jan", "kowalskim jan",
+"kowal jan", "monty python", "python monty", "cyrk monty python", "monty"))
+
+result_annoy <- blocking(x = df_example_spaces$txt,
+                         ann = "annoy",
+                         representation = "vectors",
+                         model = glove_vectors)
+
+result_annoy
+}
+
+## an example with the NN descent algorithm and true blocks
+
+data(census)
+data(cis)
+
+set.seed(2024)
+census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
+set.seed(2024)
+cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
+
+census[, txt:=paste0(pername1, pername2, sex,
+       dob_day, dob_mon, dob_year, enumcap, enumpc)]
+cis[, txt:=paste0(pername1, pername2, sex,
+    dob_day, dob_mon, dob_year, enumcap, enumpc)]
+
+matches <- merge(x = census[, .(x=1:.N, person_id)],
+                 y = cis[, .(y = 1:.N, person_id)],
+                 by = "person_id")
+matches[, block:=1:.N]
+
+result_true_blocks <- blocking(x = census$txt, y = cis$txt, verbose = 1,
+                               true_blocks = matches[, .(x, y, block)],
+                               seed = 2024)
+
+result_true_blocks
+
 }
 \author{
-Maciej Beręsewicz
+Maciej Beręsewicz, Adam Struzik
 }

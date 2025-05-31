@@ -7,18 +7,11 @@
 controls_ann(
   sparse = FALSE,
   k_search = 30,
-  nnd = list(k_build = 30, use_alt_metric = FALSE, init = "tree", n_trees = NULL,
-    leaf_size = NULL, max_tree_depth = 200, margin = "auto", n_iters = NULL, delta =
-    0.001, max_candidates = NULL, low_memory = TRUE, n_search_trees = 1,
-    pruning_degree_multiplier = 1.5, diversify_prob = 1, weight_by_degree = FALSE,
-    prune_reverse = FALSE, progress = "bar", obs = "R", max_search_fraction = 1, epsilon
-    = 0.1),
-  hnsw = list(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE),
-  lsh = list(bucket_size = 500, hash_width = 10, num_probes = 0, projections = 10, tables
-    = 30),
-  kd = list(algorithm = "dual_tree", epsilon = 0, leaf_size = 20, random_basis = FALSE,
-    rho = 0.7, tau = 0, tree_type = "kd"),
-  annoy = list(n_trees = 250, build_on_disk = FALSE)
+  nnd = control_nnd(),
+  hnsw = control_hnsw(),
+  lsh = control_lsh(),
+  kd = control_kd(),
+  annoy = control_annoy()
 )
 }
 \arguments{
@@ -26,21 +19,21 @@ controls_ann(
 
 \item{k_search}{number of neighbours to search,}
 
-\item{nnd}{list of parameters for \code{\link[rnndescent:rnnd_build]{rnndescent::rnnd_build()}} and \code{\link[rnndescent:rnnd_query]{rnndescent::rnnd_query()}},}
+\item{nnd}{parameters for \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query} (should be inside \link{control_nnd} function),}
 
-\item{hnsw}{list of parameters for \code{\link[RcppHNSW:hnsw_build]{RcppHNSW::hnsw_build()}} and \code{\link[RcppHNSW:hnsw_search]{RcppHNSW::hnsw_search()}},}
+\item{hnsw}{parameters for \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search} (should be inside \link{control_hnsw} function),}
 
-\item{lsh}{list of parameters for \code{\link[mlpack:lsh]{mlpack::lsh()}} function,}
+\item{lsh}{parameters for \link[mlpack]{lsh} function (should be inside \link{control_lsh} function),}
 
-\item{kd}{list of kd parameters for \code{\link[mlpack:knn]{mlpack::knn()}} function,}
+\item{kd}{kd parameters for \link[mlpack]{knn} function (should be inside \link{control_kd} function),}
 
-\item{annoy}{list of parameters for \link{RcppAnnoy} package.}
+\item{annoy}{parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside \link{control_annoy} function).}
 }
 \value{
-Returns a list with parameters
+Returns a list with parameters.
 }
 \description{
-Controls for ANN algorithms used in the package
+Controls for ANN algorithms used in the package.
 }
 \author{
 Maciej Beręsewicz

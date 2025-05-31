@@ -1,6 +1,6 @@
 #' @method print blocking
 #' @exportS3Method
-print.blocking <- function(x,...) {
+print.blocking <- function(x, ...) {
 
   blocks_tab <- table(x$result$block)
   block_ids <- rep(as.numeric(names(blocks_tab)), blocks_tab+1)
@@ -9,7 +9,9 @@ print.blocking <- function(x,...) {
   cat("========================================================\n")
   cat("Blocking based on the", x$method, "method.\n")
   cat("Number of blocks: ", length(unique(block_ids)), ".\n",sep="")
-  cat("Number of columns used for blocking: ", NROW(x$colnames), ".\n",sep="")
+  if (x$representation == "shingles") {
+    cat("Number of columns used for blocking: ", NROW(x$colnames), ".\n",sep="")
+  }
   cat("Reduction ratio: ", sprintf("%.4f", rr), ".\n",sep="")
 
   cat("========================================================\n")
@@ -26,4 +28,20 @@ print.blocking <- function(x,...) {
 
   }
   invisible(x)
+}
+
+#' @method print est_block_error
+#' @exportS3Method
+print.est_block_error <- function(x, ...) {
+
+  cat("FPR: ", x$FPR, "\n")
+  cat("FNR: ", x$FNR, "\n")
+
+  cat("========================================================\n")
+
+  if (x$convergence) {
+    cat("EM algorithm converged successfully within", x$iter, "iterations.")
+  } else {
+    cat("EM algorithm did not converge within", x$iter, "iterations.")
+  }
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/method_nnd.R
 \name{method_nnd}
 \alias{method_nnd}
-\title{An internal function to use the NN descent algorithm via the \link{rnndescent} package.}
+\title{An internal function to use the NN descent algorithm via the \link[rnndescent]{rnndescent} package.}
 \usage{
 method_nnd(x, y, k, distance, deduplication, verbose, n_threads, control)
 }
@@ -24,7 +24,7 @@ method_nnd(x, y, k, distance, deduplication, verbose, n_threads, control)
 \item{control}{controls for the NN descent algorithm.}
 }
 \description{
-See details of \link[rnndescent:rnnd_build]{rnndescent::rnnd_build} and \link[rnndescent:rnnd_query]{rnndescent::rnnd_query}.
+See details of \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query}.
 }
 \author{
 Maciej Beręsewicz

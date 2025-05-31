@@ -3,7 +3,7 @@
 #' @importFrom mlpack knn
 #' @importFrom data.table data.table
 #'
-#' @title An internal function to use the LSH and KD-tree algorithm via the [mlpack] package.
+#' @title An internal function to use the LSH and KD-tree algorithm via the \link[mlpack]{mlpack} package.
 #' @author Maciej Beręsewicz
 #'
 #' @param x deduplication or reference data,
@@ -16,7 +16,7 @@
 #' @param control controls for the \code{lsh} or \code{kd} algorithms.
 #'
 #' @description
-#' See details of [mlpack::lsh] and [mlpack::knn]
+#' See details of \link[mlpack]{lsh} and \link[mlpack]{knn}.
 #'
 method_mlpack <- function(x,
                           y,

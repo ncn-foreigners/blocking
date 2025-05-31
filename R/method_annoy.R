@@ -1,4 +1,4 @@
-#' Imports
+#'
 #' @importFrom RcppAnnoy AnnoyAngular
 #' @importFrom RcppAnnoy AnnoyEuclidean
 #' @importFrom RcppAnnoy AnnoyHamming
@@ -6,7 +6,7 @@
 #' @importFrom methods new
 #' @importFrom data.table data.table
 #'
-#' @title An internal function to use Annoy algorithm via the [RcppAnnoy] package.
+#' @title An internal function to use Annoy algorithm via the \link[RcppAnnoy]{RcppAnnoy} package.
 #' @author Maciej Beręsewicz
 #'
 #' @param x deduplication or reference data,
@@ -16,10 +16,10 @@
 #' @param verbose if TRUE, log messages to the console,
 #' @param seed seed for the pseudo-random numbers algorithm,
 #' @param path path to write the index,
-#' @param control controls for \code{new} or \code{build} methods for [RcppAnnoy].
+#' @param control controls for \code{new} or \code{build} methods for \link[RcppAnnoy]{RcppAnnoy}.
 #'
 #' @description
-#' See details of the [RcppAnnoy] package.
+#' See details of the \link[RcppAnnoy]{RcppAnnoy} package.
 #'
 #'
 
@@ -37,10 +37,10 @@ method_annoy <- function(x,
   ncols <- ncol(x)
 
   l_ind <- switch(distance,
-                  "euclidean" = methods::new(RcppAnnoy::AnnoyManhattan, ncols),
+                  "euclidean" = methods::new(RcppAnnoy::AnnoyEuclidean, ncols),
                   "manhatan"  = methods::new(RcppAnnoy::AnnoyManhattan, ncols),
-                  "hamming"   = methods::new(RcppAnnoy::AnnoyHamming,   ncols),
-                  "angular"   = methods::new(RcppAnnoy::AnnoyAngular,   ncols)
+                  "hamming"   = methods::new(RcppAnnoy::AnnoyHamming, ncols),
+                  "angular"   = methods::new(RcppAnnoy::AnnoyAngular, ncols)
   )
 
   l_ind$setSeed(seed)

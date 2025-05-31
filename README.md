@@ -190,7 +190,7 @@ pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>
 
 See section `Data Integration (Statistical Matching and Record Linkage)`
 in [the Official Statistics Task
-View](https://cran.r-project.org/web/views/OfficialStatistics.html).
+View](https://CRAN.R-project.org/view=OfficialStatistics).
 
 Packages that allow blocking:
 

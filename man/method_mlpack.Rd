@@ -29,3 +29,4 @@ See details of \link[mlpack]{lsh} and \link[mlpack]{knn}.
 \author{
 Maciej Beręsewicz
 }
+\keyword{internal}

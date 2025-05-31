@@ -29,3 +29,4 @@ See details of \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query}.
 \author{
 Maciej Beręsewicz
 }
+\keyword{internal}

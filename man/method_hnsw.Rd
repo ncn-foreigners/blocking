@@ -29,3 +29,4 @@ See details of \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search}.
 \author{
 Maciej Beręsewicz
 }
+\keyword{internal}

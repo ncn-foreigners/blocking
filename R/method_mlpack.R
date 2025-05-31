@@ -18,6 +18,7 @@
 #' @description
 #' See details of \link[mlpack]{lsh} and \link[mlpack]{knn}.
 #'
+#' @keywords internal
 method_mlpack <- function(x,
                           y,
                           algo = c("lsh", "kd"),

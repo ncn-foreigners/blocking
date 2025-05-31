@@ -24,7 +24,7 @@
 #' @description
 #' See details of \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search}.
 #'
-#'
+#' @keywords internal
 method_hnsw <- function(x,
                         y,
                         k,

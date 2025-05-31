@@ -18,7 +18,7 @@
 #' @description
 #' See details of \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query}.
 #'
-#'
+#' @keywords internal
 method_nnd <- function(x,
                        y,
                        k,

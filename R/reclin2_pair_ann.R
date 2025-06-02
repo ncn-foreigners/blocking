@@ -1,7 +1,7 @@
 #' @importFrom stats setNames
 #' @import data.table
 #'
-#' @title Integration with the \pkg{reclin2} package
+#' @title Integration with the reclin2 package
 #' @author Maciej Beręsewicz
 #'
 #' @description

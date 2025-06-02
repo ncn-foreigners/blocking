@@ -14,8 +14,8 @@ est_block_error(
   alpha = NULL,
   p = NULL,
   lambda = NULL,
-  tol = 10^(-6),
-  maxiter = 1000,
+  tol = 10^(-4),
+  maxiter = 100,
   sample_size = NULL
 )
 }

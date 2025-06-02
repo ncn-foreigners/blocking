@@ -9,11 +9,6 @@ coverage](https://codecov.io/gh/ncn-foreigners/blocking/branch/main/graph/badge.
 
 # Overview
 
-## Warning!
-
-The package is still being developed, so the API and features may
-change.
-
 ## Description
 
 This R package is designed to block records for data deduplication and
@@ -190,7 +185,7 @@ pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>
 
 See section `Data Integration (Statistical Matching and Record Linkage)`
 in [the Official Statistics Task
-View](https://CRAN.R-project.org/view=OfficialStatistics).
+View](https://cran.r-project.org/web/views/OfficialStatistics.html).
 
 Packages that allow blocking:
 

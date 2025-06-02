@@ -1,5 +1,7 @@
 source("test_data.R")
 
+set.seed(2024)
+
 expect_silent(
   blocking(x = df_example$txt)
 )

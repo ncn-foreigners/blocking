@@ -9,7 +9,7 @@
 #'
 #' @param x reference data (a data.frame or a data.table),
 #' @param y query data  (a data.frame or a data.table, default NULL),
-#' @param on a character vector with column names for the ANN search,
+#' @param on a character with column name or a character vector with column names for the ANN search,
 #' @param deduplication whether deduplication should be performed (default TRUE),
 #' @param keep_block whether to keep the block variable in the set,
 #' @param add_xy whether to add x and y,
@@ -52,8 +52,6 @@ pair_ann <- function(x,
   stopifnot("Only data.frame or data.table is supported" =
               is.data.frame(x) | is.data.table(x))
 
-  stopifnot("Only one `on` is currently supported" = NROW(on) == 1)
-
   if (!is.null(y)) deduplication <- FALSE
 
   if (!is.null(y)){
@@ -65,6 +63,13 @@ pair_ann <- function(x,
 
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
+
+  if (length(on) > 1) {
+    x[, txt := do.call(paste0, .SD), .SDcols = on]
+    y[, txt := do.call(paste0, .SD), .SDcols = on]
+    temp_on <- on
+    on <- "txt"
+  }
 
   block_result  <- blocking::blocking(x = x[[on]],
                                       y = if (deduplication) NULL else y[[on]],
@@ -91,6 +96,7 @@ pair_ann <- function(x,
 
   data.table::setkey(pairs, NULL)
   data.table::setattr(pairs, "class", c("pairs", class(pairs)))
+  on <- temp_on
   setattr(pairs, "blocking_on", on)
 
   if (!keep_block) {

@@ -51,19 +51,6 @@ method_nnd <- function(x,
                                   progress = control$nnd$progress,
                                   obs = control$nnd$obs)
 
-  ## query k dependent on the study
-  ## there is a problem when dataset is small
-
-#   if (deduplication == T) {
-#     k_nnd_query <- k
-#   } else if (nrow(x) < 10) {
-#     k_nnd_query <- k
-#   } else if (nrow(x) < control$k_search) {
-#     k_nnd_query <- nrow(x)
-#   } else {
-#     k_nnd_query <- control$k_search
-#   }
-
   l_1nn <- rnndescent::rnnd_query(index = l_ind,
                                   query = y,
                                   k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
@@ -73,21 +60,6 @@ method_nnd <- function(x,
                                   verbose = verbose,
                                   n_threads = n_threads,
                                   obs = control$nnd$obs)
-
-  # if (!is.null(path)) {
-  #   if (grepl("(/|\\\\)$", path)) {
-  #     path_ann <- paste0(path, "index.hnsw")
-  #     path_ann_cols <- paste0(path, "index-colnames.txt")
-  #   } else {
-  #     path_ann <- paste0(path, "//index.hnsw")
-  #     path_ann_cols <- paste0(path, "//index-colnames.txt")
-  #   }
-  #   if (verbose) {
-  #       cat("Writing an index to `path`\n")
-  #   }
-  #   l_ind$save(path_ann)
-  #   writeLines(colnames(x), path_ann_cols)
-  # }
 
   l_df <- data.table::data.table(y = 1:NROW(y),
                                  x = l_1nn$idx[, k],

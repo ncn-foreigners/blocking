@@ -363,10 +363,6 @@ blocking <- function(x,
     x_df <- x_df[, .SD[1], by = "pair"]
     x_df[, "pair" := NULL]
     x_df <- x_df[x != y]
-  } else {
-    # x_df <- x_df[order(dist)]
-    # x_df <- x_df[!duplicated(y), ]
-    # x_df <- x_df[!duplicated(x), ]
   }
 
   x_df[, x := as.integer(x)]
@@ -403,12 +399,6 @@ blocking <- function(x,
 
     } else {
 
-      #true_blocks <- data.frame(x=1:NROW(identity.RLdata500), block = identity.RLdata500)
-
-      # pairs_to_eval_long <- melt(x_df[, .(x,y,block)], id.vars = c("block"))
-      # pairs_to_eval_long <- unique(pairs_to_eval_long[, .(block_id=block, x=value)])
-      # pairs_to_eval_long[true_blocks, on = "x", true_id := i.block]
-
       eval <- eval_dedup(x_df, true_blocks)
       eval_metrics <- unlist(get_metrics(TP = eval$TP,
                                          FP = eval$FP,
@@ -420,44 +410,6 @@ blocking <- function(x,
                                  TN = eval$TN)
 
     }
-
-    # if (deduplication) {
-    #   candidate_pairs <- RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
-    #
-    #   same_block <- pairs_to_eval_long$block_id[candidate_pairs[, 1]] == pairs_to_eval_long$block_id[candidate_pairs[,2]]
-    #   same_truth <- pairs_to_eval_long$true_id[candidate_pairs[,1]] == pairs_to_eval_long$true_id[candidate_pairs[,2]]
-    #
-    #   confusion <- table(same_block, same_truth)
-    #
-    #   fp <- confusion[2, 1]
-    #   fn <- confusion[1, 2]
-    #   tp <- confusion[2, 2]
-    #   tn <- confusion[1, 1]
-    #   recall <- tp/(fn + tp)
-    #
-    #   eval_metrics <- c(recall = tp / (fn + tp), precision = tp / (tp + fp),
-    #                     fpr = fp / (fp + tn), fnr = fn / (fn + tp),
-    #                     accuracy = (tp + tn) / (tp + tn + fn + fp),
-    #                     specificity = tn / (tn + fp))
-    # }
-
-    # candidate_pairs <- RcppAlgos::comboGeneral(nrow(pairs_to_eval_long), 2,  nThreads=n_threads)
-    #
-    # same_block <- pairs_to_eval_long$block_id[candidate_pairs[, 1]] == pairs_to_eval_long$block_id[candidate_pairs[,2]]
-    # same_truth <- pairs_to_eval_long$true_id[candidate_pairs[,1]] == pairs_to_eval_long$true_id[candidate_pairs[,2]]
-    #
-    # confusion <- table(same_block, same_truth)
-    #
-    # fp <- confusion[2, 1]
-    # fn <- confusion[1, 2]
-    # tp <- confusion[2, 2]
-    # tn <- confusion[1, 1]
-    # recall <- tp/(fn + tp)
-    #
-    # eval_metrics <- c(recall = tp / (fn + tp), precision = tp / (tp + fp),
-    #                   fpr = fp / (fp + tn), fnr = fn / (fn + tp),
-    #                   accuracy = (tp + tn) / (tp + tn + fn + fp),
-    #                   specificity = tn / (tn + fp))
 
   }
 

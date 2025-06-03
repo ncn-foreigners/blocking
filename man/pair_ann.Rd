@@ -19,7 +19,7 @@ pair_ann(
 
 \item{y}{query data  (a data.frame or a data.table, default NULL),}
 
-\item{on}{a character vector with column names for the ANN search,}
+\item{on}{a character with column name or a character vector with column names for the ANN search,}
 
 \item{deduplication}{whether deduplication should be performed (default TRUE),}
 

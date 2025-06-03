@@ -28,13 +28,6 @@ method_mlpack <- function(x,
                           path,
                           control) {
 
-  ## TODO: separate building an index from querying
-
-  ## conversion from sparse to dense matrix
-  ## this should be done with verification of the size
-  ## calculate size based on 8*1e6/(2^20)
-  ## source: https://stackoverflow.com/questions/45332767/how-the-object-size-in-r-are-calculated
-
   x <- as.matrix(x)
   y <- as.matrix(y)
 
@@ -61,20 +54,6 @@ method_mlpack <- function(x,
                                        rho = control$kd$rho,
                                        tau = control$kd$tau,
                                        random_basis = control$kd$random_basis))
-  # if (!is.null(path)) {
-  #   if (grepl("(/|\\\\)$", path)) {
-  #     path_ann <- paste0(path, "index.annoy")
-  #     path_ann_cols <- paste0(path, "index-colnames.txt")
-  #   } else {
-  #     path_ann <- paste0(path, "//index.annoy")
-  #     path_ann_cols <- paste0(path, "//index-colnames.txt")
-  #   }
-  #   if (verbose == 2) {
-  #     cat("Writing an index to `path`\n")
-  #   }
-  #   l_ind$save(path_ann)
-  #   writeLines(colnames(x), path_ann_cols)
-  # }
 
 
   l_df <- data.table::data.table(y = 1:NROW(y),

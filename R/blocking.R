@@ -220,7 +220,7 @@ blocking <- function(x,
     y_dtm <- y
   } else {
 
-    if (verbose %in% 1:2) cat("===== creating tokens =====\n")
+    if ((verbose %in% 1:2) && (representation == "shingles")) cat("===== creating tokens =====\n")
 
     ## vectors
 
@@ -303,7 +303,7 @@ blocking <- function(x,
       cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
                   ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
     } else {
-      cat("===== starting search =====")
+      cat("===== starting search =====\n")
     }
 
   }

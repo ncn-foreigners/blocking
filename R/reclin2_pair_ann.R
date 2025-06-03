@@ -65,10 +65,12 @@ pair_ann <- function(x,
   y <- data.table::as.data.table(y)
 
   if (length(on) > 1) {
-    x[, txt := do.call(paste0, .SD), .SDcols = on]
-    y[, txt := do.call(paste0, .SD), .SDcols = on]
+    x[, "txt" := do.call(paste0, .SD), .SDcols = on]
+    y[, "txt" := do.call(paste0, .SD), .SDcols = on]
     temp_on <- on
     on <- "txt"
+  } else {
+    temp_on <- on
   }
 
   block_result  <- blocking::blocking(x = x[[on]],

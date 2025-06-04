@@ -32,7 +32,10 @@ method_hnsw <- function(x,
                         verbose,
                         n_threads,
                         path,
-                        control) {
+                        control,
+                        seed) {
+
+  set.seed(seed)
 
   ## depending whether x is an
   ## to avoid coping to marix

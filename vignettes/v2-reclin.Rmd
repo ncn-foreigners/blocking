@@ -79,7 +79,6 @@ We randomly select `r as.integer(floor(nrow(census) / 2))` records from `census`
 ```{r}
 set.seed(2024)
 census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
-set.seed(2024)
 cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
 ```
 
@@ -98,7 +97,7 @@ cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, 
 The goal of this exercise is to link units from the CIS dataset to the CENSUS dataset. 
 
 ```{r}
-result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1, seed = 2024)
+result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1)
 ```
 
 Distribution of distances for each pair.
@@ -110,13 +109,13 @@ hist(result1$result$dist, main = "Distribution of distances between pairs", xlab
 Example pairs.
 
 ```{r}
-head(result1$result, n= 10)
+head(result1$result, n = 10)
 ```
 
 Let's take a look at the first pair. Obviously there is a typo in the `pername1` but all the other variables are the same, so it appears to be a match.
 
 ```{r}
-cbind(t(census[1, c(1:7, 9:10)]), t(cis[2606, 1:9]))
+cbind(t(census[1, c(1:7, 9:10)]), t(cis[12088, 1:9]))
 ```
 
 
@@ -136,8 +135,7 @@ So in our example we have `r nrow(matches)` pairs.
 
 ```{r}
 result2 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
-                    true_blocks = matches[, .(x, y, block)],
-                    seed = 2024)
+                    true_blocks = matches[, .(x, y, block)])
 ```
 
 Let's see how our approach handled this problem.
@@ -146,7 +144,7 @@ Let's see how our approach handled this problem.
 result2
 ```
 
-It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.2f",result2$metrics["fnr"]*100)`%. We can see if decreasing the `epsilon` parameter as suggested in the [Nearest Neighbor Descent
+It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.4f",result2$metrics["fnr"]*100)`%. We can see if decreasing the `epsilon` parameter as suggested in the [Nearest Neighbor Descent
 ](https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html) vignette will help. 
 
 
@@ -156,11 +154,10 @@ ann_control_pars$nnd$epsilon <- 0.2
 
 result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], 
-                    control_ann = ann_control_pars,
-                    seed = 2024)
+                    control_ann = ann_control_pars)
 ```
 
-Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FNR to `r sprintf("%.2f",result3$metrics["fnr"]*100)`%.
+Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FNR to `r sprintf("%.4f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3
@@ -171,10 +168,10 @@ Finally, compare the NND and HNSW algorithm for this example.
 ```{r}
 result4 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], 
-                    ann = "hnsw", seed = 2024)
+                    ann = "hnsw")
 ```
 
-It seems that the HNSW algorithm performed better with `r sprintf("%.2f",result4$metrics["fnr"]*100)`% FNR. 
+It seems that the HNSW algorithm performed slightly better with `r sprintf("%.4f",result4$metrics["fnr"]*100)`% FNR. 
 
 ```{r}
 result4

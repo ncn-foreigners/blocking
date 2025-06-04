@@ -57,8 +57,7 @@ head(RLdata500)
 In the next step we use the newly created column in the `blocking` function. If we specify verbose, we get information about the progress.
 
 ```{r}
-set.seed(2024)
-df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE)
+df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE, seed = 2024)
 ```
 
 Results are as follows:

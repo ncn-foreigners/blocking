@@ -109,7 +109,6 @@
 #'
 #' set.seed(2024)
 #' census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
-#' set.seed(2024)
 #' cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
 #'
 #' census[, txt:=paste0(pername1, pername2, sex,
@@ -314,6 +313,7 @@ blocking <- function(x,
                                     k = k,
                                     distance = distance,
                                     deduplication = deduplication,
+                                    seed = seed,
                                     verbose = if (verbose == 2) TRUE else FALSE,
                                     n_threads = n_threads,
                                     control = control_ann),
@@ -321,6 +321,7 @@ blocking <- function(x,
                                       y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
                                       k = k,
                                       distance = distance,
+                                      seed = seed,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       n_threads = n_threads,
                                       path = ann_write,

@@ -26,8 +26,10 @@ method_nnd <- function(x,
                        deduplication,
                        verbose,
                        n_threads,
-                       control) {
+                       control,
+                       seed) {
 
+  set.seed(seed)
   l_ind <- rnndescent::rnnd_build(data = x,
                                   k = if (nrow(x) < control$nnd$k_build) nrow(x) else control$nnd$k_build,
                                   metric = distance,

@@ -90,6 +90,7 @@
 #'
 #' @examples
 #' ## an example proposed by Dasylva and Goussanou (2021)
+#' ## we obtain results very close to those reported in the paper
 #'
 #' set.seed(111)
 #'

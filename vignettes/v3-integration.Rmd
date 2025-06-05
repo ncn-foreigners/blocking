@@ -51,7 +51,7 @@ The package contains function `pair_ann` which aims at integration with `reclin2
 ```{r}
 pair_ann(x = census[1:1000], 
          y = cis[1:1000], 
-         on = "txt",#c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"), 
+         on = c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"), 
          deduplication = FALSE) |>
   head()
 ```
@@ -64,12 +64,12 @@ pair_ann(x = census[1:1000],
          on = c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"), 
          deduplication = FALSE,
          ann = "hnsw") |>
-  compare_pairs(on = "txt",#c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"),
+  compare_pairs(on = c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"),
                 comparators = list(cmp_jarowinkler())) |>
   score_simple("score",
-               on = "txt") |>#c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc")) |>
-  select_threshold("threshold", score = "score", threshold = 0.75) |>
-  link(selection = "threshold") |> 
+               on = c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc")) |>
+  select_threshold("threshold", score = "score", threshold = 6) |>
+  link(selection = "threshold") |>
   head()
 ```
 

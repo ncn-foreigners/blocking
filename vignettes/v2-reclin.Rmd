@@ -144,7 +144,7 @@ Let's see how our approach handled this problem.
 result2
 ```
 
-It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.4f",result2$metrics["fnr"]*100)`%. We can see if decreasing the `epsilon` parameter as suggested in the [Nearest Neighbor Descent
+It seems that the default parameters of the NND method result in an FNR of `r sprintf("%.2f",result2$metrics["fnr"]*100)`%. We can see if decreasing the `epsilon` parameter as suggested in the [Nearest Neighbor Descent
 ](https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html) vignette will help. 
 
 
@@ -157,7 +157,7 @@ result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
                     control_ann = ann_control_pars)
 ```
 
-Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FNR to `r sprintf("%.4f",result3$metrics["fnr"]*100)`%.
+Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the FNR to `r sprintf("%.2f",result3$metrics["fnr"]*100)`%.
 
 ```{r}
 result3
@@ -171,7 +171,7 @@ result4 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
                     ann = "hnsw")
 ```
 
-It seems that the HNSW algorithm performed slightly better with `r sprintf("%.4f",result4$metrics["fnr"]*100)`% FNR. 
+It seems that the HNSW algorithm also performed with `r sprintf("%.2f",result4$metrics["fnr"]*100)`% FNR. 
 
 ```{r}
 result4

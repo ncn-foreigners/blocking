@@ -32,11 +32,6 @@ The package can be used with the
 [reclin2](https://cran.r-project.org/package=reclin2) package via the
 `blocking::pair_ann` function.
 
-## Funding
-
-Work on this package is supported by the National Science Centre, OPUS
-22 grant no. 2020/39/B/HS4/00941.
-
 ## Installation
 
 Install the GitHub blocking package with:
@@ -202,3 +197,8 @@ Other:
   clustering, helper functions.
 - [exchanger](https://github.com/cleanzr/exchanger) – bayesian Entity
   Resolution with Exchangeable Random Partition Priors
+
+## Funding
+
+Work on this package is supported by the National Science Centre, OPUS
+20 grant no. 2020/39/B/HS4/00941.

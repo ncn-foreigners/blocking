@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{controls_txt}
 \alias{controls_txt}
-\title{Controls for processing text data}
+\title{Controls for processing character data}
 \usage{
 controls_txt(
   n_shingles = 2L,
@@ -16,7 +16,7 @@ controls_txt(
 
 \item{n_chunks}{passed to (default \code{10L}),}
 
-\item{lowercase}{should the characters be made lowercase? (default \code{TRUE}),}
+\item{lowercase}{should the characters be made lower-case? (default \code{TRUE}),}
 
 \item{strip_non_alphanum}{should punctuation and white space be stripped? (default \code{TRUE}).}
 }

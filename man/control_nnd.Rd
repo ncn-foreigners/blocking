@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{control_nnd}
 \alias{control_nnd}
-\title{Controls for NND}
+\title{Controls for the NND algorithm}
 \usage{
 control_nnd(
   k_build = 30,

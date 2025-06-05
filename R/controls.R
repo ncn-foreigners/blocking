@@ -1,4 +1,4 @@
-#' @title Controls for HNSW
+#' @title Controls for the HNSW algorithm
 #'
 #' @description
 #' Controls for HNSW algorithm used in the package (see [RcppHNSW::hnsw_build()] and [RcppHNSW::hnsw_search()] for details).
@@ -28,7 +28,7 @@ control_hnsw <- function(M = 25,
          list(...))
 }
 
-#' @title Controls for NND
+#' @title Controls for the NND algorithm
 #'
 #' @description
 #' Controls for NND algorithm used in the package (see \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query} for details).
@@ -108,7 +108,7 @@ control_nnd <- function(k_build = 30,
          list(...))
 }
 
-#' @title Controls for LSH
+#' @title Controls for the LSH algorithm
 #'
 #' @description
 #' Controls for LSH algorithm used in the package (see \link[mlpack]{lsh} for details).
@@ -137,7 +137,7 @@ control_lsh <- function(bucket_size = 10,
          list(...))
 }
 
-#' @title Controls for Annoy
+#' @title Controls for the Annoy algorithm
 #'
 #' @description
 #' Controls for Annoy algorithm used in the package (see \link[RcppAnnoy]{RcppAnnoy} for details).
@@ -157,7 +157,7 @@ control_annoy <- function(n_trees = 250,
          list(...))
 }
 
-#' @title Controls for KD
+#' @title Controls for the k-d tree algorithm
 #'
 #' @description
 #' Controls for KD algorithm used in the package (see \link[mlpack]{knn} for details).
@@ -231,7 +231,7 @@ controls_ann <- function(
         kd = kd)
 }
 
-#' @title Controls for processing text data
+#' @title Controls for processing character data
 #'
 #' @author Maciej Beręsewicz
 #'
@@ -240,7 +240,7 @@ controls_ann <- function(
 #'
 #' @param n_shingles length of shingles (default `2L`),
 #' @param n_chunks passed to (default `10L`),
-#' @param lowercase should the characters be made lowercase? (default `TRUE`),
+#' @param lowercase should the characters be made lower-case? (default `TRUE`),
 #' @param strip_non_alphanum should punctuation and white space be stripped? (default `TRUE`).
 #'
 #' @returns Returns a list with parameters.

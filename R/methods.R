@@ -45,3 +45,4 @@ print.est_block_error <- function(x, ...) {
     cat("EM algorithm did not converge within", x$iter, "iterations.")
   }
 }
+

@@ -2,7 +2,7 @@
 % Please edit documentation in R/blocking.R
 \name{blocking}
 \alias{blocking}
-\title{Block records based on text data.}
+\title{Block records based on character vectors}
 \usage{
 blocking(
   x,

@@ -237,7 +237,6 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">census</span> <span class="op">&lt;-</span> <span class="va">census</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">census</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">census</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cis</span> <span class="op">&lt;-</span> <span class="va">cis</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cis</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cis</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">census</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>,</span></span>
@@ -285,43 +284,43 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 <span class="r-in"><span>    <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            person_id pername1 pername2    sex dob_day dob_mon dob_year</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;char&gt;  &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1: HR802JU071003        I   BUTLER      M      29       5     2004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2: DE921PR018003        C  SIMPSON      F      19       9     2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3: SW791GH013001     RUBY  ROBERTS      F       3      10     1971</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4: PO200HH081002   DARCEY   PARKER   &lt;NA&gt;      19       3     1975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5:  M518DT037003    LEWIS      LEE      M      25      11     1975</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:  M560SZ011007 SCAALETT   WATSON      F       8       4     1940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:  M682HU002004      MAX     WEBB      M       1      12     2006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:   M80NA088002  IBRAHIM    LLOYD      M      25       4     2004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4: EX683DJ021002    ALFLE    LEWLS      M       8       2     1957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:  M432ZZ049003     KARA   CLARKE      F      11      12     2010</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12302: DE921PR017003     ERIN  STEVENS      F      15       4     1969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12303: SW293NE018003    AIDAN    SCOTT      M      12      10     2001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12304: EX264WU014007   SIENNA  JACKSON      F      26       2     1975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12305: HR802JR015002    ABBIE   CARTER      F       3      10     1939</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12306: SW791GH008001   SAMUEL    SMITM      M      25       6     1977</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12302:  M192ER068002    AMBER   COOPER      F       6      11     1952</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12303: SO527SS051003    DAISY   COOPER      F      28       5     1993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12304: LS243GD011001  CAITLIN     WARD      F       3       6     2009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12305: EX683DL043001     LUKE     WEBB      M               2     1953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12306:  M660XT011001    JACOB   HOLMES      M      21       1     1927</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    enumcap  enumpc           cis_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     &lt;char&gt;  &lt;char&gt;           &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:         71 NEW ROAD HR802JU CISHR802JU071003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:    18 ALBERT STREET DE921PR CISDE921PR018003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3:     13 NORTH STREET SW791GH CISSW791GH013001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4:      81 ALBERT ROAD PO200HH CISPO200HH081002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5:   37 HIGHFIELD ROAD  M518DT  CISM518DT037003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:      11 ALBERT ROAD  M560SZ  CISM560SZ011007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:         2 MAIN ROAD  M682HU  CISM682HU002004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:    87 VICTORIA ROAD   M80NA   CISM80NA088002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:      21 FOREST ROAD EX683DJ CISEX683DJ021002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:      49 CHURCH ROAD  M432ZZ  CISM432ZZ049003</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12302:    19 ALBERT STREET DE921PR CISDE921PR017003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12303: 18 MARLBOROUGH ROAD SW293NE CISSW293NE018003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12304: 14 MARLBOROUGH ROAD EX264WU CISEX264WU014007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12305:         15 NEW ROAD HR802JR CISHR802JR015002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12306:      8 NORTH STREET SW791QH CISSW791GH008001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1:               IBUTLERM295200471 NEW ROADHR802JU</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2:         CSIMPSONF199200018 ALBERT STREETDE921PR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3:       RUBYROBERTSF310197113 NORTH STREETSW791GH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4:      DARCEYPARKERNA193197581 ALBERT ROADPO200HH</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     5:        LEWISLEEM2511197537 HIGHFIELD ROADM518DT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12302:      ERINSTEVENSF154196919 ALBERT STREETDE921PR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12303:   AIDANSCOTTM1210200118 MARLBOROUGH ROADSW293NE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12304: SIENNAJACKSONF262197514 MARLBOROUGH ROADEX264WU</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12305:           ABBIECARTERF310193915 NEW ROADHR802JR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12306:        SAMUELSMITMM25619778 NORTH STREETSW791QH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12302:   68 ALEXANDRA ROAD  M192ER  CISM192ER068002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12303:                     SO527SS CISSO527SS051003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12304:     11 THE CRESCENT LS243GD CISLS243GD011001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12305:      43 FOREST ROAD EX683DL CISEX683DL043001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12306: 11 SPRINGFIELD ROAD  M660XT  CISM660XT011001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:    SCAALETTWATSONF84194011 ALBERT ROADM560SZ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:             MAXWEBBM11220062 MAIN ROADM682HU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:    IBRAHIMLLOYDM254200487 VICTORIA ROADM80NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:       ALFLELEWLSM82195721 FOREST ROADEX683DJ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:      KARACLARKEF1112201049 CHURCH ROADM432ZZ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12302:   AMBERCOOPERF611195268 ALEXANDRA ROADM192ER</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12303:                   DAISYCOOPERF2851993SO527SS</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12304:     CAITLINWARDF36200911 THE CRESCENTLS243GD</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12305:          LUKEWEBBM2195343 FOREST ROADEX683DL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12306: JACOBHOLMESM211192711 SPRINGFIELD ROADM660XT</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>x<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="va">.N</span>, <span class="va">person_id</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>                 y <span class="op">=</span> <span class="va">cis</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>y <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">.N</span>, <span class="va">person_id</span><span class="op">)</span><span class="op">]</span>,</span></span>
@@ -330,41 +329,41 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 <span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;person_id&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           person_id     x     y block</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  DE03US001003  1357  6998     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  DE03US005001  9527  5636     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  DE03US006001 10393 10457     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:  DE03US008001  4506  1203     4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  DE03US012002  2706  4384     5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1:  DE03US001003  1357 10248     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2:  DE03US008001  4506  2506     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3:  DE03US012002  2706 12005     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4:  DE03US012003  6317 11103     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    5:  DE03US013003  4388 10673     5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ---                                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6077: SW990JE006001 10966  3259  6077</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6078: SW990JE006004  7192  4120  6078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6079: SW990JE010001  8217  6327  6079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6080: SW990JE011004  4212 10977  6080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6081: SW990JE012001  2331  9335  6081</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5987: SW990JE006001 10966   572  5987</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5988: SW990JE006003  2208  4931  5988</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5989: SW990JE007002  3044  8923  5989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5990: SW990JE010001  8217  2945  5990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5991: SW990JE015001  9104  2312  5991</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result_true_blocks</span> <span class="op">&lt;-</span> <span class="fu">blocking</span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">$</span><span class="va">txt</span>, y <span class="op">=</span> <span class="va">cis</span><span class="op">$</span><span class="va">txt</span>, verbose <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                               true_blocks <span class="op">=</span> <span class="va">matches</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span>,</span></span>
 <span class="r-in"><span>                               seed <span class="op">=</span> <span class="fl">2024</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===== creating tokens =====</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ===== starting search (nnd, x, y: 12671, 12306, t: 1046) =====</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ===== starting search (nnd, x, y: 12671, 12306, t: 1053) =====</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ===== creating graph =====</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result_true_blocks</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Blocking based on the nnd method.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of blocks: 8456.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of columns used for blocking: 1046.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of blocks: 8427.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of columns used for blocking: 1053.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reduction ratio: 0.9999.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution of the size of the blocks:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2    3    4    5    6    7    8    9   10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5597 2089  602  131   27    7    1    1    1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2    3    4    5    6    7    8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5549 2092  612  143   23    6    2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Evaluation metrics (standard):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      recall   precision         fpr         fnr    accuracy specificity </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     99.6374     99.4080      0.0001      0.3626     99.9998     99.9999 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     99.8157     99.4158      0.0001      0.1843     99.9999     99.9999 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    f1_score </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     99.5226 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     99.6153 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -88,8 +88,6 @@ records for record linkage</em> vignette.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">census</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">cis</span><span class="op">)</span></span>
-<span><span class="va">census</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">cis</span><span class="op">[</span>, <span class="va">txt</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">pername1</span>, <span class="va">pername2</span>, <span class="va">sex</span>, <span class="va">dob_day</span>, <span class="va">dob_mon</span>, <span class="va">dob_year</span>, <span class="va">enumcap</span>, <span class="va">enumpc</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">census</span><span class="op">[</span>, <span class="va">x</span><span class="op">:=</span><span class="fl">1</span><span class="op">:</span><span class="va">.N</span><span class="op">]</span></span>
 <span><span class="va">cis</span><span class="op">[</span>, <span class="va">y</span><span class="op">:=</span><span class="fl">1</span><span class="op">:</span><span class="va">.N</span><span class="op">]</span></span></code></pre></div>
 </div>
@@ -102,35 +100,38 @@ follows.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
 <span>         y <span class="op">=</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
-<span>         on <span class="op">=</span> <span class="st">"txt"</span>, </span>
+<span>         on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pername1"</span>, <span class="st">"pername2"</span>, <span class="st">"sex"</span>, <span class="st">"dob_day"</span>, <span class="st">"dob_mon"</span>, <span class="st">"dob_year"</span>, <span class="st">"enumcap"</span>, <span class="st">"enumpc"</span><span class="op">)</span>, </span>
 <span>         deduplication <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   First data set:  1 000 records</span></span>
 <span><span class="co">#&gt;   Second data set: 1 000 records</span></span>
 <span><span class="co">#&gt;   Total number of pairs: 6 pairs</span></span>
-<span><span class="co">#&gt;   Blocking on: 'txt'</span></span>
+<span><span class="co">#&gt;   Blocking on: 'pername1', 'pername2', 'sex', 'dob_day',</span></span>
+<span><span class="co">#&gt;     'dob_mon', 'dob_year', 'enumcap', 'enumpc'</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       .x    .y block</span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1:   177     1     1</span></span>
-<span><span class="co">#&gt; 2:   177   130     1</span></span>
-<span><span class="co">#&gt; 3:   177   867     1</span></span>
-<span><span class="co">#&gt; 4:   535     2     2</span></span>
-<span><span class="co">#&gt; 5:   535    78     2</span></span>
-<span><span class="co">#&gt; 6:   499     3     3</span></span></code></pre></div>
+<span><span class="co">#&gt; 1:   204     1     1</span></span>
+<span><span class="co">#&gt; 2:   204   176     1</span></span>
+<span><span class="co">#&gt; 3:   204   375     1</span></span>
+<span><span class="co">#&gt; 4:   204   391     1</span></span>
+<span><span class="co">#&gt; 5:   204   405     1</span></span>
+<span><span class="co">#&gt; 6:   204   424     1</span></span></code></pre></div>
 <p>Which provides you information on the total number of pairs. This can
-be further included in the pipeline of the <code>reclin2</code>
-package.</p>
+be further included in the pipeline of the <code>reclin2</code> package
+(note that we use a different ANN this time).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_ann.html">pair_ann</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">census</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
 <span>         y <span class="op">=</span> <span class="va">cis</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">]</span>, </span>
-<span>         on <span class="op">=</span> <span class="st">"txt"</span>, </span>
+<span>         on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pername1"</span>, <span class="st">"pername2"</span>, <span class="st">"sex"</span>, <span class="st">"dob_day"</span>, <span class="st">"dob_mon"</span>, <span class="st">"dob_year"</span>, <span class="st">"enumcap"</span>, <span class="st">"enumpc"</span><span class="op">)</span>, </span>
 <span>         deduplication <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>         ann <span class="op">=</span> <span class="st">"hnsw"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/compare_pairs.html" class="external-link">compare_pairs</a></span><span class="op">(</span>on <span class="op">=</span> <span class="st">"txt"</span>, comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/comparators.html" class="external-link">cmp_jarowinkler</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/score_simple.html" class="external-link">score_simple</a></span><span class="op">(</span><span class="st">"score"</span>, on <span class="op">=</span> <span class="st">"txt"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/select_threshold.html" class="external-link">select_threshold</a></span><span class="op">(</span><span class="st">"threshold"</span>, score <span class="op">=</span> <span class="st">"score"</span>, threshold <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/link.html" class="external-link">link</a></span><span class="op">(</span>selection <span class="op">=</span> <span class="st">"threshold"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/compare_pairs.html" class="external-link">compare_pairs</a></span><span class="op">(</span>on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pername1"</span>, <span class="st">"pername2"</span>, <span class="st">"sex"</span>, <span class="st">"dob_day"</span>, <span class="st">"dob_mon"</span>, <span class="st">"dob_year"</span>, <span class="st">"enumcap"</span>, <span class="st">"enumpc"</span><span class="op">)</span>,</span>
+<span>                comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/comparators.html" class="external-link">cmp_jarowinkler</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/score_simple.html" class="external-link">score_simple</a></span><span class="op">(</span><span class="st">"score"</span>,</span>
+<span>               on <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pername1"</span>, <span class="st">"pername2"</span>, <span class="st">"sex"</span>, <span class="st">"dob_day"</span>, <span class="st">"dob_mon"</span>, <span class="st">"dob_year"</span>, <span class="st">"enumcap"</span>, <span class="st">"enumpc"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/select_threshold.html" class="external-link">select_threshold</a></span><span class="op">(</span><span class="st">"threshold"</span>, score <span class="op">=</span> <span class="st">"score"</span>, threshold <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/reclin2/man/link.html" class="external-link">link</a></span><span class="op">(</span>selection <span class="op">=</span> <span class="st">"threshold"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Total number of pairs: 6 pairs</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -151,46 +152,38 @@ package.</p>
 <span><span class="co">#&gt; 4:       1947      22        22 PARK LANE  DE125LU        Park Lane</span></span>
 <span><span class="co">#&gt; 5:       1978      40 40 SPRINGFIELD ROAD  DE256NG Springfield Road</span></span>
 <span><span class="co">#&gt; 6:       1969      35      35 CHURCH ROAD  DE159QY      Church Road</span></span>
-<span><span class="co">#&gt;                 cap_add         census_id</span></span>
-<span><span class="co">#&gt;                  &lt;char&gt;            &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: 39, Springfield Road CENSDE256NG039003</span></span>
-<span><span class="co">#&gt; 2:      62, Church Road CENSDE159QA062001</span></span>
-<span><span class="co">#&gt; 3:   25, Woodlands Road CENSDE237GG025002</span></span>
-<span><span class="co">#&gt; 4:        22, Park Lane CENSDE125LU022001</span></span>
-<span><span class="co">#&gt; 5: 40, Springfield Road CENSDE256NG040002</span></span>
-<span><span class="co">#&gt; 6:      35, Church Road CENSDE159QY035002</span></span>
-<span><span class="co">#&gt;                                               txt.x     x   person_id.y</span></span>
-<span><span class="co">#&gt;                                              &lt;char&gt; &lt;int&gt;        &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: HARRIETTHOMSONF121199539 SPRINGFIELD ROADDE256NG   945 DE256NG039003</span></span>
-<span><span class="co">#&gt; 2:          LEWISGREENM233197362 CHURCH ROADDE159QA   427 DE159QA062001</span></span>
-<span><span class="co">#&gt; 3:       IMOGENDARISF64196825 WOODLANDS ROADDE237GG   720 DE237GG025002</span></span>
-<span><span class="co">#&gt; 4:          DANIECMICCERM214194722 PARK LANEDE125LU   136 DE125LU022001</span></span>
-<span><span class="co">#&gt; 5:     CHLOEWILSONF57197840 SPRINGFIELD ROADDE256NG   949 DE256NG040002</span></span>
-<span><span class="co">#&gt; 6:              AVAKINGF77196935 CHURCH ROADDE159QY   549 DE159QY035002</span></span>
-<span><span class="co">#&gt;    pername1.y pername2.y  sex.y dob_day.y dob_mon.y dob_year.y</span></span>
-<span><span class="co">#&gt;        &lt;char&gt;     &lt;char&gt; &lt;char&gt;    &lt;char&gt;    &lt;char&gt;     &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:    HARRIET    THOMSON      F        12         1       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 2:      LEWIS      GREEN      M        23         3       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 3:     IMOGEW      DAVIS      F         6         4       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4:     DAMIEL     HILLER      M        21         4       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 5:      CHLOE     WILSOM      F         5         7       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 6:        AVA       KING      F         7         7       &lt;NA&gt;</span></span>
-<span><span class="co">#&gt;              enumcap.y enumpc.y           cis_id</span></span>
-<span><span class="co">#&gt;                 &lt;char&gt;   &lt;char&gt;           &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1: 39 SPRINGFIELD ROAD  DE256NG CISDE256NG039003</span></span>
-<span><span class="co">#&gt; 2:      62 CHURCH ROAD  DE159QA CISDE159QA062001</span></span>
-<span><span class="co">#&gt; 3:   25 WOODLANDS ROAD  DE237GG CISDE237GG025002</span></span>
-<span><span class="co">#&gt; 4:        22 PARK LANE  DE125LU CISDE125LU022001</span></span>
-<span><span class="co">#&gt; 5: 40 SPRINGFIELD ROAD  DE256NG CISDE256NG040002</span></span>
-<span><span class="co">#&gt; 6:      35 CHURCH ROAD  DE159QY CISDE159QY035002</span></span>
-<span><span class="co">#&gt;                                             txt.y     y</span></span>
-<span><span class="co">#&gt;                                            &lt;char&gt; &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1: HARRIETTHOMSONF121NA39 SPRINGFIELD ROADDE256NG    11</span></span>
-<span><span class="co">#&gt; 2:          LEWISGREENM233NA62 CHURCH ROADDE159QA    71</span></span>
-<span><span class="co">#&gt; 3:       IMOGEWDAVISF64NA25 WOODLANDS ROADDE237GG    83</span></span>
-<span><span class="co">#&gt; 4:          DAMIELHILLERM214NA22 PARK LANEDE125LU    99</span></span>
-<span><span class="co">#&gt; 5:     CHLOEWILSOMF57NA40 SPRINGFIELD ROADDE256NG   154</span></span>
-<span><span class="co">#&gt; 6:              AVAKINGF77NA35 CHURCH ROADDE159QY   156</span></span></code></pre></div>
+<span><span class="co">#&gt;                 cap_add         census_id     x</span></span>
+<span><span class="co">#&gt;                  &lt;char&gt;            &lt;char&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1: 39, Springfield Road CENSDE256NG039003   945</span></span>
+<span><span class="co">#&gt; 2:      62, Church Road CENSDE159QA062001   427</span></span>
+<span><span class="co">#&gt; 3:   25, Woodlands Road CENSDE237GG025002   720</span></span>
+<span><span class="co">#&gt; 4:        22, Park Lane CENSDE125LU022001   136</span></span>
+<span><span class="co">#&gt; 5: 40, Springfield Road CENSDE256NG040002   949</span></span>
+<span><span class="co">#&gt; 6:      35, Church Road CENSDE159QY035002   549</span></span>
+<span><span class="co">#&gt;                                               txt.x   person_id.y pername1.y</span></span>
+<span><span class="co">#&gt;                                              &lt;char&gt;        &lt;char&gt;     &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: HARRIETTHOMSONF121199539 SPRINGFIELD ROADDE256NG DE256NG039003    HARRIET</span></span>
+<span><span class="co">#&gt; 2:          LEWISGREENM233197362 CHURCH ROADDE159QA DE159QA062001      LEWIS</span></span>
+<span><span class="co">#&gt; 3:       IMOGENDARISF64196825 WOODLANDS ROADDE237GG DE237GG025002     IMOGEW</span></span>
+<span><span class="co">#&gt; 4:          DANIECMICCERM214194722 PARK LANEDE125LU DE125LU022001     DAMIEL</span></span>
+<span><span class="co">#&gt; 5:     CHLOEWILSONF57197840 SPRINGFIELD ROADDE256NG DE256NG040002      CHLOE</span></span>
+<span><span class="co">#&gt; 6:              AVAKINGF77196935 CHURCH ROADDE159QY DE159QY035002        AVA</span></span>
+<span><span class="co">#&gt;    pername2.y  sex.y dob_day.y dob_mon.y dob_year.y           enumcap.y</span></span>
+<span><span class="co">#&gt;        &lt;char&gt; &lt;char&gt;    &lt;char&gt;    &lt;char&gt;     &lt;char&gt;              &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:    THOMSON      F        12         1            39 SPRINGFIELD ROAD</span></span>
+<span><span class="co">#&gt; 2:      GREEN      M        23         3                 62 CHURCH ROAD</span></span>
+<span><span class="co">#&gt; 3:      DAVIS      F         6         4              25 WOODLANDS ROAD</span></span>
+<span><span class="co">#&gt; 4:     HILLER      M        21         4                   22 PARK LANE</span></span>
+<span><span class="co">#&gt; 5:     WILSOM      F         5         7            40 SPRINGFIELD ROAD</span></span>
+<span><span class="co">#&gt; 6:       KING      F         7         7                 35 CHURCH ROAD</span></span>
+<span><span class="co">#&gt;    enumpc.y           cis_id     y                                        txt.y</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;           &lt;char&gt; &lt;int&gt;                                       &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:  DE256NG CISDE256NG039003    11 HARRIETTHOMSONF12139 SPRINGFIELD ROADDE256NG</span></span>
+<span><span class="co">#&gt; 2:  DE159QA CISDE159QA062001    71          LEWISGREENM23362 CHURCH ROADDE159QA</span></span>
+<span><span class="co">#&gt; 3:  DE237GG CISDE237GG025002    83       IMOGEWDAVISF6425 WOODLANDS ROADDE237GG</span></span>
+<span><span class="co">#&gt; 4:  DE125LU CISDE125LU022001    99          DAMIELHILLERM21422 PARK LANEDE125LU</span></span>
+<span><span class="co">#&gt; 5:  DE256NG CISDE256NG040002   154     CHLOEWILSOMF5740 SPRINGFIELD ROADDE256NG</span></span>
+<span><span class="co">#&gt; 6:  DE159QY CISDE159QY035002   156              AVAKINGF7735 CHURCH ROADDE159QY</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage-with-fastlink-package">Usage with <code>fastLink</code> package<a class="anchor" aria-label="anchor" href="#usage-with-fastlink-package"></a>

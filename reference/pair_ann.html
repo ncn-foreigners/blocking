@@ -34,7 +34,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Integration with the <span class="pkg">reclin2</span> package</h1>
+      <h1>Integration with the reclin2 package</h1>
       <small class="dont-index">Source: <a href="https://github.com/ncn-foreigners/blocking/blob/main/R/reclin2_pair_ann.R" class="external-link"><code>R/reclin2_pair_ann.R</code></a></small>
       <div class="d-none name"><code>pair_ann.Rd</code></div>
     </div>
@@ -49,7 +49,6 @@
 <span>  <span class="va">x</span>,</span>
 <span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">on</span>,</span>
-<span>  on_blocking <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  deduplication <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  keep_block <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  add_xy <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -70,11 +69,7 @@
 
 
 <dt id="arg-on">on<a class="anchor" aria-label="anchor" href="#arg-on"></a></dt>
-<dd><p>a character vector with column names for the ANN search,</p></dd>
-
-
-<dt id="arg-on-blocking">on_blocking<a class="anchor" aria-label="anchor" href="#arg-on-blocking"></a></dt>
-<dd><p>blocking variables (currently not supported),</p></dd>
+<dd><p>a character with column name or a character vector with column names for the ANN search,</p></dd>
 
 
 <dt id="arg-deduplication">deduplication<a class="anchor" aria-label="anchor" href="#arg-deduplication"></a></dt>

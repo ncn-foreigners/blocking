@@ -1,6 +1,6 @@
 Package: blocking
 Type: Package
-Title: Deduplication / Entity Resolution with Record Blocking
+Title: Various blocking methods for entity resolution
 Version: 1.0.0
 Authors@R: 
   c(person(given = "Maciej",

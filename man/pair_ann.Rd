@@ -2,13 +2,12 @@
 % Please edit documentation in R/reclin2_pair_ann.R
 \name{pair_ann}
 \alias{pair_ann}
-\title{Integration with the \pkg{reclin2} package}
+\title{Integration with the reclin2 package}
 \usage{
 pair_ann(
   x,
   y = NULL,
   on,
-  on_blocking = NULL,
   deduplication = TRUE,
   keep_block = TRUE,
   add_xy = TRUE,
@@ -20,9 +19,7 @@ pair_ann(
 
 \item{y}{query data  (a data.frame or a data.table, default NULL),}
 
-\item{on}{a character vector with column names for the ANN search,}
-
-\item{on_blocking}{blocking variables (currently not supported),}
+\item{on}{a character with column name or a character vector with column names for the ANN search,}
 
 \item{deduplication}{whether deduplication should be performed (default TRUE),}
 

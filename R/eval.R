@@ -39,13 +39,9 @@ eval_reclin <- function(pred_df, true_df) {
                                              length.out = sum(is.na(pred_y$block)))
   }
 
-  # n_pred <- length(unique(c(pred_x$block, pred_y$block)))
-  # n_true <- length(unique(c(true_x$block, true_y$block)))
   n1 <- max(c(pred_x$block, pred_y$block))
   n2 <- max(c(true_x$block, true_y$block))
 
-  # cx <- Matrix::sparseMatrix(i = pred_x$block, j = true_x$block, x = 1, dims = c(n_pred, n_true))
-  # cy <- Matrix::sparseMatrix(i = pred_y$block, j = true_y$block, x = 1, dims = c(n_pred, n_true))
   cx <- Matrix::sparseMatrix(i = pred_x$block, j = true_x$block, x = 1, dims = c(n1, n2))
   cy <- Matrix::sparseMatrix(i = pred_y$block, j = true_y$block, x = 1, dims = c(n1, n2))
 

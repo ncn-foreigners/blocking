@@ -110,6 +110,7 @@ where \eqn{E[p(v_i)] = \sum_{g=1}^G\alpha_gp_g} and \eqn{E[\lambda(v_i)] = \sum_
 }
 \examples{
 ## an example proposed by Dasylva and Goussanou (2021)
+## we obtain results very close to those reported in the paper
 
 set.seed(111)
 

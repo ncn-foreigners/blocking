@@ -4,7 +4,7 @@
 \alias{method_nnd}
 \title{An internal function to use the NN descent algorithm via the \link[rnndescent]{rnndescent} package.}
 \usage{
-method_nnd(x, y, k, distance, deduplication, verbose, n_threads, control)
+method_nnd(x, y, k, distance, deduplication, verbose, n_threads, control, seed)
 }
 \arguments{
 \item{x}{deduplication or reference data,}

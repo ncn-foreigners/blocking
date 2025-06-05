@@ -4,7 +4,7 @@
 \alias{method_hnsw}
 \title{An internal function to use HNSW algorithm via the RcppHNSW package.}
 \usage{
-method_hnsw(x, y, k, distance, verbose, n_threads, path, control)
+method_hnsw(x, y, k, distance, verbose, n_threads, path, control, seed)
 }
 \arguments{
 \item{x}{deduplication or reference data,}

@@ -133,7 +133,6 @@ data(cis)
 
 set.seed(2024)
 census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
-set.seed(2024)
 cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
 
 census[, txt:=paste0(pername1, pername2, sex,

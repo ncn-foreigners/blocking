@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{control_lsh}
 \alias{control_lsh}
-\title{Controls for LSH}
+\title{Controls for the LSH algorithm}
 \usage{
 control_lsh(
   bucket_size = 10,

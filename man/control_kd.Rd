@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{control_kd}
 \alias{control_kd}
-\title{Controls for KD}
+\title{Controls for the k-d tree algorithm}
 \usage{
 control_kd(
   algorithm = "dual_tree",

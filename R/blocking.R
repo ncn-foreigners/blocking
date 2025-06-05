@@ -16,7 +16,7 @@
 #' @importFrom utils unzip
 #'
 #'
-#' @title Block records based on text data.
+#' @title Block records based on character vectors
 #'
 #' @author Maciej Beręsewicz, Adam Struzik
 #'

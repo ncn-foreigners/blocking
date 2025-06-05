@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{control_hnsw}
 \alias{control_hnsw}
-\title{Controls for HNSW}
+\title{Controls for the HNSW algorithm}
 \usage{
 control_hnsw(M = 25, ef_c = 200, ef_s = 200, grain_size = 1, byrow = TRUE, ...)
 }

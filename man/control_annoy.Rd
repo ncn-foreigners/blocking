@@ -2,7 +2,7 @@
 % Please edit documentation in R/controls.R
 \name{control_annoy}
 \alias{control_annoy}
-\title{Controls for Annoy}
+\title{Controls for the Annoy algorithm}
 \usage{
 control_annoy(n_trees = 250, build_on_disk = FALSE, ...)
 }

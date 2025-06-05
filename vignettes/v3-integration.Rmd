@@ -38,8 +38,6 @@ In the example we will use the same dataset as in the *Blocking records for reco
 ```{r}
 data(census)
 data(cis)
-census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
-cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
 census[, x:=1:.N]
 cis[, y:=1:.N]
 ```

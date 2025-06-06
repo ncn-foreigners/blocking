@@ -68,13 +68,6 @@
 #'
 #' result
 #'
-#' ## an example using mlpack::lsh
-#'
-#' result_lsh <- blocking(x = df_example$txt,
-#'                        ann = "lsh")
-#'
-#' result_lsh
-#'
 #' ## an example using GloVe and RcppAnnoy
 #' \dontrun{
 #' options(timeout = 500)
@@ -101,31 +94,6 @@
 #'
 #' result_annoy
 #' }
-#'
-#' ## an example with the NN descent algorithm and true blocks
-#'
-#' data(census)
-#' data(cis)
-#'
-#' set.seed(2024)
-#' census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
-#' cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
-#'
-#' census[, txt:=paste0(pername1, pername2, sex,
-#'        dob_day, dob_mon, dob_year, enumcap, enumpc)]
-#' cis[, txt:=paste0(pername1, pername2, sex,
-#'     dob_day, dob_mon, dob_year, enumcap, enumpc)]
-#'
-#' matches <- merge(x = census[, .(x=1:.N, person_id)],
-#'                  y = cis[, .(y = 1:.N, person_id)],
-#'                  by = "person_id")
-#' matches[, block:=1:.N]
-#'
-#' result_true_blocks <- blocking(x = census$txt, y = cis$txt, verbose = 1,
-#'                                true_blocks = matches[, .(x, y, block)],
-#'                                seed = 2024)
-#'
-#' result_true_blocks
 #'
 #' @export
 blocking <- function(x,

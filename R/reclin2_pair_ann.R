@@ -23,8 +23,6 @@
 #'
 #' # example using two datasets from reclin2
 #'
-#' library(reclin2)
-#'
 #' data("linkexample1", "linkexample2", package = "reclin2")
 #'
 #' linkexample1$txt <- with(linkexample1, tolower(paste0(firstname, lastname, address, sex, postcode)))

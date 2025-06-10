@@ -70,6 +70,7 @@
 #'
 #' ## an example using GloVe and RcppAnnoy
 #' \dontrun{
+#' old <- getOption("timeout")
 #' options(timeout = 500)
 #' utils::download.file("https://nlp.stanford.edu/data/glove.6B.zip", destfile = "glove.6B.zip")
 #' utils::unzip("glove.6B.zip")
@@ -93,6 +94,8 @@
 #'                          model = glove_vectors)
 #'
 #' result_annoy
+#'
+#' options(timeout = old)
 #' }
 #'
 #' @export

@@ -12,7 +12,7 @@ Authors@R:
              family = "Struzik",
              role = c("aut", "ctr"),
              email = "adastr5@st.amu.edu.pl"))
-Description: An R package that uses various approximate nearest neighbours algorithms and graphs to block records for data deduplication / record linkage / entity resolution.
+Description: Data deduplication, record linkage, and entity resolution with blocking of records. The package supports generating shingles or vectors with a given model, applying approximate nearest neighbour (ANN) algorithms, and constructing blocks using graph techniques. Available ANN algorithms are provided by the following packages: 'rnndescent' <https://cran.r-project.org/package=rnndescent>, 'RcppHNSW' <https://cran.r-project.org/package=RcppHNSW>, 'RcppAnnoy' <https://cran.r-project.org/package=RcppAnnoy>, and 'mlpack' <https://cran.r-project.org/package=mlpack>. The 'blocking' package provides evaluation metrics when true blocks are known, as well as estimators for the false positive rate (FPR) and false negative rate (FNR) in record linkage. More details can be found in: Papadakis et al. (2020) <doi:10.1145/3377455>, Steorts et al. (2014) <doi:10.1007/978-3-319-11257-2_20>, Dasylva and Goussanou (2021) <https://www150.statcan.gc.ca/n1/en/catalogue/12-001-X202100200002>, Dasylva and Goussanou (2022) <doi:10.1007/s42081-022-00153-3>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -40,6 +40,10 @@ Function for the integration with the \pkg{reclin2} package. The function is bas
 
 # example using two datasets from reclin2
 
+\donttest{
+if (requireNamespace("reclin2", quietly = TRUE)) {
+
+library(reclin2)
 data("linkexample1", "linkexample2", package = "reclin2")
 
 linkexample1$txt <- with(linkexample1, tolower(paste0(firstname, lastname, address, sex, postcode)))
@@ -54,7 +58,8 @@ compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
 score_simple("score", on = "txt") |>
 select_threshold("threshold", score = "score", threshold = 0.75) |>
 link(selection = "threshold")
-
+}
+}
 }
 \author{
 Maciej Beręsewicz

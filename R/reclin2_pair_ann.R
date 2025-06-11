@@ -23,6 +23,10 @@
 #'
 #' # example using two datasets from reclin2
 #'
+#' \donttest{
+#' if (requireNamespace("reclin2", quietly = TRUE)) {
+#'
+#' library(reclin2)
 #' data("linkexample1", "linkexample2", package = "reclin2")
 #'
 #' linkexample1$txt <- with(linkexample1, tolower(paste0(firstname, lastname, address, sex, postcode)))
@@ -37,7 +41,8 @@
 #' score_simple("score", on = "txt") |>
 #' select_threshold("threshold", score = "score", threshold = 0.75) |>
 #' link(selection = "threshold")
-#'
+#' }
+#' }
 #' @export
 pair_ann <- function(x,
                      y = NULL,

@@ -27,7 +27,7 @@ It supports the following R packages that bind to specific ANN algorithms:
 + [rnndescent](https://cran.r-project.org/package=rnndescent) (default, very powerful, supports sparse matrices),
 + [RcppHNSW](https://cran.r-project.org/package=RcppHNSW) (powerful but does not support sparse matrices), 
 + [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy), 
-+ [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see `mlpack::lsh` and `mlpack::knn`).
++ [mlpack](https://cran.r-project.org/package=mlpack) (see `mlpack::lsh` and `mlpack::knn`).
 
 The package can be used with the [reclin2](https://cran.r-project.org/package=reclin2) package via the `blocking::pair_ann` function.
 

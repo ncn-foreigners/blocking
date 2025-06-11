@@ -25,8 +25,8 @@ algorithms:
 - [RcppHNSW](https://cran.r-project.org/package=RcppHNSW) (powerful but
   does not support sparse matrices),
 - [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy),
-- [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
-  `mlpack::lsh` and `mlpack::knn`).
+- [mlpack](https://cran.r-project.org/package=mlpack) (see `mlpack::lsh`
+  and `mlpack::knn`).
 
 The package can be used with the
 [reclin2](https://cran.r-project.org/package=reclin2) package via the
@@ -48,7 +48,8 @@ Load packages for the examples
 ``` r
 library(blocking)
 library(reclin2)
-#> Loading required package: data.table
+#> Ładowanie wymaganego pakietu: data.table
+#> data.table 1.17.0 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
 ```
 
 Generate simple data with three groups (`df_example`) and reference data

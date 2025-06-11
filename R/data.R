@@ -11,7 +11,7 @@
 #' @format A `data.table` with 500 records. Each row represents one record, with the following columns:
 #'
 #' \itemize{
-#' \item{`fname_cq` -- first name, first component,}
+#' \item{`fname_c1` -- first name, first component,}
 #' \item{`fname_c2` -- first name, second component,}
 #' \item{`lname_c1` -- last name, first component,}
 #' \item{`lname_c2` -- last name, second component,}

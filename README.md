@@ -48,8 +48,7 @@ Load packages for the examples
 ``` r
 library(blocking)
 library(reclin2)
-#> Ładowanie wymaganego pakietu: data.table
-#> data.table 1.17.0 using 6 threads (see ?getDTthreads).  Latest news: r-datatable.com
+#> Loading required package: data.table
 ```
 
 Generate simple data with three groups (`df_example`) and reference data

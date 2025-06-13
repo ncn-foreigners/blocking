@@ -1,7 +1,7 @@
 Package: blocking
 Type: Package
 Title: Various Blocking Methods for Entity Resolution
-Version: 1.0.0
+Version: 1.0.9001
 Authors@R: 
   c(person(given = "Maciej",
              family = "Beręsewicz",

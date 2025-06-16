@@ -48,7 +48,7 @@ blocking(
 
 \item{ann_colnames}{file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),}
 
-\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from \link[igraph]{compare} are returned).}
+\item{true_blocks}{matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).}
 
 \item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),}
 

@@ -4,12 +4,10 @@
 #' @importFrom text2vec create_vocabulary
 #' @importFrom text2vec vocab_vectorizer
 #' @importFrom text2vec create_dtm
-#' @importFrom igraph graph_from_adjacency_matrix
+#' @importFrom tokenizers tokenize_character_shingles
 #' @importFrom igraph components
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom igraph make_clusters
-#' @importFrom igraph compare
-#' @importFrom RcppAlgos comboGeneral
 #' @importFrom stats dist
 #' @importFrom readr read_table
 #' @importFrom utils download.file
@@ -36,7 +34,7 @@
 #' @param distance distance metric (default \code{cosine}, more options are possible see details),
 #' @param ann_write writing an index to file. Two files will be created: 1) an index, 2) and text file with column names,
 #' @param ann_colnames file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),
-#' @param true_blocks matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix as well as all metrics from \link[igraph]{compare} are returned).
+#' @param true_blocks matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).
 #' @param verbose whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),
 #' @param graph whether a graph should be returned (default FALSE),
 #' @param seed seed for the algorithms (for reproducibility),

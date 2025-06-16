@@ -29,7 +29,6 @@ Imports:
     rnndescent,
     igraph,
     data.table,
-    RcppAlgos,
     methods,
     readr,
     utils,

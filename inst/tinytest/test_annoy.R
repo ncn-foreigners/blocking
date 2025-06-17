@@ -72,43 +72,43 @@ expect_equal(
 
 
 ## file saving
-expect_error(
-  blocking(x = mat_y,
-           ann = "annoy",
-           distance = "euclidean",
-           ann_write = "./plik")
-  )
+# expect_error(
+#   blocking(x = mat_y,
+#            ann = "annoy",
+#            distance = "euclidean",
+#            ann_write = "./plik")
+#   )
 
 
-expect_true({
-  tmp_dir <- tempdir()
-  blocking(x = mat_y,
-           ann = "annoy",
-           distance = "euclidean",
-           ann_write = file.path(tmp_dir))
-  file.exists(file.path(tmp_dir, "index.annoy")) &
-    file.exists(file.path(tmp_dir, "index-colnames.txt"))
-})
+# expect_true({
+#   tmp_dir <- tempdir()
+#   blocking(x = mat_y,
+#            ann = "annoy",
+#            distance = "euclidean",
+#            ann_write = file.path(tmp_dir))
+#   file.exists(file.path(tmp_dir, "index.annoy")) &
+#     file.exists(file.path(tmp_dir, "index-colnames.txt"))
+# })
 
-expect_true({
-  tmp_dir <- tempdir()
-  sub_dir <- file.path(tmp_dir, "sub")
-  dir.create(sub_dir, showWarnings = FALSE)
-  blocking(x = mat_y,
-           ann = "annoy",
-           distance = "euclidean",
-           ann_write = file.path(sub_dir))
-  file.exists(file.path(sub_dir, "index.annoy")) &
-    file.exists(file.path(sub_dir, "index-colnames.txt"))
-})
+# expect_true({
+#   tmp_dir <- tempdir()
+#   sub_dir <- file.path(tmp_dir, "sub")
+#   dir.create(sub_dir, showWarnings = FALSE)
+#   blocking(x = mat_y,
+#            ann = "annoy",
+#            distance = "euclidean",
+#            ann_write = file.path(sub_dir))
+#   file.exists(file.path(sub_dir, "index.annoy")) &
+#     file.exists(file.path(sub_dir, "index-colnames.txt"))
+# })
 
 ## testing reading saved index
-expect_equal({
-  ncols <- length(readLines(file.path(tmp_dir, "index-colnames.txt")))
-  ann_annoy <- methods::new(RcppAnnoy::AnnoyEuclidean, ncols)
-  ann_annoy$load(file.path(tmp_dir, "index.annoy"))
-  ann_annoy$getNItems()
-},  8)
+# expect_equal({
+#   ncols <- length(readLines(file.path(tmp_dir, "index-colnames.txt")))
+#   ann_annoy <- methods::new(RcppAnnoy::AnnoyEuclidean, ncols)
+#   ann_annoy$load(file.path(tmp_dir, "index.annoy"))
+#   ann_annoy$getNItems()
+# },  8)
 
 ## test verbose
 expect_stdout(

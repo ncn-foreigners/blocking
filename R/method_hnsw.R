@@ -6,8 +6,6 @@
 #' @importFrom RcppHNSW HnswIp
 #' @importFrom data.table data.table
 #' @importFrom methods new
-#' @importFrom utils setTxtProgressBar
-#' @importFrom utils txtProgressBar
 #'
 #' @title An internal function to use HNSW algorithm via the RcppHNSW package.
 #' @author Maciej Beręsewicz

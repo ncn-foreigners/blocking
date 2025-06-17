@@ -12,7 +12,7 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/blocking)](https://cran
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/blocking)](https://cran.r-project.org/package=blocking)
 [![Mentioned in Awesome Official
-Statistics](https://awesome.re/mentioned-badge.svg)](http://www.awesomeofficialstatistics.org)
+Statistics](https://awesome.re/mentioned-badge.svg)](https://github.com/SNStatComp/awesome-official-statistics-software)
 
 <!-- badges: end -->
 
@@ -22,7 +22,7 @@ Statistics](https://awesome.re/mentioned-badge.svg)](http://www.awesomeofficials
 
 This R package is designed to block records for data deduplication and
 record linkage (also known as entity resolution) using [approximate
-nearest neighbours algorithms
+nearest neighbor algorithms
 (ANN)](https://en.wikipedia.org/wiki/Nearest_neighbor_search) and graphs
 (via the `igraph` package).
 
@@ -43,16 +43,22 @@ The package can be used with the
 
 ## Installation
 
-Install the GitHub blocking package with:
+Install the stable version from CRAN:
 
 ``` r
-# install.packages("remotes") # uncomment if needed
-remotes::install_github("ncn-foreigners/blocking")
+install.packages("blocking") 
+```
+
+You can also install the development version from GitHub:
+
+``` r
+# install.packages("pak") # uncomment if needed
+pak::pkg_install("ncn-foreigners/blocking")
 ```
 
 ## Basic usage
 
-Load packages for the examples
+Load packages for the examples:
 
 ``` r
 library(blocking)
@@ -61,7 +67,7 @@ library(reclin2)
 ```
 
 Generate simple data with three groups (`df_example`) and reference data
-(`df_base`).
+(`df_base`):
 
 ``` r
 df_example <- data.frame(txt = c(
@@ -75,7 +81,6 @@ df_example <- data.frame(txt = c(
   "monty"
 ))
 df_base <- data.frame(txt = c("montypython", "kowalskijan", "other"))
-
 df_example
 #>               txt
 #> 1     jankowalski
@@ -86,7 +91,6 @@ df_example
 #> 6     pythonmonty
 #> 7 cyrkmontypython
 #> 8           monty
-
 df_base
 #>           txt
 #> 1 montypython
@@ -97,13 +101,12 @@ df_base
 Deduplication using the `blocking` function. Output contains
 information:
 
-- the method used (where `nnd` which refers to the NN descent
-  algorithm),
+- the method used (`nnd` refers to the NN descent algorithm),
 - number of blocks created (here 2 blocks),
-- number of columns used for blocking, i.e. how many shingles were
-  created by `text2vec` package (here 28),
-- reduction ratio, i.e. how large is the reduction of comparison pairs
-  (here 0.5714 which means blocking reduces comparison by over 57%).
+- number of columns used for blocking, i.e., how many shingles were
+  created by the `text2vec` package (here 28),
+- reduction ratio, i.e., how large the reduction of comparison pairs is
+  (here 0.5714, which means blocking reduces comparisons by over 57%).
 
 ``` r
 blocking_result <- blocking(x = df_example$txt)
@@ -138,7 +141,7 @@ blocking_result$result
 ```
 
 Deduplication using the `pair_ann` function for integration with the
-`reclin2` package. Use the pipeline with the `reclin2` package.
+`reclin2` package. Use the pipeline with the `reclin2` package:
 
 ``` r
 pair_ann(x = df_example, on = "txt") |>
@@ -162,7 +165,7 @@ pair_ann(x = df_example, on = "txt") |>
 ```
 
 Linking records using the same function where `df_base` is the
-“register” and `df_example` is the reference (data).
+“register” and `df_example` is the reference data:
 
 ``` r
 pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>
@@ -196,16 +199,16 @@ Packages that allow blocking:
 - [klsh](https://CRAN.R-project.org/package=klsh) – k-means locality
   sensitive hashing,
 - [reclin2](https://CRAN.R-project.org/package=reclin2) –
-  `pair_blocking`, `pari_minsim` functions,
+  `pair_blocking`, `pair_minsim` functions,
 - [fastLink](https://CRAN.R-project.org/package=fastLink) – `blockData`
   function.
 
 Other:
 
 - [clevr](https://CRAN.R-project.org/package=clevr) – evaluation of
-  clustering, helper functions.
-- [exchanger](https://github.com/cleanzr/exchanger) – bayesian Entity
-  Resolution with Exchangeable Random Partition Priors
+  clustering, helper functions,
+- [exchanger](https://github.com/cleanzr/exchanger) – Bayesian Entity
+  Resolution with Exchangeable Random Partition Priors.
 
 ## Funding
 

@@ -1,5 +1,11 @@
 # development
 
+# version 1.0.1
+
++ Fixing cran errors
++ [Awesome Official Statistics](http://www.awesomeofficialstatistics.org) badge added
++ Removed unnecessary dependence on the `RcppAlgos` package 
+
 # version 1.0.0
 
 + Added support for word embeddings.

@@ -122,8 +122,11 @@ blocking_result
 #> 2
 ```
 
-Table with blocking results contains: + row numbers from the original
-data, + block number (integers), + distance (from the ANN algorithm).
+Table with blocking results contains:
+
+- row numbers from the original data,
+- block number (integers),
+- distance (from the ANN algorithm).
 
 ``` r
 blocking_result$result

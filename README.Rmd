@@ -92,6 +92,7 @@ blocking_result
 ```
 
 Table with blocking results contains:
+
 + row numbers from the original data,
 + block number (integers),
 + distance (from the ANN algorithm).

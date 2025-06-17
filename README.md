@@ -43,11 +43,17 @@ The package can be used with the
 
 ## Installation
 
-Install the GitHub blocking package with:
+Install stable version from CRAN
 
 ``` r
-# install.packages("remotes") # uncomment if needed
-remotes::install_github("ncn-foreigners/blocking")
+install.packages("blocking") 
+```
+
+You can also install the development version from github
+
+``` r
+# install.packages("pak") # uncomment if needed
+pak::pkg_install("ncn-foreigners/blocking")
 ```
 
 ## Basic usage

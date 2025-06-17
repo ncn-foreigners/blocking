@@ -3,7 +3,7 @@
 # version 1.0.1
 
 + Fixed CRAN errors
-+ [Awesome Official Statistics](http://www.awesomeofficialstatistics.org) badge added
++ [Awesome Official Statistics](https://github.com/SNStatComp/awesome-official-statistics-software) badge added
 + Removed unnecessary dependency on the `RcppAlgos` package
 
 # version 1.0.0

@@ -1,5 +1,6 @@
 #' @importFrom stats dpois
 #' @importFrom stats runif
+#' @importFrom stats AIC
 #'
 #' @title Estimate errors due to blocking in record linkage
 #'
@@ -11,25 +12,34 @@
 #' @param x Reference data (required if `n` and `N` are not provided).
 #' @param y Query data (required if `n` is not provided).
 #' @param blocking_result `data.frame` or `data.table` containing blocking results (required if `n` is not provided).
+#' It must contain a column named `y` storing the indices of the records in the query data set.
 #' @param n Integer vector of numbers of accepted pairs formed by each record in the query data set
 #' with records in the reference data set, based on blocking criteria (if `NULL`, derived from `blocking_result`).
 #' @param N Total number of records in the reference data set (if `NULL`, derived as `length(x)`).
-#' @param G Number of classes in the finite mixture model.
+#' @param G Integer or vector of integers. Number of classes in the finite mixture model.
+#' If `G` is a vector, the optimal number of classes is selected from the provided values
+#' based on the Akaike Information Criterion (AIC).
 #' @param alpha Numeric vector of initial class proportions (length `G`; if `NULL`, initialized as `rep(1/G, G)`).
 #' @param p Numeric vector of initial matching probabilities in each class of the mixture model
-#' (length `G`; if `NULL`, randomly initialized from `runif(G, 0.5, 1)`).
+#' (length `G`; if `NULL`, randomly initialized from `runif(G, 0.5, 1)` or `rep(runif(1, 0.5, 1), G)`,
+#' depending on the parameter `equal_p`).
 #' @param lambda Numeric vector of initial Poisson distribution parameters for non-matching records in each class of the mixture model
 #' (length `G`; if `NULL`, randomly initialized from `runif(G, 0.1, 2)`).
-#' @param tol Convergence tolerance for the EM algorithm (default `10^(-6)`).
-#' @param maxiter Maximum number of iterations for the EM algorithm (default `1000`).
+#' @param equal_p Logical, indicating whether the matching probabilities
+#' `p` should be constrained to be equal across all latent classes (default `FALSE`).
+#' @param tol Convergence tolerance for the EM algorithm (default `10^(-4)`).
+#' @param maxiter Maximum number of iterations for the EM algorithm (default `100`).
 #' @param sample_size Bootstrap sample (from `n`) size used for calculations (if `NULL`, uses all data).
 #'
 #' @details
-#' Consider a large finite population that comprises of \eqn{N} individuals, and two duplicate-free data sources: a register and a file.
+#' Consider a large finite population that comprises of \eqn{N} individuals, and two duplicate-free data sources:
+#' a register (reference data `x`) and a file (query data `y`).
 #' Assume that the register has no undercoverage,
-#' i.e. each record from the file corresponds to exactly one record from the same individual in the register.
+#' i.e., each record from the file corresponds to exactly one record from the same individual in the register.
 #' Let \eqn{n_i} denote the number of register records which form an accepted (by the blocking criteria) pair with
-#' record \eqn{i} on the file. Assume that:\cr
+#' record \eqn{i} on the file, for \eqn{i=1,2,\ldots,m}, where \eqn{m} is the number of records in the file.
+#' Let \eqn{v_i} denote record \eqn{i} from the file.
+#' Assume that:\cr
 #' \itemize{
 #' \item two matched records are neighbours with a probability that is bounded away from \eqn{0} regardless of \eqn{N},
 #' \item two unmatched records are accidental neighbours with a probability of \eqn{O(\frac{1}{N})}.
@@ -71,14 +81,20 @@
 #' }
 #' where \eqn{E[p(v_i)] = \sum_{g=1}^G\alpha_gp_g} and \eqn{E[\lambda(v_i)] = \sum_{g=1}^G\alpha_g\lambda_g}.
 #'
+#' @note
+#' The matching probabilities \eqn{p_g} can be constrained to be equal across all latent classes
+#' by setting `equal_p = TRUE`.
 #'
-#'
-#' @returns Returns a list containing:\cr
+#' @returns Returns an object of class `est_block_error`, with a list containing:\cr
 #' \itemize{
 #' \item{`FPR` -- estimated false positive rate,}
 #' \item{`FNR` -- estimated false negative rate,}
+#' \item{`G` -- number of classes used in the optimal model,}
+#' \item{`log_lik` -- final log-likelihood value,}
+#' \item{`equal_p` -- logical, indicating whether the matching probabilities were constrained,}
 #' \item{`iter` -- number of the EM algorithm iterations performed,}
-#' \item{`convergence` -- logical, indicating whether the EM algorithm converged within `maxiter` iterations.}
+#' \item{`convergence` -- logical, indicating whether the EM algorithm converged within `maxiter` iterations,}
+#' \item{`AIC` -- Akaike Information Criterion value in the optimal model.}
 #' }
 #'
 #' @references
@@ -92,15 +108,15 @@
 #' ## an example proposed by Dasylva and Goussanou (2021)
 #' ## we obtain results very close to those reported in the paper
 #'
-#' set.seed(111)
+#' set.seed(11)
 #'
 #' neighbors <- rep(0:5, c(1659, 53951, 6875, 603, 62, 5))
 #'
 #' errors <- est_block_error(n = neighbors,
 #'                           N = 63155,
-#'                           G = 2,
+#'                           G = 1:3,
 #'                           tol = 10^(-3),
-#'                           maxiter = 50)
+#'                           equal_p = TRUE)
 #'
 #' errors
 #'
@@ -114,6 +130,7 @@ est_block_error <- function(x = NULL,
                             alpha = NULL,
                             p = NULL,
                             lambda = NULL,
+                            equal_p = FALSE,
                             tol = 10^(-4),
                             maxiter = 100,
                             sample_size = NULL) {
@@ -135,6 +152,29 @@ est_block_error <- function(x = NULL,
     n <- sample(n, size = sample_size, replace = TRUE)
   }
 
+  if (length(G) > 1) {
+
+    G_cand <- sort(G)
+    results_list <- list()
+    aic_values <- numeric(length(G_cand))
+
+    for (i in seq_along(G_cand)) {
+
+      fit <- est_block_error(n = n, N = N, G = G_cand[i],
+                             alpha = NULL, p = NULL, lambda = NULL,
+                             equal_p = equal_p, tol = tol, maxiter = maxiter)
+      results_list[[i]] <- fit
+      aic_values[i] <- fit$AIC
+
+    }
+
+    best_idx <- which.min(aic_values)
+    best_model <- results_list[[best_idx]]
+
+    return(best_model)
+
+  }
+
   convergence <- FALSE
   m <- length(n)
 
@@ -143,7 +183,13 @@ est_block_error <- function(x = NULL,
   }
 
   if (is.null(p)) {
-    p <- runif(G, min = 0.5, max = 1)
+    if (equal_p) {
+      p <- rep(runif(1, min = 0.5, max = 1), G)
+    } else {
+      p <- runif(G, min = 0.5, max = 1)
+    }
+  } else if (equal_p && length(p) == G) {
+    p <- rep(mean(p), G)
   }
 
   if (is.null(lambda)) {
@@ -192,7 +238,11 @@ est_block_error <- function(x = NULL,
     ## M
 
     alpha <- 1 / m * colSums(probs_c_n)
-    p <- colSums(E_c_n_M) / (m * alpha)
+    if (equal_p) {
+      p <- rep(sum(E_c_n_M) / m, G)
+    } else {
+      p <- colSums(E_c_n_M) / (m * alpha)
+    }
     lambda <- colSums(E_c_n_U) / (m * alpha)
 
     ## check
@@ -215,13 +265,20 @@ est_block_error <- function(x = NULL,
   FNR <- 1 - sum(alpha * p)
   FPR <- sum(alpha * lambda) / (N - 1)
 
-  return(structure(
+  res <- structure(
     list(
-    FPR = FPR,
-    FNR = FNR,
-    iter = l,
-    convergence = convergence
-  ),
-  class = "est_block_error"))
+      FPR = FPR,
+      FNR = FNR,
+      G = G,
+      log_lik = log_lik_new,
+      equal_p = equal_p,
+      iter = l,
+      convergence = convergence
+    ),
+    class = "est_block_error")
+
+  res$AIC <- AIC(res)
+
+  return(res)
 
 }

@@ -14,6 +14,7 @@ est_block_error(
   alpha = NULL,
   p = NULL,
   lambda = NULL,
+  equal_p = FALSE,
   tol = 10^(-4),
   maxiter = 100,
   sample_size = NULL
@@ -24,36 +25,47 @@ est_block_error(
 
 \item{y}{Query data (required if \code{n} is not provided).}
 
-\item{blocking_result}{\code{data.frame} or \code{data.table} containing blocking results (required if \code{n} is not provided).}
+\item{blocking_result}{\code{data.frame} or \code{data.table} containing blocking results (required if \code{n} is not provided).
+It must contain a column named \code{y} storing the indices of the records in the query data set.}
 
 \item{n}{Integer vector of numbers of accepted pairs formed by each record in the query data set
 with records in the reference data set, based on blocking criteria (if \code{NULL}, derived from \code{blocking_result}).}
 
 \item{N}{Total number of records in the reference data set (if \code{NULL}, derived as \code{length(x)}).}
 
-\item{G}{Number of classes in the finite mixture model.}
+\item{G}{Integer or vector of integers. Number of classes in the finite mixture model.
+If \code{G} is a vector, the optimal number of classes is selected from the provided values
+based on the Akaike Information Criterion (AIC).}
 
 \item{alpha}{Numeric vector of initial class proportions (length \code{G}; if \code{NULL}, initialized as \code{rep(1/G, G)}).}
 
 \item{p}{Numeric vector of initial matching probabilities in each class of the mixture model
-(length \code{G}; if \code{NULL}, randomly initialized from \code{runif(G, 0.5, 1)}).}
+(length \code{G}; if \code{NULL}, randomly initialized from \code{runif(G, 0.5, 1)} or \code{rep(runif(1, 0.5, 1), G)},
+depending on the parameter \code{equal_p}).}
 
 \item{lambda}{Numeric vector of initial Poisson distribution parameters for non-matching records in each class of the mixture model
 (length \code{G}; if \code{NULL}, randomly initialized from \code{runif(G, 0.1, 2)}).}
 
-\item{tol}{Convergence tolerance for the EM algorithm (default \code{10^(-6)}).}
+\item{equal_p}{Logical, indicating whether the matching probabilities
+\code{p} should be constrained to be equal across all latent classes (default \code{FALSE}).}
 
-\item{maxiter}{Maximum number of iterations for the EM algorithm (default \code{1000}).}
+\item{tol}{Convergence tolerance for the EM algorithm (default \code{10^(-4)}).}
+
+\item{maxiter}{Maximum number of iterations for the EM algorithm (default \code{100}).}
 
 \item{sample_size}{Bootstrap sample (from \code{n}) size used for calculations (if \code{NULL}, uses all data).}
 }
 \value{
-Returns a list containing:\cr
+Returns an object of class \code{est_block_error}, with a list containing:\cr
 \itemize{
 \item{\code{FPR} -- estimated false positive rate,}
 \item{\code{FNR} -- estimated false negative rate,}
+\item{\code{G} -- number of classes used in the optimal model,}
+\item{\code{log_lik} -- final log-likelihood value,}
+\item{\code{equal_p} -- logical, indicating whether the matching probabilities were constrained,}
 \item{\code{iter} -- number of the EM algorithm iterations performed,}
-\item{\code{convergence} -- logical, indicating whether the EM algorithm converged within \code{maxiter} iterations.}
+\item{\code{convergence} -- logical, indicating whether the EM algorithm converged within \code{maxiter} iterations,}
+\item{\code{AIC} -- Akaike Information Criterion value in the optimal model.}
 }
 }
 \description{
@@ -62,11 +74,14 @@ as proposed by Dasylva and Goussanou (2021). Assumes duplicate-free data sources
 complete coverage of the reference data set and blocking decisions based solely on record pairs.
 }
 \details{
-Consider a large finite population that comprises of \eqn{N} individuals, and two duplicate-free data sources: a register and a file.
+Consider a large finite population that comprises of \eqn{N} individuals, and two duplicate-free data sources:
+a register (reference data \code{x}) and a file (query data \code{y}).
 Assume that the register has no undercoverage,
-i.e. each record from the file corresponds to exactly one record from the same individual in the register.
+i.e., each record from the file corresponds to exactly one record from the same individual in the register.
 Let \eqn{n_i} denote the number of register records which form an accepted (by the blocking criteria) pair with
-record \eqn{i} on the file. Assume that:\cr
+record \eqn{i} on the file, for \eqn{i=1,2,\ldots,m}, where \eqn{m} is the number of records in the file.
+Let \eqn{v_i} denote record \eqn{i} from the file.
+Assume that:\cr
 \itemize{
 \item two matched records are neighbours with a probability that is bounded away from \eqn{0} regardless of \eqn{N},
 \item two unmatched records are accidental neighbours with a probability of \eqn{O(\frac{1}{N})}.
@@ -108,19 +123,23 @@ As \eqn{N \to \infty}, the error rates and the model parameters are related as f
 }
 where \eqn{E[p(v_i)] = \sum_{g=1}^G\alpha_gp_g} and \eqn{E[\lambda(v_i)] = \sum_{g=1}^G\alpha_g\lambda_g}.
 }
+\note{
+The matching probabilities \eqn{p_g} can be constrained to be equal across all latent classes
+by setting \code{equal_p = TRUE}.
+}
 \examples{
 ## an example proposed by Dasylva and Goussanou (2021)
 ## we obtain results very close to those reported in the paper
 
-set.seed(111)
+set.seed(11)
 
 neighbors <- rep(0:5, c(1659, 53951, 6875, 603, 62, 5))
 
 errors <- est_block_error(n = neighbors,
                           N = 63155,
-                          G = 2,
+                          G = 1:3,
                           tol = 10^(-3),
-                          maxiter = 50)
+                          equal_p = TRUE)
 
 errors
 

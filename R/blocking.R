@@ -127,16 +127,16 @@ blocking <- function(x,
                                             "lsh" = NULL,
                                             "kd" = NULL)
 
-  stopifnot("Only character, dense or sparse (dgCMatrix) matrix x is supported" =
+  stopifnot("Only character, dense or sparse (dgCMatrix) matrix x is supported." =
               is.character(x) | is.matrix(x) | inherits(x, "Matrix"))
 
 
   if (!is.null(ann_write)) {
-    stopifnot("Path provided in the `ann_write` is incorrect" = file.exists(ann_write) )
+    stopifnot("Path provided in the `ann_write` is incorrect." = file.exists(ann_write) )
   }
 
   if (ann == "nnd") {
-    stopifnot("Distance for NND should be `euclidean, cosine, manhatan, hamming`" =
+    stopifnot("Distance for NND should be `euclidean, cosine, manhatan, hamming`." =
                 distance %in% c("euclidean", "cosine","manhatan", "hamming"))
   }
 
@@ -145,14 +145,17 @@ blocking <- function(x,
   }
 
   if (ann == "hnsw") {
-    stopifnot("Distance for HNSW should be `l2, euclidean, cosine, ip`" =
+    stopifnot("Distance for HNSW should be `l2, euclidean, cosine, ip`." =
                 distance %in% c("l2", "euclidean", "cosine", "ip"))
   }
 
   if (ann == "annoy") {
-    stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
+    stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`." =
                 distance %in% c("euclidean", "manhatan", "hamming", "angular"))
   }
+
+  stopifnot("Algorithm should be `nnd, hnsw, annoy, lsh, kd`." =
+              ann %in% c("nnd", "hnsw", "annoy", "lsh", "kd"))
 
   if (!is.null(y)) {
     deduplication <- FALSE
@@ -167,15 +170,15 @@ blocking <- function(x,
 
   if (!is.null(true_blocks)) {
 
-    stopifnot("`true_blocks` should be a data.frame" = is.data.frame(true_blocks))
+    stopifnot("`true_blocks` should be a data.frame." = is.data.frame(true_blocks))
 
     if (deduplication == FALSE) {
-      stopifnot("`true blocks` should be a data.frame with columns: x, y, block" =
+      stopifnot("`true blocks` should be a data.frame with columns: x, y, block." =
                   length(colnames(true_blocks)) == 3,
                 all(colnames(true_blocks) == c("x", "y", "block")))
     }
     if (deduplication) {
-      stopifnot("`true blocks` should be a data.frame with columns: x, block" =
+      stopifnot("`true blocks` should be a data.frame with columns: x, block." =
                   length(colnames(true_blocks)) == 2,
                 all(colnames(true_blocks) == c("x", "block")))
     }

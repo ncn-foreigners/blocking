@@ -59,6 +59,8 @@ all records in the cis).
 ```{r}
 data(census)
 data(cis)
+census <- data.table::copy(census)
+cis <- data.table::copy(cis)
 setDT(census)
 setDT(cis)
 ```

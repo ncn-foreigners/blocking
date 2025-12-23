@@ -37,7 +37,6 @@ Read the `RLdata500` data (taken from the [RecordLinkage](https://CRAN.R-project
 
 ```{r}
 data(RLdata500)
-RLdata500 <- as.data.frame(RLdata500)
 setDT(RLdata500)
 head(RLdata500)
 ```

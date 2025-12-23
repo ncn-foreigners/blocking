@@ -59,8 +59,8 @@ all records in the cis).
 ```{r}
 data(census)
 data(cis)
-setDT(census)
-setDT(cis)
+census <- as.data.table(census)
+cis <- as.data.table(cis)
 ```
 
 + `census` object has `r nrow(census)` rows and `r ncol(census)` columns,

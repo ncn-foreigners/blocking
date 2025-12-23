@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
   message = FALSE,
   comment = "#>"
 )
+data.table::setDTthreads(1)
 ```
 
 # Setup

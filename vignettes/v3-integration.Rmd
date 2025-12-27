@@ -40,8 +40,6 @@ In the example we will use the same dataset as in the *Blocking records for reco
 ```{r}
 data(census)
 data(cis)
-census <- data.table::copy(census)
-cis <- data.table::copy(cis)
 setDT(census)
 setDT(cis)
 census[, x:=1:.N]

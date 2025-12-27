@@ -22,12 +22,14 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+data.table::setDTthreads(1)
 ```
 
 # Setup
 
 ```{r setup}
 library(blocking)
+library(data.table)
 library(reclin2)
 ```
 
@@ -38,6 +40,8 @@ In the example we will use the same dataset as in the *Blocking records for reco
 ```{r}
 data(census)
 data(cis)
+setDT(census)
+setDT(cis)
 census[, x:=1:.N]
 cis[, y:=1:.N]
 ```

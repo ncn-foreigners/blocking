@@ -8,3 +8,4 @@ inst/doc
 misc
 vignettes/.*R
 vignettes/.*html
+.DS_Store

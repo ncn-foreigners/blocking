@@ -1,5 +1,9 @@
 # development
 
+# version 1.0.2
+
++ Updated `est_block_error` function.
+
 # version 1.0.1
 
 + Fixed CRAN errors.

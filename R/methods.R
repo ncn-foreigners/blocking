@@ -34,8 +34,9 @@ print.blocking <- function(x, ...) {
 #' @exportS3Method
 print.est_block_error <- function(x, ...) {
 
-  cat("FPR: ", x$FPR, "\n")
-  cat("FNR: ", x$FNR, "\n")
+  cat("Estimated FPR: ", x$FPR, "\n")
+  cat("Estimated FNR: ", x$FNR, "\n")
+  cat("Number of classes in the model: ", x$G, "\n")
 
   cat("========================================================\n")
 
@@ -46,3 +47,20 @@ print.est_block_error <- function(x, ...) {
   }
 }
 
+#' @method logLik est_block_error
+#' @exportS3Method
+logLik.est_block_error <- function(object, ...) {
+
+  val <- object$log_lik
+  if (object$equal_p) {
+    k <- 2 * object$G
+  } else {
+    k <- 3 * object$G - 1
+  }
+
+  attr(val, "df") <- k
+  class(val) <- "logLik"
+
+  val
+
+}

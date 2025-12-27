@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
   message = FALSE,
   comment = "#>"
 )
+data.table::setDTthreads(1)
 ```
 
 # Setup
@@ -36,6 +37,7 @@ Read the `RLdata500` data (taken from the [RecordLinkage](https://CRAN.R-project
 
 ```{r}
 data(RLdata500)
+setDT(RLdata500)
 head(RLdata500)
 ```
 This dataset contains `r nrow(RLdata500)` rows with `r NROW(unique(RLdata500$ent_id))` entities.

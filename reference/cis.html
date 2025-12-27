@@ -13,7 +13,7 @@ which is combined administrative data from the tax and benefit systems."><link r
 
     <a class="navbar-brand me-2" href="../index.html">blocking</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,22 +82,20 @@ Southampton, 25-28 January 2011.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"cis"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cis</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        person_id pername1 pername2    sex dob_day dob_mon dob_year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;char&gt;  &lt;char&gt;  &lt;char&gt;   &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: PO827ER091001   HAYDEN     HALL      M               1         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: LS992DB024001    SEREN ANDERSON      F       1       1         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  M432ZZ053003    LEWIS    LEWIS      M       1       1         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  SW75TQ018001 HARRISON   POSTER      M       5       1         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: EX527TR017006 MUHAMMED   WATSUN      M       7       1         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: SW540RB001001     RHYS THOMPSON      M       7       1         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               enumcap  enumpc           cis_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;char&gt;  &lt;char&gt;           &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   91 CLARENCE ROAD PO827ER CISPO827ER091001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     24 CHURCH LANE LS992DB CISLS992DB024001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:     53 CHURCH ROAD  M432ZZ  CISM432ZZ053003</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  19 HIGHFIELD ROAD  SW75TG  CISSW75TQ018001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 17 VICTORIA STREET         CISEX527TR017006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 1 SPRINGFIELD ROAD SW540RB CISSW540RB001001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       person_id pername1 pername2 sex dob_day dob_mon dob_year</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 PO827ER091001   HAYDEN     HALL   M               1         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 LS992DB024001    SEREN ANDERSON   F       1       1         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  M432ZZ053003    LEWIS    LEWIS   M       1       1         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  SW75TQ018001 HARRISON   POSTER   M       5       1         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 EX527TR017006 MUHAMMED   WATSUN   M       7       1         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 SW540RB001001     RHYS THOMPSON   M       7       1         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              enumcap  enumpc           cis_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   91 CLARENCE ROAD PO827ER CISPO827ER091001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     24 CHURCH LANE LS992DB CISLS992DB024001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     53 CHURCH ROAD  M432ZZ  CISM432ZZ053003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  19 HIGHFIELD ROAD  SW75TG  CISSW75TQ018001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 17 VICTORIA STREET         CISEX527TR017006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1 SPRINGFIELD ROAD SW540RB CISSW540RB001001</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -110,7 +108,7 @@ Southampton, 25-28 January 2011.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

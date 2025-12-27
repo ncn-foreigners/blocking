@@ -11,7 +11,7 @@ complete coverage of the reference data set and blocking decisions based solely 
 
     <a class="navbar-brand me-2" href="../index.html">blocking</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@ complete coverage of the reference data set and blocking decisions based solely 
 <span>  alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  p <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lambda <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  equal_p <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  tol <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span>,</span>
 <span>  maxiter <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  sample_size <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -80,7 +81,8 @@ complete coverage of the reference data set and blocking decisions based solely 
 
 
 <dt id="arg-blocking-result">blocking_result<a class="anchor" aria-label="anchor" href="#arg-blocking-result"></a></dt>
-<dd><p><code>data.frame</code> or <code>data.table</code> containing blocking results (required if <code>n</code> is not provided).</p></dd>
+<dd><p><code>data.frame</code> or <code>data.table</code> containing blocking results (required if <code>n</code> is not provided).
+It must contain a column named <code>y</code> storing the indices of the records in the query data set.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -93,7 +95,9 @@ with records in the reference data set, based on blocking criteria (if <code>NUL
 
 
 <dt id="arg-g">G<a class="anchor" aria-label="anchor" href="#arg-g"></a></dt>
-<dd><p>Number of classes in the finite mixture model.</p></dd>
+<dd><p>Integer or vector of integers. Number of classes in the finite mixture model.
+If <code>G</code> is a vector, the optimal number of classes is selected from the provided values
+based on the Akaike Information Criterion (AIC).</p></dd>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
@@ -102,7 +106,8 @@ with records in the reference data set, based on blocking criteria (if <code>NUL
 
 <dt id="arg-p">p<a class="anchor" aria-label="anchor" href="#arg-p"></a></dt>
 <dd><p>Numeric vector of initial matching probabilities in each class of the mixture model
-(length <code>G</code>; if <code>NULL</code>, randomly initialized from <code>runif(G, 0.5, 1)</code>).</p></dd>
+(length <code>G</code>; if <code>NULL</code>, randomly initialized from <code>runif(G, 0.5, 1)</code> or <code>rep(runif(1, 0.5, 1), G)</code>,
+depending on the parameter <code>equal_p</code>).</p></dd>
 
 
 <dt id="arg-lambda">lambda<a class="anchor" aria-label="anchor" href="#arg-lambda"></a></dt>
@@ -110,12 +115,17 @@ with records in the reference data set, based on blocking criteria (if <code>NUL
 (length <code>G</code>; if <code>NULL</code>, randomly initialized from <code>runif(G, 0.1, 2)</code>).</p></dd>
 
 
+<dt id="arg-equal-p">equal_p<a class="anchor" aria-label="anchor" href="#arg-equal-p"></a></dt>
+<dd><p>Logical, indicating whether the matching probabilities
+<code>p</code> should be constrained to be equal across all latent classes (default <code>FALSE</code>).</p></dd>
+
+
 <dt id="arg-tol">tol<a class="anchor" aria-label="anchor" href="#arg-tol"></a></dt>
-<dd><p>Convergence tolerance for the EM algorithm (default <code>10^(-6)</code>).</p></dd>
+<dd><p>Convergence tolerance for the EM algorithm (default <code>10^(-4)</code>).</p></dd>
 
 
 <dt id="arg-maxiter">maxiter<a class="anchor" aria-label="anchor" href="#arg-maxiter"></a></dt>
-<dd><p>Maximum number of iterations for the EM algorithm (default <code>1000</code>).</p></dd>
+<dd><p>Maximum number of iterations for the EM algorithm (default <code>100</code>).</p></dd>
 
 
 <dt id="arg-sample-size">sample_size<a class="anchor" aria-label="anchor" href="#arg-sample-size"></a></dt>
@@ -124,18 +134,25 @@ with records in the reference data set, based on blocking criteria (if <code>NUL
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns a list containing:<br></p><ul><li><p><code>FPR</code> – estimated false positive rate,</p></li>
+    <p>Returns an object of class <code>est_block_error</code>, with a list containing:<br></p><ul><li><p><code>FPR</code> – estimated false positive rate,</p></li>
 <li><p><code>FNR</code> – estimated false negative rate,</p></li>
+<li><p><code>G</code> – number of classes used in the optimal model,</p></li>
+<li><p><code>log_lik</code> – final log-likelihood value,</p></li>
+<li><p><code>equal_p</code> – logical, indicating whether the matching probabilities were constrained,</p></li>
 <li><p><code>iter</code> – number of the EM algorithm iterations performed,</p></li>
-<li><p><code>convergence</code> – logical, indicating whether the EM algorithm converged within <code>maxiter</code> iterations.</p></li>
+<li><p><code>convergence</code> – logical, indicating whether the EM algorithm converged within <code>maxiter</code> iterations,</p></li>
+<li><p><code>AIC</code> – Akaike Information Criterion value in the optimal model.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Consider a large finite population that comprises of \(N\) individuals, and two duplicate-free data sources: a register and a file.
+    <p>Consider a large finite population that comprises of \(N\) individuals, and two duplicate-free data sources:
+a register (reference data <code>x</code>) and a file (query data <code>y</code>).
 Assume that the register has no undercoverage,
-i.e. each record from the file corresponds to exactly one record from the same individual in the register.
+i.e., each record from the file corresponds to exactly one record from the same individual in the register.
 Let \(n_i\) denote the number of register records which form an accepted (by the blocking criteria) pair with
-record \(i\) on the file. Assume that:<br></p><ul><li><p>two matched records are neighbours with a probability that is bounded away from \(0\) regardless of \(N\),</p></li>
+record \(i\) on the file, for \(i=1,2,\ldots,m\), where \(m\) is the number of records in the file.
+Let \(v_i\) denote record \(i\) from the file.
+Assume that:<br></p><ul><li><p>two matched records are neighbours with a probability that is bounded away from \(0\) regardless of \(N\),</p></li>
 <li><p>two unmatched records are accidental neighbours with a probability of \(O(\frac{1}{N})\).</p></li>
 </ul><p>The finite mixture model \(n_i \sim \sum_{g=1}^G \alpha_g(\text{Bernoulli}(p_g) \ast \text{Poisson}(\lambda_g))\) is assumed.
 When \(G\) is fixed, the unknown model parameters are given by the vector \(\psi = [(\alpha_g, p_g, \lambda_g)]_{1 \leq g \leq G}\)
@@ -174,6 +191,11 @@ $$
 where \(E[p(v_i)] = \sum_{g=1}^G\alpha_gp_g\) and \(E[\lambda(v_i)] = \sum_{g=1}^G\alpha_g\lambda_g\).</p>
     </div>
     <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>The matching probabilities \(p_g\) can be constrained to be equal across all latent classes
+by setting <code>equal_p = TRUE</code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Dasylva, A., Goussanou, A. (2021). Estimating the false negatives due to blocking in record linkage.
 Survey Methodology, Statistics Canada, Catalogue No. 12-001-X, Vol. 47, No. 2.</p>
@@ -186,21 +208,22 @@ Jpn J Stat Data Sci 5, 181–216. <a href="https://doi.org/10.1007/s42081-022-00
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## an example proposed by Dasylva and Goussanou (2021)</span></span></span>
 <span class="r-in"><span><span class="co">## we obtain results very close to those reported in the paper</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">neighbors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1659</span>, <span class="fl">53951</span>, <span class="fl">6875</span>, <span class="fl">603</span>, <span class="fl">62</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">errors</span> <span class="op">&lt;-</span> <span class="fu">est_block_error</span><span class="op">(</span>n <span class="op">=</span> <span class="va">neighbors</span>,</span></span>
 <span class="r-in"><span>                          N <span class="op">=</span> <span class="fl">63155</span>,</span></span>
-<span class="r-in"><span>                          G <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>                          G <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span></span>
 <span class="r-in"><span>                          tol <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                          maxiter <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                          equal_p <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">errors</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FPR:  2.137919e-06 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> FNR:  0.03006997 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated FPR:  2.13617e-06 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated FNR:  0.02994969 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of classes in the model:  2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EM algorithm converged successfully within 9 iterations.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EM algorithm converged successfully within 92 iterations.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -213,7 +236,7 @@ Jpn J Stat Data Sci 5, 181–216. <a href="https://doi.org/10.1007/s42081-022-00
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

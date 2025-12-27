@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">blocking</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,6 +83,7 @@ Beręsewicz</h4>
 package).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    fname_c1 fname_c2 lname_c1 lname_c2    by    bm    bd rec_id ent_id</span></span>
 <span><span class="co">#&gt;      &lt;char&gt;   &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
@@ -187,7 +188,7 @@ visualisation.</li>
 <p>Plot connections.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">graph</span>, vertex.size<span class="op">=</span><span class="fl">1</span>, vertex.label <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
 <p>The resulting <code>data.table</code> has four columns:</p>
 <ul>
 <li>
@@ -259,7 +260,7 @@ groups: matches (close to 0) and non-matches (close to 1).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">dist</span>, xlab <span class="op">=</span> <span class="st">"Distances"</span>, ylab <span class="op">=</span> <span class="st">"Frequency"</span>, breaks <span class="op">=</span> <span class="st">"fd"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Distances calculated between units"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
 <p>Finally, we can visualise the result based on the information whether
 block contains matches or not.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -269,7 +270,7 @@ block contains matches or not.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">df_for_density</span><span class="op">[</span><span class="va">match</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">]</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"blue"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span>, </span>
 <span>     main <span class="op">=</span> <span class="st">"Distribution of distances between\nclusters type (match=red, non-match=blue)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">df_for_density</span><span class="op">[</span><span class="va">match</span><span class="op">==</span><span class="cn">TRUE</span><span class="op">]</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -282,7 +283,7 @@ block contains matches or not.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

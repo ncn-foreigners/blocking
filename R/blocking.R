@@ -34,7 +34,8 @@
 #' @param distance distance metric (default \code{cosine}, more options are possible see details),
 #' @param ann_write writing an index to file. Two files will be created: 1) an index, 2) and text file with column names,
 #' @param ann_colnames file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),
-#' @param true_blocks matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).
+#' @param true_blocks `data.frame` with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).
+#' This `data.frame` must contain three columns: `x`, `y`, and `block`.
 #' @param verbose whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),
 #' @param graph whether a graph should be returned (default FALSE),
 #' @param seed seed for the algorithms (for reproducibility),

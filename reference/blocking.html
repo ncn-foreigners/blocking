@@ -122,7 +122,8 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 
 
 <dt id="arg-true-blocks">true_blocks<a class="anchor" aria-label="anchor" href="#arg-true-blocks"></a></dt>
-<dd><p>matrix with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).</p></dd>
+<dd><p><code>data.frame</code> with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).
+This <code>data.frame</code> must contain three columns: <code>x</code>, <code>y</code>, and <code>block</code>.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -180,7 +181,7 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Blocking based on the hnsw method.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of blocks: 2.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of columns used for blocking: 28.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of shingles created for blocking: 28.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reduction ratio: 0.5714.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution of the size of the blocks:</span>
@@ -197,7 +198,7 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 <span class="r-in"><span><span class="va">glove_6B_50d</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html" class="external-link">read_table</a></span><span class="op">(</span><span class="st">"glove.6B.50d.txt"</span>,</span></span>
 <span class="r-in"><span>                                  col_names <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                                  show_col_types <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">glove_6B_50d</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">glove_6B_50d</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">glove_vectors</span> <span class="op">&lt;-</span> <span class="va">glove_6B_50d</span><span class="op">[</span>,<span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">glove_vectors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">glove_vectors</span><span class="op">)</span></span></span>

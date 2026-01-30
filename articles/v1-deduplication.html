@@ -83,7 +83,7 @@ Beręsewicz</h4>
 package).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">RLdata500</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    fname_c1 fname_c2 lname_c1 lname_c2    by    bm    bd rec_id ent_id</span></span>
 <span><span class="co">#&gt;      &lt;char&gt;   &lt;char&gt;   &lt;char&gt;   &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;  &lt;int&gt;</span></span>
@@ -133,7 +133,7 @@ information about the progress.</p>
 <p>Results are as follows:</p>
 <ul>
 <li>based on <code>rnndescent</code> we have created 133 blocks,</li>
-<li>it was based on 429 columns (2 character shingles),</li>
+<li>429 2-character shingles have been created for the blocking,</li>
 <li>we have 45 blocks of 2 elements, 33 blocks of 3 elements, …, 1 block
 of 17 elements.</li>
 </ul>
@@ -142,7 +142,7 @@ of 17 elements.</li>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
 <span><span class="co">#&gt; Number of blocks: 133.</span></span>
-<span><span class="co">#&gt; Number of columns used for blocking: 429.</span></span>
+<span><span class="co">#&gt; Number of shingles created for blocking: 429.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 0.9919.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
@@ -188,7 +188,7 @@ visualisation.</li>
 <p>Plot connections.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">graph</span>, vertex.size<span class="op">=</span><span class="fl">1</span>, vertex.label <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
 <p>The resulting <code>data.table</code> has four columns:</p>
 <ul>
 <li>
@@ -215,7 +215,7 @@ may not contain all units of <code>RLdata500</code>,</li>
 <p>Create long <code>data.table</code> with information on blocks and
 units from original dataset.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_block_melted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span>, id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"block"</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df_block_melted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span>, id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"block"</span>, <span class="st">"dist"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">df_block_melted_rec_block</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df_block_melted</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>rec_id<span class="op">=</span><span class="va">value</span>, <span class="va">block</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_block_melted_rec_block</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    rec_id block</span></span>
@@ -250,7 +250,7 @@ units from original dataset.</p>
 (<code>ent_id</code>) are observed. In our example, all the same
 entities are in the same blocks.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">RLdata500</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>uniq_blocks <span class="op">=</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">uniqueN</a></span><span class="op">(</span><span class="va">block_id</span><span class="op">)</span><span class="op">)</span>, <span class="fu">.</span><span class="op">(</span><span class="va">ent_id</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">uniq_blocks</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">RLdata500</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span>uniq_blocks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/duplicated.html" class="external-link">uniqueN</a></span><span class="op">(</span><span class="va">block_id</span><span class="op">)</span><span class="op">)</span>, <span class="fu">.</span><span class="op">(</span><span class="va">ent_id</span><span class="op">)</span><span class="op">]</span><span class="op">[</span>, <span class="va">.N</span>, <span class="va">uniq_blocks</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    uniq_blocks     N</span></span>
 <span><span class="co">#&gt;          &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1:           1   450</span></span></code></pre></div>
@@ -260,17 +260,17 @@ groups: matches (close to 0) and non-matches (close to 1).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">df_blocks</span><span class="op">$</span><span class="va">result</span><span class="op">$</span><span class="va">dist</span>, xlab <span class="op">=</span> <span class="st">"Distances"</span>, ylab <span class="op">=</span> <span class="st">"Frequency"</span>, breaks <span class="op">=</span> <span class="st">"fd"</span>,</span>
 <span>     main <span class="op">=</span> <span class="st">"Distances calculated between units"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
 <p>Finally, we can visualise the result based on the information whether
 block contains matches or not.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_for_density</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">df_block_melted</span><span class="op">[</span><span class="va">block</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">RLdata500</span><span class="op">$</span><span class="va">block_id</span><span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df_for_density</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/copy.html" class="external-link">copy</a></span><span class="op">(</span><span class="va">df_block_melted</span><span class="op">[</span><span class="va">block</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">RLdata500</span><span class="op">$</span><span class="va">block_id</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">df_for_density</span><span class="op">[</span>, <span class="va">match</span><span class="op">:=</span> <span class="va">block</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">RLdata500</span><span class="op">[</span><span class="va">id_count</span> <span class="op">==</span> <span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">block_id</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">df_for_density</span><span class="op">[</span><span class="va">match</span><span class="op">==</span><span class="cn">FALSE</span><span class="op">]</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"blue"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span>, </span>
 <span>     main <span class="op">=</span> <span class="st">"Distribution of distances between\nclusters type (match=red, non-match=blue)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">df_for_density</span><span class="op">[</span><span class="va">match</span><span class="op">==</span><span class="cn">TRUE</span><span class="op">]</span><span class="op">$</span><span class="va">dist</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="v1-deduplication_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

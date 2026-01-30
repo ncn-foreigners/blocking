@@ -54,10 +54,10 @@ pair_ann(
 ## Value
 
 Returns a
-[data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html)
-with two columns `.x` and `.y`. Columns `.x` and `.y` are row numbers
-from data.frames x and y respectively. Returned `data.table` is also of
-a class `pairs` which allows for integration with the
+[data.table](https://rdrr.io/pkg/data.table/man/data.table.html) with
+two columns `.x` and `.y`. Columns `.x` and `.y` are row numbers from
+data.frames x and y respectively. Returned `data.table` is also of a
+class `pairs` which allows for integration with the
 [compare_pairs](https://rdrr.io/pkg/reclin2/man/compare_pairs.html)
 function.
 

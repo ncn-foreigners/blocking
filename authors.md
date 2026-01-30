@@ -12,14 +12,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/ncn-foreigners/blocking/blob/main/DESCRIPTION)
 
-Beręsewicz M, Struzik A (2025). *blocking: Various Blocking Methods for
+Beręsewicz M, Struzik A (2026). *blocking: Various Blocking Methods for
 Entity Resolution*. R package version 1.0.2,
 <https://github.com/ncn-foreigners/blocking>.
 
     @Manual{,
       title = {blocking: Various Blocking Methods for Entity Resolution},
       author = {Maciej Beręsewicz and Adam Struzik},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.0.2},
       url = {https://github.com/ncn-foreigners/blocking},
     }

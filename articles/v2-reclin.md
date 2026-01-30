@@ -200,7 +200,7 @@ result2
 #> ========================================================
 #> Blocking based on the nnd method.
 #> Number of blocks: 8441.
-#> Number of columns used for blocking: 1053.
+#> Number of shingles created for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
@@ -240,7 +240,7 @@ result3
 #> ========================================================
 #> Blocking based on the nnd method.
 #> Number of blocks: 8448.
-#> Number of columns used for blocking: 1053.
+#> Number of shingles created for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
@@ -272,7 +272,7 @@ result4
 #> ========================================================
 #> Blocking based on the hnsw method.
 #> Number of blocks: 8446.
-#> Number of columns used for blocking: 1053.
+#> Number of shingles created for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:

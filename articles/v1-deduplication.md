@@ -71,7 +71,7 @@ df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE,
 Results are as follows:
 
 - based on `rnndescent` we have created 133 blocks,
-- it was based on 429 columns (2 character shingles),
+- 429 2-character shingles have been created for the blocking,
 - we have 45 blocks of 2 elements, 33 blocks of 3 elements, …, 1 block
   of 17 elements.
 
@@ -80,7 +80,7 @@ df_blocks
 #> ========================================================
 #> Blocking based on the nnd method.
 #> Number of blocks: 133.
-#> Number of columns used for blocking: 429.
+#> Number of shingles created for blocking: 429.
 #> Reduction ratio: 0.9919.
 #> ========================================================
 #> Distribution of the size of the blocks:
@@ -122,7 +122,7 @@ Plot connections.
 plot(df_blocks$graph, vertex.size=1, vertex.label = NA)
 ```
 
-![](v1-deduplication_files/figure-html/unnamed-chunk-7-1.png)
+![](v1-deduplication_files/figure-html/unnamed-chunk-8-1.png)
 
 The resulting `data.table` has four columns:
 
@@ -204,7 +204,7 @@ hist(df_blocks$result$dist, xlab = "Distances", ylab = "Frequency", breaks = "fd
      main = "Distances calculated between units")
 ```
 
-![](v1-deduplication_files/figure-html/unnamed-chunk-12-1.png)
+![](v1-deduplication_files/figure-html/unnamed-chunk-13-1.png)
 
 Finally, we can visualise the result based on the information whether
 block contains matches or not.
@@ -218,4 +218,4 @@ plot(density(df_for_density[match==FALSE]$dist), col = "blue", xlim = c(0, 0.8),
 lines(density(df_for_density[match==TRUE]$dist), col = "red", xlim = c(0, 0.8))
 ```
 
-![](v1-deduplication_files/figure-html/unnamed-chunk-13-1.png)
+![](v1-deduplication_files/figure-html/unnamed-chunk-14-1.png)

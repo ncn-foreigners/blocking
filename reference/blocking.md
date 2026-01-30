@@ -93,8 +93,9 @@ blocking(
 
 - true_blocks:
 
-  matrix with true blocks to calculate evaluation metrics (standard
-  metrics based on confusion matrix are returned).
+  `data.frame` with true blocks to calculate evaluation metrics
+  (standard metrics based on confusion matrix are returned). This
+  `data.frame` must contain three columns: `x`, `y`, and `block`.
 
 - verbose:
 
@@ -167,7 +168,7 @@ result
 #> ========================================================
 #> Blocking based on the hnsw method.
 #> Number of blocks: 2.
-#> Number of columns used for blocking: 28.
+#> Number of shingles created for blocking: 28.
 #> Reduction ratio: 0.5714.
 #> ========================================================
 #> Distribution of the size of the blocks:

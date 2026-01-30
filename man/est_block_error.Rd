@@ -143,6 +143,33 @@ errors <- est_block_error(n = neighbors,
 
 errors
 
+## an example with the `blocking` function output
+
+if (requireNamespace("data.table", quietly = TRUE)) {
+  library(data.table)
+
+  data(census)
+  data(cis)
+  setDT(census)
+  setDT(cis)
+  set.seed(2024)
+
+  census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
+  cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
+
+  census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
+  cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
+
+  result <- blocking(x = census$txt,
+                     y = cis$txt)
+
+  est <- est_block_error(x = census$txt,
+                         y = census$txt,
+                         blocking_result = result$result,
+                         G = 1:5)
+
+  est
+}
 }
 \references{
 Dasylva, A., Goussanou, A. (2021). Estimating the false negatives due to blocking in record linkage.

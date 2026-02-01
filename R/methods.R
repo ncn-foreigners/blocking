@@ -21,7 +21,7 @@ print.blocking <- function(x, ...) {
 
   if (!is.null(x$metrics)) {
     cat("========================================================\n")
-    cat("Evaluation metrics (standard):\n" )
+    cat("Evaluation metrics (standard, presented as percentages):\n" )
     metrics <- as.numeric(sprintf("%.4f", x$metrics*100))
     names(metrics)  <- names(x$metrics)
     print(metrics)
@@ -34,8 +34,8 @@ print.blocking <- function(x, ...) {
 #' @exportS3Method
 print.est_block_error <- function(x, ...) {
 
-  cat("Estimated FPR: ", x$FPR, "\n")
-  cat("Estimated FNR: ", x$FNR, "\n")
+  cat("Estimated FPR: ", sprintf("%.4f", x$FPR * 100), "%\n", sep = "")
+  cat("Estimated FNR: ", sprintf("%.4f", x$FNR * 100), "%\n", sep = "")
   cat("Number of classes in the model: ", x$G, "\n")
 
   cat("========================================================\n")

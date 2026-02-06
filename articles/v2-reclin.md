@@ -207,7 +207,7 @@ result2
 #>    2    3    4    5    6    7    8    9 
 #> 5575 2084  609  140   25    6    1    1 
 #> ========================================================
-#> Evaluation metrics (standard):
+#> Evaluation metrics (standard, presented as percentages):
 #>      recall   precision         fpr         fnr    accuracy specificity 
 #>     99.8159     99.5326      0.0001      0.1841     99.9999     99.9999 
 #>    f1_score 
@@ -247,7 +247,7 @@ result3
 #>    2    3    4    5    6    7    8    9 
 #> 5587 2082  604  142   26    5    1    1 
 #> ========================================================
-#> Evaluation metrics (standard):
+#> Evaluation metrics (standard, presented as percentages):
 #>      recall   precision         fpr         fnr    accuracy specificity 
 #>     99.9332     99.8331      0.0000      0.0668    100.0000    100.0000 
 #>    f1_score 
@@ -279,7 +279,7 @@ result4
 #>    2    3    4    5    6    7    8    9 
 #> 5586 2078  607  142   26    5    1    1 
 #> ========================================================
-#> Evaluation metrics (standard):
+#> Evaluation metrics (standard, presented as percentages):
 #>      recall   precision         fpr         fnr    accuracy specificity 
 #>     99.9332     99.8331      0.0000      0.0668    100.0000    100.0000 
 #>    f1_score 

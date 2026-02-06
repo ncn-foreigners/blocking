@@ -204,8 +204,8 @@ errors <- est_block_error(n = neighbors,
                           equal_p = TRUE)
 
 errors
-#> Estimated FPR:  2.13617e-06 
-#> Estimated FNR:  0.02994969 
+#> Estimated FPR: 0.0002%
+#> Estimated FNR: 2.9950%
 #> Number of classes in the model:  2 
 #> ========================================================
 #> EM algorithm converged successfully within 92 iterations.
@@ -237,8 +237,8 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 
   est
 }
-#> Estimated FPR:  1.867802e-17 
-#> Estimated FNR:  0.02880593 
+#> Estimated FPR: 0.0000%
+#> Estimated FNR: 2.8806%
 #> Number of classes in the model:  1 
 #> ========================================================
 #> EM algorithm converged successfully within 11 iterations.

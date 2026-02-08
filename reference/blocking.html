@@ -54,7 +54,7 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">blocking</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  y <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  representation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shingles"</span>, <span class="st">"vectors"</span><span class="op">)</span>,</span>
+<span>  representation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shingles"</span>, <span class="st">"custom_matrix"</span>, <span class="st">"vectors"</span><span class="op">)</span>,</span>
 <span>  <span class="va">model</span>,</span>
 <span>  deduplication <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  on <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -86,7 +86,7 @@ and creates blocks using graphs via <a href="https://r.igraph.org/reference/aaa-
 
 
 <dt id="arg-representation">representation<a class="anchor" aria-label="anchor" href="#arg-representation"></a></dt>
-<dd><p>method of representing input data (possible <code>c("shingles", "vectors")</code>; default <code>"shingles"</code>),</p></dd>
+<dd><p>method of representing input data (possible <code>c("shingles", "custom_matrix", "vectors")</code>; default <code>"shingles"</code>),</p></dd>
 
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
@@ -155,7 +155,7 @@ This <code>data.frame</code> must contain three columns: <code>x</code>, <code>y
     <p>Returns a list containing:<br></p><ul><li><p><code>result</code> – <code>data.table</code> with indices (rows) of x, y, block and distance between points</p></li>
 <li><p><code>method</code> – name of the ANN algorithm used,</p></li>
 <li><p><code>deduplication</code> – information whether deduplication was applied,</p></li>
-<li><p><code>representation</code> – information whether shingles or vectors were used,</p></li>
+<li><p><code>representation</code> – information whether shingles, a custom matrix, or vectors were used,</p></li>
 <li><p><code>metrics</code> – metrics for quality assessment, if <code>true_blocks</code> is provided,</p></li>
 <li><p><code>confusion</code> – confusion matrix, if <code>true_blocks</code> is provided,</p></li>
 <li><p><code>colnames</code> – variable names (colnames) used for search,</p></li>
@@ -181,7 +181,7 @@ This <code>data.frame</code> must contain three columns: <code>x</code>, <code>y
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Blocking based on the hnsw method.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of blocks: 2.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of shingles created for blocking: 28.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of columns used for blocking: 28.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Reduction ratio: 0.5714.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Distribution of the size of the blocks:</span>

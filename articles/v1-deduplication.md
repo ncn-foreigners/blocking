@@ -80,7 +80,7 @@ df_blocks
 #> ========================================================
 #> Blocking based on the nnd method.
 #> Number of blocks: 133.
-#> Number of shingles created for blocking: 429.
+#> Number of columns used for blocking: 429.
 #> Reduction ratio: 0.9919.
 #> ========================================================
 #> Distribution of the size of the blocks:
@@ -93,7 +93,8 @@ Structure of the object is as follows:
 - `result` – a `data.table` with identifiers and block IDs,
 - `method` – the method used,
 - `deduplication` – whether deduplication was applied,
-- `representation` – whether shingles or vectors were used,
+- `representation` – whether shingles, a custom matrix, or vectors were
+  used,
 - `metrics` – standard metrics and based on the
   [`igraph::compare`](https://r.igraph.org/reference/compare.html)
   methods for comparing graphs (here NULL),

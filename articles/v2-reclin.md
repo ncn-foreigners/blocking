@@ -200,14 +200,14 @@ result2
 #> ========================================================
 #> Blocking based on the nnd method.
 #> Number of blocks: 8441.
-#> Number of shingles created for blocking: 1053.
+#> Number of columns used for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
 #>    2    3    4    5    6    7    8    9 
 #> 5575 2084  609  140   25    6    1    1 
 #> ========================================================
-#> Evaluation metrics (standard, presented as percentages):
+#> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
 #>     99.8159     99.5326      0.0001      0.1841     99.9999     99.9999 
 #>    f1_score 
@@ -240,14 +240,14 @@ result3
 #> ========================================================
 #> Blocking based on the nnd method.
 #> Number of blocks: 8448.
-#> Number of shingles created for blocking: 1053.
+#> Number of columns used for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
 #>    2    3    4    5    6    7    8    9 
 #> 5587 2082  604  142   26    5    1    1 
 #> ========================================================
-#> Evaluation metrics (standard, presented as percentages):
+#> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
 #>     99.9332     99.8331      0.0000      0.0668    100.0000    100.0000 
 #>    f1_score 
@@ -272,14 +272,14 @@ result4
 #> ========================================================
 #> Blocking based on the hnsw method.
 #> Number of blocks: 8446.
-#> Number of shingles created for blocking: 1053.
+#> Number of columns used for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
 #>    2    3    4    5    6    7    8    9 
 #> 5586 2078  607  142   26    5    1    1 
 #> ========================================================
-#> Evaluation metrics (standard, presented as percentages):
+#> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
 #>     99.9332     99.8331      0.0000      0.0668    100.0000    100.0000 
 #>    f1_score 

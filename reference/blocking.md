@@ -16,7 +16,7 @@ creates blocks using graphs via
 blocking(
   x,
   y = NULL,
-  representation = c("shingles", "vectors"),
+  representation = c("shingles", "custom_matrix", "vectors"),
   model,
   deduplication = TRUE,
   on = NULL,
@@ -49,7 +49,7 @@ blocking(
 - representation:
 
   method of representing input data (possible
-  `c("shingles", "vectors")`; default `"shingles"`),
+  `c("shingles", "custom_matrix", "vectors")`; default `"shingles"`),
 
 - model:
 
@@ -137,7 +137,8 @@ Returns a list containing:
 
 - `deduplication` – information whether deduplication was applied,
 
-- `representation` – information whether shingles or vectors were used,
+- `representation` – information whether shingles, a custom matrix, or
+  vectors were used,
 
 - `metrics` – metrics for quality assessment, if `true_blocks` is
   provided,
@@ -168,7 +169,7 @@ result
 #> ========================================================
 #> Blocking based on the hnsw method.
 #> Number of blocks: 2.
-#> Number of shingles created for blocking: 28.
+#> Number of columns used for blocking: 28.
 #> Reduction ratio: 0.5714.
 #> ========================================================
 #> Distribution of the size of the blocks:

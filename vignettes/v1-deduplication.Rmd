@@ -82,7 +82,7 @@ Structure of the object is as follows:
 + `result` -- a `data.table` with identifiers and block IDs,
 + `method` -- the method used,
 + `deduplication` -- whether deduplication was applied,
-+ `representation` -- whether shingles or vectors were used,
++ `representation` -- whether shingles, a custom matrix, or vectors were used,
 + `metrics` -- standard metrics and based on the `igraph::compare` methods for comparing graphs (here NULL),
 + `confusion` -- confusion matrix (here NULL),
 + `colnames` -- column names used for the comparison,

@@ -25,7 +25,7 @@ expect_equal(
     class = c("data.table", "data.frame")),
     method = "annoy",
     deduplication = FALSE,
-    representation = "shingles",
+    representation = "custom_matrix",
     metrics = NULL,
     confusion = NULL,
     colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo",

@@ -25,7 +25,7 @@
 #'
 #' @param x reference data (a character vector or a matrix),
 #' @param y query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,
-#' @param representation method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),
+#' @param representation method of representing input data (possible \code{c("shingles", "custom_matrix", "vectors")}; default \code{"shingles"}),
 #' @param model a matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
 #' @param on variables for ANN search (currently not supported),
@@ -48,7 +48,7 @@
 #' \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 #' \item{\code{method} -- name of the ANN algorithm used,}
 #' \item{\code{deduplication} -- information whether deduplication was applied,}
-#' \item{\code{representation} -- information whether shingles or vectors were used,}
+#' \item{\code{representation} -- information whether shingles, a custom matrix, or vectors were used,}
 #' \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
 #' \item{\code{confusion} -- confusion matrix, if \code{true_blocks} is provided,}
 #' \item{\code{colnames} -- variable names (colnames) used for search,}
@@ -100,7 +100,7 @@
 #' @export
 blocking <- function(x,
                      y = NULL,
-                     representation = c("shingles", "vectors"),
+                     representation = c("shingles", "custom_matrix", "vectors"),
                      model,
                      deduplication = TRUE,
                      on = NULL,
@@ -188,8 +188,13 @@ blocking <- function(x,
 
   ## add verification if x and y is a sparse matrix
   if (is.matrix(x) | inherits(x, "Matrix")) {
+    representation <- "custom_matrix"
     x_dtm <- x
     y_dtm <- y
+    if (is.null(colnames(x_dtm)) || is.null(colnames(y_dtm))) {
+      colnames(x_dtm) <- paste0("v", 1:ncol(x_dtm))
+      colnames(y_dtm) <- colnames(x_dtm)
+    }
   } else {
 
     if ((verbose %in% 1:2) && (representation == "shingles")) cat("===== creating tokens =====\n")
@@ -265,13 +270,13 @@ blocking <- function(x,
 
   }
 
-  if (representation == "shingles"){
+  if (representation %in% c("shingles", "custom_matrix")){
     colnames_xy <- intersect(colnames(x_dtm), colnames(y_dtm))
   }
 
   if (verbose %in% 1:2) {
 
-    if (representation == "shingles") {
+    if (representation %in% c("shingles", "custom_matrix")) {
       cat(sprintf("===== starting search (%s, x, y: %d, %d, t: %d) =====\n",
                   ann, nrow(x_dtm), nrow(y_dtm), length(colnames_xy)))
     } else {
@@ -281,8 +286,8 @@ blocking <- function(x,
   }
 
   x_df <- switch(ann,
-                 "nnd" = method_nnd(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
-                                    y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
+                 "nnd" = method_nnd(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
+                                    y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
                                     k = k,
                                     distance = distance,
                                     deduplication = deduplication,
@@ -290,8 +295,8 @@ blocking <- function(x,
                                     verbose = if (verbose == 2) TRUE else FALSE,
                                     n_threads = n_threads,
                                     control = control_ann),
-                 "hnsw" = method_hnsw(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
-                                      y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
+                 "hnsw" = method_hnsw(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
+                                      y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
                                       k = k,
                                       distance = distance,
                                       seed = seed,
@@ -299,24 +304,24 @@ blocking <- function(x,
                                       n_threads = n_threads,
                                       path = ann_write,
                                       control = control_ann),
-                 "lsh" = method_mlpack(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
-                                       y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
+                 "lsh" = method_mlpack(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
+                                       y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
                                        algo = "lsh",
                                        k = k,
                                        verbose = if (verbose == 2) TRUE else FALSE,
                                        seed = seed,
                                        path = ann_write,
                                        control = control_ann),
-                 "kd" = method_mlpack(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
-                                      y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
+                 "kd" = method_mlpack(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
+                                      y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
                                       algo = "kd",
                                       k = k,
                                       verbose = if (verbose == 2) TRUE else FALSE,
                                       seed = seed,
                                       path = ann_write,
                                       control = control_ann),
-                 "annoy" = method_annoy(x = if (representation == "shingles") x_dtm[, colnames_xy] else x_embeddings,
-                                        y = if (representation == "shingles") y_dtm[, colnames_xy] else y_embeddings,
+                 "annoy" = method_annoy(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
+                                        y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
                                         k = k,
                                         distance  = distance,
                                         verbose = if (verbose == 2) TRUE else FALSE,

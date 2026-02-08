@@ -7,7 +7,7 @@
 blocking(
   x,
   y = NULL,
-  representation = c("shingles", "vectors"),
+  representation = c("shingles", "custom_matrix", "vectors"),
   model,
   deduplication = TRUE,
   on = NULL,
@@ -30,7 +30,7 @@ blocking(
 
 \item{y}{query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,}
 
-\item{representation}{method of representing input data (possible \code{c("shingles", "vectors")}; default \code{"shingles"}),}
+\item{representation}{method of representing input data (possible \code{c("shingles", "custom_matrix", "vectors")}; default \code{"shingles"}),}
 
 \item{model}{a matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},}
 
@@ -69,7 +69,7 @@ Returns a list containing:\cr
 \item{\code{result} -- \code{data.table} with indices (rows) of x, y, block and distance between points}
 \item{\code{method} -- name of the ANN algorithm used,}
 \item{\code{deduplication} -- information whether deduplication was applied,}
-\item{\code{representation} -- information whether shingles or vectors were used,}
+\item{\code{representation} -- information whether shingles, a custom matrix, or vectors were used,}
 \item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
 \item{\code{confusion} -- confusion matrix, if \code{true_blocks} is provided,}
 \item{\code{colnames} -- variable names (colnames) used for search,}

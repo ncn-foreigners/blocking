@@ -114,7 +114,7 @@
 #'
 #' errors <- est_block_error(n = neighbors,
 #'                           N = 63155,
-#'                           G = 1:3,
+#'                           G = 2,
 #'                           tol = 10^(-3),
 #'                           equal_p = TRUE)
 #'
@@ -143,7 +143,7 @@
 #'   est <- est_block_error(x = census$txt,
 #'                          y = census$txt,
 #'                          blocking_result = result$result,
-#'                          G = 1:5)
+#'                          G = 1:2)
 #'
 #'   est
 #' }

@@ -199,16 +199,16 @@ neighbors <- rep(0:5, c(1659, 53951, 6875, 603, 62, 5))
 
 errors <- est_block_error(n = neighbors,
                           N = 63155,
-                          G = 1:3,
+                          G = 2,
                           tol = 10^(-3),
                           equal_p = TRUE)
 
 errors
 #> Estimated FPR: 0.0002%
-#> Estimated FNR: 2.9950%
+#> Estimated FNR: 2.9946%
 #> Number of classes in the model:  2 
 #> ========================================================
-#> EM algorithm converged successfully within 92 iterations.
+#> EM algorithm converged successfully within 56 iterations.
 
 ## an example with the `blocking` function output
 
@@ -233,7 +233,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   est <- est_block_error(x = census$txt,
                          y = census$txt,
                          blocking_result = result$result,
-                         G = 1:5)
+                         G = 1:2)
 
   est
 }

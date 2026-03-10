@@ -10,7 +10,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/ncn-foreigners/blocking/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/ncn-foreigners/blocking/blob/1.0.2/DESCRIPTION)
 
 Beręsewicz M, Struzik A (2026). *blocking: Various Blocking Methods for
 Entity Resolution*. R package version 1.0.2,

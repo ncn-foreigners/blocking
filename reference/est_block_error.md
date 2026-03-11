@@ -211,7 +211,7 @@ errors
 #> EM algorithm converged successfully within 56 iterations.
 
 ## an example with the `blocking` function output
-
+if (FALSE) { # \dontrun{
 if (requireNamespace("data.table", quietly = TRUE)) {
   library(data.table)
 
@@ -233,13 +233,9 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   est <- est_block_error(x = census$txt,
                          y = census$txt,
                          blocking_result = result$result,
-                         G = 1:2)
+                         G = 1:5)
 
   est
 }
-#> Estimated FPR: 0.0000%
-#> Estimated FNR: 2.8806%
-#> Number of classes in the model:  1 
-#> ========================================================
-#> EM algorithm converged successfully within 11 iterations.
+} # }
 ```

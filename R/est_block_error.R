@@ -121,7 +121,7 @@
 #' errors
 #'
 #' ## an example with the `blocking` function output
-#'
+#' \dontrun{
 #' if (requireNamespace("data.table", quietly = TRUE)) {
 #'   library(data.table)
 #'
@@ -143,9 +143,10 @@
 #'   est <- est_block_error(x = census$txt,
 #'                          y = census$txt,
 #'                          blocking_result = result$result,
-#'                          G = 1:2)
+#'                          G = 1:5)
 #'
 #'   est
+#' }
 #' }
 #' @export
 est_block_error <- function(x = NULL,

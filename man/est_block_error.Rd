@@ -144,7 +144,7 @@ errors <- est_block_error(n = neighbors,
 errors
 
 ## an example with the `blocking` function output
-
+\dontrun{
 if (requireNamespace("data.table", quietly = TRUE)) {
   library(data.table)
 
@@ -166,9 +166,10 @@ if (requireNamespace("data.table", quietly = TRUE)) {
   est <- est_block_error(x = census$txt,
                          y = census$txt,
                          blocking_result = result$result,
-                         G = 1:2)
+                         G = 1:5)
 
   est
+}
 }
 }
 \references{

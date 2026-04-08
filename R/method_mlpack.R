@@ -30,9 +30,11 @@ method_mlpack <- function(x,
 
   x <- as.matrix(x)
   y <- as.matrix(y)
+  search_k <- max(1L, min(nrow(x), max(control$k_search, k)))
+  effective_k <- min(k, search_k)
 
   result <- switch(algo,
-                   "lsh" = mlpack::lsh(k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
+                   "lsh" = mlpack::lsh(k = search_k,
                                        query = y,
                                        reference = x,
                                        verbose = verbose,
@@ -42,7 +44,7 @@ method_mlpack <- function(x,
                                        num_probes = control$lsh$num_probes,
                                        projections = control$lsh$projections,
                                        tables = control$lsh$tables),
-                   "kd" = mlpack::knn(k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
+                   "kd" = mlpack::knn(k = search_k,
                                        query = y,
                                        reference = x,
                                        verbose = verbose,
@@ -57,11 +59,10 @@ method_mlpack <- function(x,
 
 
   l_df <- data.table::data.table(y = 1:NROW(y),
-                                 x = result$neighbors[, k] + 1,
-                                 dist = result$distances[, k])
+                                 x = result$neighbors[, effective_k] + 1,
+                                 dist = result$distances[, effective_k])
   l_df
 }
-
 
 
 

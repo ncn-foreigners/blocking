@@ -11,7 +11,8 @@ controls_ann(
   hnsw = control_hnsw(),
   lsh = control_lsh(),
   kd = control_kd(),
-  annoy = control_annoy()
+  annoy = control_annoy(),
+  duckdb = control_duckdb()
 )
 }
 \arguments{
@@ -27,7 +28,10 @@ controls_ann(
 
 \item{kd}{kd parameters for \link[mlpack]{knn} function (should be inside \link{control_kd} function),}
 
-\item{annoy}{parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside \link{control_annoy} function).}
+\item{annoy}{parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside \link{control_annoy} function),}
+
+\item{duckdb}{parameters for the DuckDB backend
+(should be inside \link{control_duckdb} function).}
 }
 \value{
 Returns a list with parameters.

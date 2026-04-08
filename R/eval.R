@@ -30,6 +30,7 @@ eval_reclin <- function(pred_df, true_df) {
   pred_y$block <- pred_y_map$block[match(true_y$y, pred_y_map$y)]
 
   max_block <- max(c(pred_df$block, true_df$block), na.rm = TRUE)
+  count_na <- 0L
   if (any(is.na(pred_x$block))) {
     count_na <- sum(is.na(pred_x$block))
     pred_x$block[is.na(pred_x$block)] <- seq(max_block + 1, length.out = count_na)

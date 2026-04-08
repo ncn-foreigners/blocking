@@ -194,6 +194,57 @@ control_kd <- function(algorithm = "dual_tree",
          list(...))
 }
 
+#' @title Controls for the DuckDB backend
+#'
+#' @description
+#' Controls for DuckDB-based blocking that uses the `vss` or `faiss`
+#' extensions for nearest-neighbour search.
+#' The `faiss` engine is reserved for future use and currently errors with
+#' a diagnostic message from the backend.
+#'
+#' @param engine DuckDB vector search engine to use:
+#'   `\"vss\"` for the core HNSW extension or `\"faiss\"` for the
+#'   community FAISS extension (currently disabled in the blocking backend).
+#' @param install_extension should the DuckDB extension be installed
+#'   before loading it?
+#' @param dbdir path to the DuckDB database (default `\":memory:\"`).
+#' @param vss_M maximum number of neighbours kept for each vertex in the
+#'   HNSW graph built by the `vss` extension.
+#' @param vss_M0 number of neighbours kept at the base level of the HNSW graph.
+#' @param vss_ef_construction number of candidate vertices considered
+#'   during HNSW index construction.
+#' @param vss_ef_search number of candidate vertices considered during
+#'   HNSW search.
+#' @param faiss_index FAISS factory string, e.g. `\"IDMap,Flat\"`
+#'   or `\"IDMap,HNSW32\"`.
+#' @param ... Additional arguments.
+#'
+#' @returns Returns a list with parameters.
+#'
+#' @export
+control_duckdb <- function(engine = c("vss", "faiss"),
+                           install_extension = TRUE,
+                           dbdir = ":memory:",
+                           vss_M = 16,
+                           vss_M0 = 32,
+                           vss_ef_construction = 128,
+                           vss_ef_search = 64,
+                           faiss_index = "IDMap,Flat",
+                           ...) {
+
+  engine <- match.arg(engine)
+
+  append(list(engine = engine,
+              install_extension = install_extension,
+              dbdir = dbdir,
+              vss_M = vss_M,
+              vss_M0 = vss_M0,
+              vss_ef_construction = vss_ef_construction,
+              vss_ef_search = vss_ef_search,
+              faiss_index = faiss_index),
+         list(...))
+}
+
 #' @title Controls for approximate nearest neighbours algorithms
 #'
 #' @author Maciej Beręsewicz
@@ -207,7 +258,9 @@ control_kd <- function(algorithm = "dual_tree",
 #' @param hnsw parameters for \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search} (should be inside [control_hnsw] function),
 #' @param lsh parameters for \link[mlpack]{lsh} function (should be inside [control_lsh] function),
 #' @param kd kd parameters for \link[mlpack]{knn} function (should be inside [control_kd] function),
-#' @param annoy parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside [control_annoy] function).
+#' @param annoy parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside [control_annoy] function),
+#' @param duckdb parameters for the DuckDB backend
+#'   (should be inside [control_duckdb] function).
 #'
 #' @returns Returns a list with parameters.
 #'
@@ -219,7 +272,8 @@ controls_ann <- function(
     hnsw = control_hnsw(),
     lsh = control_lsh(),
     kd = control_kd(),
-    annoy = control_annoy()
+    annoy = control_annoy(),
+    duckdb = control_duckdb()
     ) {
 
    list(sparse = sparse,
@@ -228,7 +282,8 @@ controls_ann <- function(
         hnsw = hnsw,
         lsh = lsh,
         annoy = annoy,
-        kd = kd)
+        kd = kd,
+        duckdb = duckdb)
 }
 
 #' @title Controls for processing character data

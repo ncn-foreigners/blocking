@@ -30,6 +30,9 @@ method_nnd <- function(x,
                        seed) {
 
   set.seed(seed)
+  search_k <- max(1L, min(nrow(x), max(control$k_search, k)))
+  effective_k <- min(k, search_k)
+
   l_ind <- rnndescent::rnnd_build(data = x,
                                   k = if (nrow(x) < control$nnd$k_build) nrow(x) else control$nnd$k_build,
                                   metric = distance,
@@ -55,7 +58,7 @@ method_nnd <- function(x,
 
   l_1nn <- rnndescent::rnnd_query(index = l_ind,
                                   query = y,
-                                  k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
+                                  k = search_k,
                                   epsilon = control$nnd$epsilon,
                                   max_search_fraction = control$nnd$max_search_fraction,
                                   init = NULL,
@@ -64,8 +67,8 @@ method_nnd <- function(x,
                                   obs = control$nnd$obs)
 
   l_df <- data.table::data.table(y = 1:NROW(y),
-                                 x = l_1nn$idx[, k],
-                                 dist = l_1nn$dist[,k])
+                                 x = l_1nn$idx[, effective_k],
+                                 dist = l_1nn$dist[, effective_k])
 
 
   l_df

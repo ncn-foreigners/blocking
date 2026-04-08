@@ -149,6 +149,24 @@ expect_silent(
   blocking(x = mat_x, y = mat_y)
 )
 
+expect_silent(
+  blocking(x = "abc")
+)
+
+expect_equal(
+  nrow(blocking(x = "abc")$result),
+  0L
+)
+
+expect_silent(
+  blocking(x = "abc", y = "xyz")
+)
+
+expect_equal(
+  nrow(blocking(x = "abc", y = "xyz")$result),
+  0L
+)
+
 
 # test parameters ---------------------------------------------------------
 

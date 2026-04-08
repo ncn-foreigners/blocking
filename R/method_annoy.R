@@ -32,6 +32,8 @@ method_annoy <- function(x,
                          control) {
 
 
+  search_k <- max(1L, min(nrow(x), max(control$k_search, k)))
+  effective_k <- min(k, search_k)
 
   ncols <- ncol(x)
 
@@ -61,11 +63,11 @@ method_annoy <- function(x,
   ## query
   for (i in 1:nrow(y)) {
     annoy_res <- l_ind$getNNsByVectorList(y[i, ],
-                                          if (nrow(x) < control$k_search) nrow(x) else control$k_search,
+                                          search_k,
                                           -1,
                                           TRUE)
-    l_ind_nns[i] <- annoy_res$item[k]
-    l_ind_dist[i] <- annoy_res$distance[k]
+    l_ind_nns[i] <- annoy_res$item[effective_k]
+    l_ind_dist[i] <- annoy_res$distance[effective_k]
   }
 
   if (!is.null(path)) {

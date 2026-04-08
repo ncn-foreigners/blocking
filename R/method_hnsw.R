@@ -36,6 +36,8 @@ method_hnsw <- function(x,
                         seed) {
 
   set.seed(seed)
+  search_k <- max(1L, min(nrow(x), max(control$k_search, k)))
+  effective_k <- min(k, search_k)
 
   ## depending whether x is an
   ## to avoid coping to marix
@@ -61,7 +63,7 @@ method_hnsw <- function(x,
     l_1nn_m <- list()
     for (i in 1:nrow(y)) {
       l_1nn_m[[i]] <- l_ind$getNNsList(y[i,],
-                                       k,
+                                       search_k,
                                        TRUE)
     }
 
@@ -82,7 +84,7 @@ method_hnsw <- function(x,
     ## query
     l_1nn <- RcppHNSW::hnsw_search(X = y,
                                    ann = l_ind,
-                                   k = if (nrow(x) < control$k_search) nrow(x) else control$k_search,
+                                   k = search_k,
                                    ef = control$hnsw$ef_s,
                                    verbose = verbose,
                                    n_threads = n_threads)
@@ -105,8 +107,8 @@ method_hnsw <- function(x,
   }
 
   l_df <- data.table::data.table(y = 1:NROW(y),
-                                 x = l_1nn$idx[, k],
-                                 dist = l_1nn$dist[,k])
+                                 x = l_1nn$idx[, effective_k],
+                                 dist = l_1nn$dist[, effective_k])
 
 
 

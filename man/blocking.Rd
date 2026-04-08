@@ -12,7 +12,7 @@ blocking(
   deduplication = TRUE,
   on = NULL,
   on_blocking = NULL,
-  ann = c("nnd", "hnsw", "annoy", "lsh", "kd"),
+  ann = c("nnd", "hnsw", "annoy", "lsh", "kd", "duckdb"),
   distance = c("cosine", "euclidean", "l2", "ip", "manhatan", "hamming", "angular"),
   ann_write = NULL,
   ann_colnames = NULL,
@@ -40,7 +40,7 @@ blocking(
 
 \item{on_blocking}{variables for blocking records before ANN search (currently not supported),}
 
-\item{ann}{algorithm to be used for searching for ann (possible, \code{c("nnd", "hnsw", "annoy", "lsh", "kd")}, default \code{"nnd"} which corresponds to nearest neighbour descent method),}
+\item{ann}{algorithm to be used for searching for ann (possible, \code{c("nnd", "hnsw", "annoy", "lsh", "kd", "duckdb")}, default \code{"nnd"} which corresponds to nearest neighbour descent method),}
 
 \item{distance}{distance metric (default \code{cosine}, more options are possible see details),}
 
@@ -77,7 +77,7 @@ Returns a list containing:\cr
 }
 \description{
 Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe),
-applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent}, \link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy} and \link[mlpack]{mlpack} packages,
+applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent}, \link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy}, \link[mlpack]{mlpack} and \pkg{duckdb} packages,
 and creates blocks using graphs via \link[igraph]{igraph}.
 }
 \examples{

@@ -1,3 +1,18 @@
+# version 1.1.0
+
++ Added a DuckDB backend based on the `vss` extension.
++ Added `duckdb_setup_vss()` for one-time DuckDB `vss` installation,
+update and `HNSW_INDEX_JOIN` diagnostics outside `blocking()`.
++ Added support for DuckDB runs from character vectors or precomputed
+dense / sparse matrices.
++ Added DuckDB `join_mode` controls and verbose reporting of whether
+`HNSW_INDEX_JOIN` is available and used.
++ DuckDB extensions are now expected to be installed before calling
+`blocking()`, with clearer setup messages when `vss` is missing.
++ Fixed several edge cases in blocking and evaluation, including
+singleton deduplication, empty feature overlap, and `eval_reclin()`
+handling of unmatched records.
+
 # version 1.0.0
 
 + Added support for word embeddings.

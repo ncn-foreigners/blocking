@@ -188,10 +188,6 @@ blocking <- function(x,
     stopifnot("Distance for Annoy should be `euclidean, manhatan, hamming, angular`" =
                 distance %in% c("euclidean", "manhatan", "hamming", "angular"))
   }
-  if (ann == "duckdb") {
-    stopifnot("DuckDB backend currently supports only `representation = \"shingles\"`" =
-                identical(representation, "shingles"))
-  }
 
   if (!is.null(y)) {
     deduplication <- FALSE
@@ -240,7 +236,13 @@ blocking <- function(x,
   }
 
 
-  if (ann == "duckdb") {
+  use_duckdb_text_backend <- ann == "duckdb" &&
+    identical(representation, "shingles") &&
+    is.character(x) &&
+    is.character(y) &&
+    identical(control_ann$duckdb$text_backend, "duckdb")
+
+  if (use_duckdb_text_backend) {
     duckdb_result <- method_duckdb(x = x,
                                    y = y,
                                    k = k,
@@ -347,7 +349,21 @@ blocking <- function(x,
 
     }
 
-    if ((representation == "shingles") && !length(colnames_xy)) {
+    if (ann == "duckdb") {
+      duckdb_result <- method_duckdb(
+        x = if (representation == "shingles") x_dtm else x_embeddings,
+        y = if (representation == "shingles") y_dtm else y_embeddings,
+        k = k,
+        distance = distance,
+        verbose = if (verbose == 2) TRUE else FALSE,
+        n_threads = n_threads,
+        deduplication = deduplication,
+        control_txt = control_txt,
+        control = control_ann
+      )
+      x_df <- duckdb_result$result
+      colnames_xy <- duckdb_result$colnames
+    } else if ((representation == "shingles") && !length(colnames_xy)) {
       x_df <- data.table(y = integer(), x = integer(), dist = numeric())
     } else {
       x_df <- switch(ann,

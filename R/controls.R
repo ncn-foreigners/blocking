@@ -205,8 +205,10 @@ control_kd <- function(algorithm = "dual_tree",
 #' @param engine DuckDB vector search engine to use:
 #'   `\"vss\"` for the core HNSW extension or `\"faiss\"` for the
 #'   community FAISS extension (currently disabled in the blocking backend).
-#' @param install_extension should the DuckDB extension be installed
-#'   before loading it?
+#' @param install_extension compatibility flag kept for older code.
+#'   DuckDB extension installation is now expected to happen before
+#'   calling [blocking()]. If set to `TRUE`, [blocking()] will emit a
+#'   warning and only attempt to `LOAD` the extension.
 #' @param dbdir path to the DuckDB database (default `\":memory:\"`).
 #' @param vss_M maximum number of neighbours kept for each vertex in the
 #'   HNSW graph built by the `vss` extension.
@@ -215,6 +217,16 @@ control_kd <- function(algorithm = "dual_tree",
 #'   during HNSW index construction.
 #' @param vss_ef_search number of candidate vertices considered during
 #'   HNSW search.
+#' @param text_backend how should character inputs be converted before
+#'   DuckDB search? Use `\"duckdb\"` to create shingles inside DuckDB or
+#'   `\"matrix\"` to build the shingle matrix in R first and then send
+#'   sparse feature counts to DuckDB. The matrix path is most useful when
+#'   you already have a shingle matrix or want to reuse one across runs.
+#' @param join_mode how should the DuckDB `vss` search be executed?
+#'   `\"classic\"` uses one indexed query per record,
+#'   `\"lateral\"` uses a batched `LATERAL` join query,
+#'   and `\"auto\"` uses the batched query only when `EXPLAIN` shows
+#'   DuckDB's `HNSW_INDEX_JOIN` optimization.
 #' @param faiss_index FAISS factory string, e.g. `\"IDMap,Flat\"`
 #'   or `\"IDMap,HNSW32\"`.
 #' @param ... Additional arguments.
@@ -223,16 +235,20 @@ control_kd <- function(algorithm = "dual_tree",
 #'
 #' @export
 control_duckdb <- function(engine = c("vss", "faiss"),
-                           install_extension = TRUE,
+                           install_extension = FALSE,
                            dbdir = ":memory:",
                            vss_M = 16,
                            vss_M0 = 32,
                            vss_ef_construction = 128,
                            vss_ef_search = 64,
+                           text_backend = c("duckdb", "matrix"),
+                           join_mode = c("auto", "classic", "lateral"),
                            faiss_index = "IDMap,Flat",
                            ...) {
 
   engine <- match.arg(engine)
+  text_backend <- match.arg(text_backend)
+  join_mode <- match.arg(join_mode)
 
   append(list(engine = engine,
               install_extension = install_extension,
@@ -241,6 +257,8 @@ control_duckdb <- function(engine = c("vss", "faiss"),
               vss_M0 = vss_M0,
               vss_ef_construction = vss_ef_construction,
               vss_ef_search = vss_ef_search,
+              text_backend = text_backend,
+              join_mode = join_mode,
               faiss_index = faiss_index),
          list(...))
 }

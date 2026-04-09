@@ -6,12 +6,14 @@
 \usage{
 control_duckdb(
   engine = c("vss", "faiss"),
-  install_extension = TRUE,
+  install_extension = FALSE,
   dbdir = ":memory:",
   vss_M = 16,
   vss_M0 = 32,
   vss_ef_construction = 128,
   vss_ef_search = 64,
+  text_backend = c("duckdb", "matrix"),
+  join_mode = c("auto", "classic", "lateral"),
   faiss_index = "IDMap,Flat",
   ...
 )
@@ -21,8 +23,10 @@ control_duckdb(
 \verb{\\"vss\\"} for the core HNSW extension or \verb{\\"faiss\\"} for the
 community FAISS extension (currently disabled in the blocking backend).}
 
-\item{install_extension}{should the DuckDB extension be installed
-before loading it?}
+\item{install_extension}{compatibility flag kept for older code.
+DuckDB extension installation is now expected to happen before
+calling \code{\link{blocking}()}. If set to \code{TRUE}, \code{blocking()}
+will emit a warning and only attempt to \code{LOAD} the extension.}
 
 \item{dbdir}{path to the DuckDB database (default \verb{\\":memory:\\"}).}
 
@@ -36,6 +40,18 @@ during HNSW index construction.}
 
 \item{vss_ef_search}{number of candidate vertices considered during
 HNSW search.}
+
+\item{text_backend}{how should character inputs be converted before
+DuckDB search? Use \verb{\\"duckdb\\"} to create shingles inside DuckDB or
+\verb{\\"matrix\\"} to build the shingle matrix in R first and then send
+sparse feature counts to DuckDB. The matrix path is most useful when
+you already have a shingle matrix or want to reuse one across runs.}
+
+\item{join_mode}{how should the DuckDB \code{vss} search be executed?
+\verb{\\"classic\\"} uses one indexed query per record,
+\verb{\\"lateral\\"} uses a batched \code{LATERAL} join query,
+and \verb{\\"auto\\"} uses the batched query only when \code{EXPLAIN} shows
+DuckDB's \code{HNSW_INDEX_JOIN} optimization.}
 
 \item{faiss_index}{FAISS factory string, e.g. \verb{\\"IDMap,Flat\\"}
 or \verb{\\"IDMap,HNSW32\\"}.}

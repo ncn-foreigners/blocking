@@ -26,7 +26,9 @@ algorithms:
   does not support sparse matrices),
 - [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy),
 - [mlpack](https://cran.r-project.org/package=RcppAnnoy) (see
-  `mlpack::lsh` and `mlpack::knn`).
+  `mlpack::lsh` and `mlpack::knn`),
+- [duckdb](https://cran.r-project.org/package=duckdb) with the DuckDB
+  `vss` extension.
 
 The package can be used with the
 [reclin2](https://cran.r-project.org/package=reclin2) package via the
@@ -40,6 +42,20 @@ Install the GitHub blocking package with:
 # install.packages("remotes") # uncomment if needed
 remotes::install_github("ncn-foreigners/blocking")
 ```
+
+If you want to use `ann = "duckdb"`, install or update the DuckDB `vss`
+extension once before calling `blocking()`:
+
+``` r
+library(blocking)
+
+duckdb_setup_vss(update = TRUE, verbose = TRUE)
+```
+
+If the setup helper reports `HNSW_INDEX_JOIN available: FALSE` on
+DuckDB `1.5.0`, that is currently an upstream DuckDB VSS regression
+rather than a package setup error. In that case, try DuckDB `1.4.4` for
+the batched `HNSW_INDEX_JOIN` optimizer path.
 
 ## Basic usage
 
@@ -108,6 +124,31 @@ blocking_result
 #> Distribution of the size of the blocks:
 #> 4 
 #> 2
+```
+
+DuckDB can also be used as the ANN backend. The helper below checks
+that the `vss` extension is installed and reports whether DuckDB
+exposes the batched `HNSW_INDEX_JOIN` optimization:
+
+``` r
+duckdb_setup_vss(update = TRUE, verbose = TRUE)
+
+duckdb_result <- blocking(
+  x = df_base$txt,
+  y = df_example$txt,
+  ann = "duckdb",
+  distance = "cosine",
+  verbose = 2,
+  control_ann = controls_ann(
+    k_search = 1L,
+    duckdb = control_duckdb(
+      engine = "vss",
+      join_mode = "auto"
+    )
+  )
+)
+
+duckdb_result$result
 ```
 
 Table with blocking results contains:

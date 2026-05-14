@@ -3,8 +3,14 @@
 ## Setup
 
 ``` r
+
 library(blocking)
 library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following object is masked from 'package:base':
+#> 
+#>     %notin%
 library(reclin2)
 ```
 
@@ -14,6 +20,7 @@ In the example we will use the same dataset as in the *Blocking records
 for record linkage* vignette.
 
 ``` r
+
 data(census)
 data(cis)
 setDT(census)
@@ -28,6 +35,7 @@ The package contains function `pair_ann` which aims at integration with
 `reclin2` package. This function works as follows.
 
 ``` r
+
 pair_ann(x = census[1:1000], 
          y = cis[1:1000], 
          on = c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"), 
@@ -54,6 +62,7 @@ further included in the pipeline of the `reclin2` package (note that we
 use a different ANN this time).
 
 ``` r
+
 pair_ann(x = census[1:1000], 
          y = cis[1:1000], 
          on = c("pername1", "pername2", "sex", "dob_day", "dob_mon", "dob_year", "enumcap", "enumpc"), 

@@ -1,6 +1,12 @@
 # Changelog
 
+## version 1.0.3
+
+- Fixed errors in the evaluation functions.
+
 ## version 1.0.2
+
+CRAN release: 2026-03-11
 
 - Updated `est_block_error` function.
 

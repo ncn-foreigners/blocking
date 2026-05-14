@@ -5,8 +5,14 @@
 Read required packages
 
 ``` r
+
 library(blocking)
 library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following object is masked from 'package:base':
+#> 
+#>     %notin%
 ```
 
 ## Data
@@ -33,6 +39,7 @@ repository:
     all records in the cis). 
 
 ``` r
+
 data(census)
 data(cis)
 setDT(census)
@@ -45,6 +52,7 @@ setDT(cis)
 Census data
 
 ``` r
+
 head(census)
 #>       person_id pername1 pername2    sex dob_day dob_mon dob_year hse_num
 #>          <char>   <char>   <char> <char>  <char>  <char>   <char>   <num>
@@ -67,6 +75,7 @@ head(census)
 CIS data
 
 ``` r
+
 head(cis)
 #>        person_id pername1 pername2    sex dob_day dob_mon dob_year
 #>           <char>   <char>   <char> <char>  <char>  <char>   <char>
@@ -90,6 +99,7 @@ We randomly select 12671 records from `census` and 12306 records from
 `cis`.
 
 ``` r
+
 set.seed(2024)
 census <- census[sample(nrow(census), floor(nrow(census) / 2)), ]
 cis <- cis[sample(nrow(cis), floor(nrow(cis) / 2)), ]
@@ -99,6 +109,7 @@ We need to create new columns that concatenate variables from `pername1`
 to `enumpc`.
 
 ``` r
+
 census[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
 cis[, txt:=paste0(pername1, pername2, sex, dob_day, dob_mon, dob_year, enumcap, enumpc)]
 ```
@@ -111,6 +122,7 @@ The goal of this exercise is to link units from the CIS dataset to the
 CENSUS dataset.
 
 ``` r
+
 result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1)
 #> ===== creating tokens =====
 #> ===== starting search (nnd, x, y: 12671, 12306, t: 1053) =====
@@ -120,6 +132,7 @@ result1 <- blocking(x = census$txt, y = cis$txt, verbose = 1)
 Distribution of distances for each pair.
 
 ``` r
+
 hist(result1$result$dist, main = "Distribution of distances between pairs", xlab = "Distances")
 ```
 
@@ -128,6 +141,7 @@ hist(result1$result$dist, main = "Distribution of distances between pairs", xlab
 Example pairs.
 
 ``` r
+
 head(result1$result, n = 10)
 #>         x     y block       dist
 #>     <int> <int> <num>      <num>
@@ -148,6 +162,7 @@ Let’s take a look at the first pair. Obviously there is a typo in the
 a match.
 
 ``` r
+
 cbind(t(census[1, c(1:7, 9:10)]), t(cis[12088, 1:9]))
 #>           [,1]              [,2]             
 #> person_id "SW122AB001001"   "SW122AB001001"  
@@ -167,6 +182,7 @@ For some records, we have information about the correct linkage. We can
 use this information to evaluate our approach.
 
 ``` r
+
 matches <- merge(x = census[, .(x=1:.N, person_id)],
                  y = cis[, .(y = 1:.N, person_id)],
                  by = "person_id")
@@ -186,6 +202,7 @@ head(matches)
 So in our example we have 5991 pairs.
 
 ``` r
+
 result2 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
                     true_blocks = matches[, .(x, y, block)])
 #> ===== creating tokens =====
@@ -196,6 +213,7 @@ result2 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
 Let’s see how our approach handled this problem.
 
 ``` r
+
 result2
 #> ========================================================
 #> Blocking based on the nnd method.
@@ -209,18 +227,19 @@ result2
 #> ========================================================
 #> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
-#>     99.8159     99.5326      0.0001      0.1841     99.9999     99.9999 
+#>     99.5326     99.8159      0.0000      0.4674     99.9999    100.0000 
 #>    f1_score 
 #>     99.6740
 ```
 
 It seems that the default parameters of the NND method result in an FNR
-of 0.18%. We can see if decreasing the `epsilon` parameter as suggested
+of 0.47%. We can see if decreasing the `epsilon` parameter as suggested
 in the [Nearest Neighbor
 Descent](https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html)
 vignette will help.
 
 ``` r
+
 ann_control_pars <- controls_ann()
 ann_control_pars$nnd$epsilon <- 0.2
 
@@ -233,9 +252,10 @@ result3 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
 ```
 
 Changing the `epsilon` search parameter from 0.1 to 0.2 decreased the
-FNR to 0.07%.
+FNR to 0.17%.
 
 ``` r
+
 result3
 #> ========================================================
 #> Blocking based on the nnd method.
@@ -249,7 +269,7 @@ result3
 #> ========================================================
 #> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
-#>     99.9332     99.8331      0.0000      0.0668    100.0000    100.0000 
+#>     99.8331     99.9332      0.0000      0.1669    100.0000    100.0000 
 #>    f1_score 
 #>     99.8831
 ```
@@ -257,6 +277,7 @@ result3
 Finally, compare the NND and HNSW algorithm for this example.
 
 ``` r
+
 result4 <- blocking(x = census$txt, y = cis$txt, verbose = 1, 
                     true_blocks = matches[, .(x, y, block)], 
                     ann = "hnsw")
@@ -265,9 +286,10 @@ result4 <- blocking(x = census$txt, y = cis$txt, verbose = 1,
 #> ===== creating graph =====
 ```
 
-It seems that the HNSW algorithm also performed with 0.07% FNR.
+It seems that the HNSW algorithm also performed with 0.17% FNR.
 
 ``` r
+
 result4
 #> ========================================================
 #> Blocking based on the hnsw method.
@@ -281,7 +303,7 @@ result4
 #> ========================================================
 #> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
-#>     99.9332     99.8331      0.0000      0.0668    100.0000    100.0000 
+#>     99.8331     99.9332      0.0000      0.1669    100.0000    100.0000 
 #>    f1_score 
 #>     99.8831
 ```
@@ -292,6 +314,7 @@ Finally, we can compare the results of two ANN algorithms. The overlap
 between neighbours is given by
 
 ``` r
+
 c("no tuning" = mean(result2$result[order(y)]$x == result4$result[order(y)]$x)*100,
   "with tuning" = mean(result3$result[order(y)]$x == result4$result[order(y)]$x)*100)
 #>   no tuning with tuning 

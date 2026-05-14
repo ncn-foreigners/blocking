@@ -47,6 +47,7 @@ ESSnet DI on-the-job training course, Southampton, 25-28 January 2011.
 ## Examples
 
 ``` r
+
 data("cis")
 head(cis)
 #>       person_id pername1 pername2 sex dob_day dob_mon dob_year

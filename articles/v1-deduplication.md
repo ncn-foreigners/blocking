@@ -5,6 +5,7 @@
 Read required packages.
 
 ``` r
+
 library(blocking)
 library(data.table)
 ```
@@ -14,6 +15,7 @@ Read the `RLdata500` data (taken from the
 package).
 
 ``` r
+
 data(RLdata500)
 setDT(RLdata500)
 head(RLdata500)
@@ -35,6 +37,7 @@ Now we create a new column that concatenates the information in each
 row.
 
 ``` r
+
 RLdata500[, id_count :=.N, ent_id] ## how many times given unit occurs
 RLdata500[, bm:=sprintf("%02d", bm)] ## add leading zeros to month
 RLdata500[, bd:=sprintf("%02d", bd)] ## add leading zeros to day
@@ -62,6 +65,7 @@ In the next step we use the newly created column in the `blocking`
 function. If we specify verbose, we get information about the progress.
 
 ``` r
+
 df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE, seed = 2024)
 #> ===== creating tokens =====
 #> ===== starting search (nnd, x, y: 500, 500, t: 429) =====
@@ -76,6 +80,7 @@ Results are as follows:
   of 17 elements.
 
 ``` r
+
 df_blocks
 #> ========================================================
 #> Blocking based on the nnd method.
@@ -103,10 +108,11 @@ Structure of the object is as follows:
 - `graph` – an `igraph` object mainly for visualisation.
 
 ``` r
+
 str(df_blocks,1)
 #> List of 8
 #>  $ result        :Classes 'data.table' and 'data.frame': 367 obs. of  4 variables:
-#>   ..- attr(*, ".internal.selfref")=<externalptr> 
+#>   ..- attr(*, ".internal.selfref")=<pointer: 0x561fba382ef0> 
 #>  $ method        : chr "nnd"
 #>  $ deduplication : logi TRUE
 #>  $ representation: chr "shingles"
@@ -120,6 +126,7 @@ str(df_blocks,1)
 Plot connections.
 
 ``` r
+
 plot(df_blocks$graph, vertex.size=1, vertex.label = NA)
 ```
 
@@ -135,6 +142,7 @@ The resulting `data.table` has four columns:
 - `dist` – distance between objects.
 
 ``` r
+
 head(df_blocks$result)
 #>        x     y block       dist
 #>    <int> <int> <num>      <num>
@@ -150,6 +158,7 @@ Create long `data.table` with information on blocks and units from
 original dataset.
 
 ``` r
+
 df_block_melted <- melt(df_blocks$result, id.vars = c("block", "dist"))
 df_block_melted_rec_block <- unique(df_block_melted[, .(rec_id=value, block)])
 head(df_block_melted_rec_block)
@@ -166,6 +175,7 @@ head(df_block_melted_rec_block)
 We add block information to the final dataset.
 
 ``` r
+
 RLdata500[df_block_melted_rec_block, on = "rec_id", block_id := i.block]
 head(RLdata500)
 #>    fname_c1 fname_c2 lname_c1 lname_c2    by     bm     bd rec_id ent_id
@@ -190,6 +200,7 @@ We can check in how many blocks the same entities (`ent_id`) are
 observed. In our example, all the same entities are in the same blocks.
 
 ``` r
+
 RLdata500[, .(uniq_blocks = uniqueN(block_id)), .(ent_id)][, .N, uniq_blocks]
 #>    uniq_blocks     N
 #>          <int> <int>
@@ -201,6 +212,7 @@ We can visualise the distances between units stored in the
 matches (close to 0) and non-matches (close to 1).
 
 ``` r
+
 hist(df_blocks$result$dist, xlab = "Distances", ylab = "Frequency", breaks = "fd",
      main = "Distances calculated between units")
 ```
@@ -211,6 +223,7 @@ Finally, we can visualise the result based on the information whether
 block contains matches or not.
 
 ``` r
+
 df_for_density <- copy(df_block_melted[block %in% RLdata500$block_id])
 df_for_density[, match:= block %in% RLdata500[id_count == 2]$block_id]
 

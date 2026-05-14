@@ -68,6 +68,7 @@ Maciej Beręsewicz
 ## Examples
 
 ``` r
+
 # example using two datasets from reclin2
 
 # \donttest{

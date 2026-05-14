@@ -30,12 +30,14 @@ function.
 Install the stable version from CRAN:
 
 ``` r
+
 install.packages("blocking") 
 ```
 
 You can also install the development version from GitHub:
 
 ``` r
+
 # install.packages("pak") # uncomment if needed
 pak::pkg_install("ncn-foreigners/blocking")
 ```
@@ -45,6 +47,7 @@ pak::pkg_install("ncn-foreigners/blocking")
 Load packages for the examples:
 
 ``` r
+
 library(blocking)
 library(reclin2)
 #> Loading required package: data.table
@@ -54,6 +57,7 @@ Generate simple data with three groups (`df_example`) and reference data
 (`df_base`):
 
 ``` r
+
 df_example <- data.frame(txt = c(
   "jankowalski",
   "kowalskijan",
@@ -93,6 +97,7 @@ information:
   (here 0.5714, which means blocking reduces comparisons by over 57%).
 
 ``` r
+
 blocking_result <- blocking(x = df_example$txt)
 blocking_result
 #> ========================================================
@@ -113,6 +118,7 @@ Table with blocking results contains:
 - distance (from the ANN algorithm).
 
 ``` r
+
 blocking_result$result
 #>        x     y block       dist
 #>    <int> <int> <num>      <num>
@@ -128,6 +134,7 @@ Deduplication using the `pair_ann` function for integration with the
 `reclin2` package. Use the pipeline with the `reclin2` package:
 
 ``` r
+
 pair_ann(x = df_example, on = "txt") |>
   compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
   score_simple("score", on = "txt") |>
@@ -152,6 +159,7 @@ Linking records using the same function where `df_base` is the
 “register” and `df_example` is the reference data:
 
 ``` r
+
 pair_ann(x = df_base, y = df_example, on = "txt", deduplication = FALSE) |>
   compare_pairs(on = "txt", comparators = list(cmp_jarowinkler())) |>
   score_simple("score", on = "txt") |>

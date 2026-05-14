@@ -45,6 +45,7 @@ Linking and Deduplicating Data Sets. R package version 0.4-12.4,
 ## Examples
 
 ``` r
+
 data("RLdata500")
 head(RLdata500)
 #>   fname_c1 fname_c2 lname_c1 lname_c2   by bm bd rec_id ent_id

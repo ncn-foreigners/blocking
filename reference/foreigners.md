@@ -32,6 +32,7 @@ the following columns:
 ## Examples
 
 ``` r
+
 data("foreigners")
 head(foreigners)
 #>    fname sname    surname       date region country true_id

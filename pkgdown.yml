@@ -1,11 +1,11 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   v1-deduplication: v1-deduplication.html
   v2-reclin: v2-reclin.html
   v3-integration: v3-integration.html
-last_built: 2026-03-11T11:59Z
+last_built: 2026-05-14T15:51Z
 urls:
   reference: https://ncn-foreigners.ue.poznan.pl/blocking/reference
   article: https://ncn-foreigners.ue.poznan.pl/blocking/articles

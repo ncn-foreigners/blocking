@@ -30,6 +30,7 @@ eval_reclin <- function(pred_df, true_df) {
   pred_y$block <- pred_y_map$block[match(true_y$y, pred_y_map$y)]
 
   max_block <- max(c(pred_df$block, true_df$block), na.rm = TRUE)
+  count_na <- 0
   if (any(is.na(pred_x$block))) {
     count_na <- sum(is.na(pred_x$block))
     pred_x$block[is.na(pred_x$block)] <- seq(max_block + 1, length.out = count_na)
@@ -49,11 +50,11 @@ eval_reclin <- function(pred_df, true_df) {
 
   row_sum_x <- Matrix::rowSums(cx)
   row_sum_y <- Matrix::rowSums(cy)
-  true_pairs <- sum(row_sum_x * row_sum_y)
+  pred_pairs <- sum(row_sum_x * row_sum_y)
 
   col_sum_x <- Matrix::colSums(cx)
   col_sum_y <- Matrix::colSums(cy)
-  pred_pairs <- sum(col_sum_x * col_sum_y)
+  true_pairs <- sum(col_sum_x * col_sum_y)
 
   FP <- pred_pairs - TP
   FN <- true_pairs - TP
@@ -94,13 +95,12 @@ eval_dedup <- function(pred_df, true_df) {
   setkey(pred_lbl, "rec")
   setkey(true_lbl, "rec")
 
-  pred_lbl <- true_lbl[pred_lbl]
-  pred_lbl <- pred_lbl[!is.na(pred_lbl$block)]
+  pred_lbl <- pred_lbl[true_lbl]
 
-  if (any(is.na(pred_lbl$i.block))) {
-    max_block <- max(c(pred_lbl$i.block, true_lbl$block), na.rm = TRUE)
-    pred_lbl$i.block[is.na(pred_lbl$i.block)] <- seq(max_block + 1,
-                                                 length.out = length(sum(is.na(pred_lbl$i.block))))
+  if (any(is.na(pred_lbl$block))) {
+    max_block <- max(c(pred_lbl$block, pred_lbl$i.block), na.rm = TRUE)
+    pred_lbl$block[is.na(pred_lbl$block)] <- seq(max_block + 1,
+                                                 length.out = sum(is.na(pred_lbl$block)))
   }
 
   grouped <- pred_lbl[, list(N = .N), by = c("block", "i.block")]
@@ -110,8 +110,8 @@ eval_dedup <- function(pred_df, true_df) {
   row_sum <- grouped[, list(row_sum = sum(N)), by = "i.block"]
   col_sum <- grouped[, list(col_sum = sum(N)), by = "block"]
 
-  pred_pairs <- sum(row_sum$row_sum * (row_sum$row_sum - 1) / 2)
-  true_pairs <- sum(col_sum$col_sum * (col_sum$col_sum - 1) / 2)
+  true_pairs <- sum(row_sum$row_sum * (row_sum$row_sum - 1) / 2)
+  pred_pairs <- sum(col_sum$col_sum * (col_sum$col_sum - 1) / 2)
 
   FP <- pred_pairs - TP
   FN <- true_pairs - TP
@@ -121,9 +121,9 @@ eval_dedup <- function(pred_df, true_df) {
   TN <- total_pairs - TP - FP - FN
 
   return(list(TP = TP,
-    FP = FP,
-    FN = FN,
-    TN = TN
+              FP = FP,
+              FN = FN,
+              TN = TN
   ))
 }
 

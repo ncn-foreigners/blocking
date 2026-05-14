@@ -1,5 +1,9 @@
 # development
 
+# version 1.0.3
+
++ Fixed errors in the evaluation functions.
+
 # version 1.0.2
 
 + Updated `est_block_error` function.

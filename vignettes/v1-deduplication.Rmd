@@ -54,17 +54,18 @@ RLdata500[, txt:=tolower(paste0(fname_c1,fname_c2,lname_c1,lname_c2,by,bm,bd))]
 head(RLdata500)
 ```
 
-In the next step we use the newly created column in the `blocking` function. If we specify verbose, we get information about the progress.
+In the next step we use the newly created column in the `blocking()` function. If we specify verbose, we get information about the progress.
 
 ```{r}
 df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE, seed = 2024)
 ```
 
 ```{r, echo = FALSE}
-blocks_tab <- table(df_blocks$result$block)
-block_ids <- rep(as.numeric(names(blocks_tab)), blocks_tab+1)
-block_size <- as.numeric(names(table(table(block_ids))))
-block_count <- as.vector(table(table(block_ids)))
+block_membership <- unique(melt(df_blocks$result[, .(x, y, block)],
+                                id.vars = "block")[, .(record = value, block)])
+block_size_distribution <- table(table(block_membership$block))
+block_size <- as.numeric(names(block_size_distribution))
+block_count <- as.vector(block_size_distribution)
 ```
 
 Results are as follows:
@@ -83,7 +84,7 @@ Structure of the object is as follows:
 + `method` -- the method used,
 + `deduplication` -- whether deduplication was applied,
 + `representation` -- whether shingles, a custom matrix, or vectors were used,
-+ `metrics` -- standard metrics and based on the `igraph::compare` methods for comparing graphs (here NULL),
++ `metrics` -- standard metrics and based on the `igraph::compare()` methods for comparing graphs (here NULL),
 + `confusion` -- confusion matrix (here NULL),
 + `colnames` -- column names used for the comparison,
 + `graph` -- an `igraph` object mainly for visualisation.
@@ -146,4 +147,3 @@ plot(density(df_for_density[match==FALSE]$dist), col = "blue", xlim = c(0, 0.8),
      main = "Distribution of distances between\nclusters type (match=red, non-match=blue)")
 lines(density(df_for_density[match==TRUE]$dist), col = "red", xlim = c(0, 0.8))
 ```
-

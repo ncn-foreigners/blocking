@@ -33,9 +33,9 @@ It supports the following R packages that bind to specific ANN algorithms:
 + [rnndescent](https://cran.r-project.org/package=rnndescent) (default, very powerful, supports sparse matrices),
 + [RcppHNSW](https://cran.r-project.org/package=RcppHNSW) (powerful but does not support sparse matrices), 
 + [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy), 
-+ [mlpack](https://cran.r-project.org/package=mlpack) (see `mlpack::lsh` and `mlpack::knn`).
++ [mlpack](https://cran.r-project.org/package=mlpack) (see `mlpack::lsh()` and `mlpack::knn()`).
 
-The package can be used with the [reclin2](https://cran.r-project.org/package=reclin2) package via the `blocking::pair_ann` function.
+The package can be used with the [reclin2](https://cran.r-project.org/package=reclin2) package via the `pair_ann()` function.
 
 ## Installation
 
@@ -79,7 +79,7 @@ df_example
 df_base
 ```
 
-Deduplication using the `blocking` function. Output contains information:
+Deduplication using the `blocking()` function. Output contains information:
 
 + the method used (`nnd` refers to the NN descent algorithm), 
 + number of blocks created (here 2 blocks),
@@ -101,7 +101,7 @@ Table with blocking results contains:
 blocking_result$result
 ```
 
-Deduplication using the `pair_ann` function for integration with the `reclin2` package. Use the pipeline with the `reclin2` package:
+Deduplication using the `pair_ann()` function for integration with the `reclin2` package. Use the pipeline with the `reclin2` package:
 
 ```{r}
 pair_ann(x = df_example, on = "txt") |>
@@ -128,8 +128,8 @@ See section `Data Integration (Statistical Matching and Record Linkage)` in [the
 Packages that allow blocking:
 
 + [klsh](https://CRAN.R-project.org/package=klsh) -- k-means locality sensitive hashing,
-+ [reclin2](https://CRAN.R-project.org/package=reclin2) -- `pair_blocking`, `pair_minsim` functions,
-+ [fastLink](https://CRAN.R-project.org/package=fastLink) -- `blockData` function.
++ [reclin2](https://CRAN.R-project.org/package=reclin2) -- `pair_blocking()`, `pair_minsim()` functions,
++ [fastLink](https://CRAN.R-project.org/package=fastLink) -- `blockData()` function.
 
 Other:
 

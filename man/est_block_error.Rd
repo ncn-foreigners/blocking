@@ -29,9 +29,11 @@ est_block_error(
 It must contain a column named \code{y} storing the indices of the records in the query data set.}
 
 \item{n}{Integer vector of numbers of accepted pairs formed by each record in the query data set
-with records in the reference data set, based on blocking criteria (if \code{NULL}, derived from \code{blocking_result}).}
+with records in the reference data set, based on blocking criteria.
+If \code{NULL}, derived from \code{blocking_result}; if supplied directly, \code{N} must also be supplied.}
 
-\item{N}{Total number of records in the reference data set (if \code{NULL}, derived as \code{length(x)}).}
+\item{N}{Total number of records in the reference data set.
+Required when \code{n} is supplied directly. If \code{n = NULL}, derived as \code{length(x)}.}
 
 \item{G}{Integer or vector of integers. Number of classes in the finite mixture model.
 If \code{G} is a vector, the optimal number of classes is selected from the provided values
@@ -164,7 +166,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
                      y = cis$txt)
 
   est <- est_block_error(x = census$txt,
-                         y = census$txt,
+                         y = cis$txt,
                          blocking_result = result$result,
                          G = 1:5)
 

@@ -5,7 +5,7 @@
 #' @author Maciej Beręsewicz
 #'
 #' @description
-#' Function for the integration with the \pkg{reclin2} package. The function is based on \link[reclin2]{pair_minsim} and reuses some of its source code.
+#' Function for the integration with the \link[reclin2:pair_minsim]{reclin2} package. The function is based on \link[reclin2:pair_minsim]{pair_minsim()} and reuses some of its source code.
 #'
 #' @param x reference data (a data.frame or a data.table),
 #' @param y query data  (a data.frame or a data.table, default NULL),
@@ -14,11 +14,11 @@
 #' @param keep_block whether to keep the block variable in the set,
 #' @param add_xy whether to add x and y,
 #' @param on_blocking a character with column name or a character vector with column names for exact blocking before ANN search. Requires `on`,
-#' @param ... arguments passed to [blocking] function.
+#' @param ... arguments passed to [blocking()].
 #'
 #'
-#' @returns Returns a \link[data.table]{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively.
-#' Returned `data.table` is also of a class \code{pairs} which allows for integration with the \link[reclin2]{compare_pairs} function.
+#' @returns Returns a \link[data.table:data.table]{data.table} with two columns `.x` and `.y`. Columns `.x` and `.y` are row numbers from data.frames x and y respectively.
+#' Returned `data.table` is also of a class `pairs` which allows for integration with the \link[reclin2:compare_pairs]{compare_pairs()} function.
 #'
 #' @examples
 #'

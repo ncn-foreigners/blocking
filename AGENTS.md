@@ -81,4 +81,5 @@ to CRAN policies.
 In `.Rmd` files, use `function()`
 - Refer to functions from other packages (with `roxygen2`) as `\link[package:function]{function()}`. Don't use `::`.
 In `.Rmd` files, use `package::function()`.
+- To refer to packages (with `roxygen2`), use `\link[package]{package}`.
 - Use backticks instead of `\code{}`.

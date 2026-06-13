@@ -30,14 +30,14 @@ pair_ann(
 
 \item{on_blocking}{a character with column name or a character vector with column names for exact blocking before ANN search. Requires \code{on},}
 
-\item{...}{arguments passed to \link{blocking} function.}
+\item{...}{arguments passed to \code{\link[=blocking]{blocking()}}.}
 }
 \value{
-Returns a \link[data.table]{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively.
-Returned \code{data.table} is also of a class \code{pairs} which allows for integration with the \link[reclin2]{compare_pairs} function.
+Returns a \link[data.table:data.table]{data.table} with two columns \code{.x} and \code{.y}. Columns \code{.x} and \code{.y} are row numbers from data.frames x and y respectively.
+Returned \code{data.table} is also of a class \code{pairs} which allows for integration with the \link[reclin2:compare_pairs]{compare_pairs()} function.
 }
 \description{
-Function for the integration with the \pkg{reclin2} package. The function is based on \link[reclin2]{pair_minsim} and reuses some of its source code.
+Function for the integration with the \link[reclin2:pair_minsim]{reclin2} package. The function is based on \link[reclin2:pair_minsim]{pair_minsim()} and reuses some of its source code.
 }
 \examples{
 

@@ -34,12 +34,12 @@ algorithms:
 - [RcppHNSW](https://cran.r-project.org/package=RcppHNSW) (powerful but
   does not support sparse matrices),
 - [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy),
-- [mlpack](https://cran.r-project.org/package=mlpack) (see `mlpack::lsh`
-  and `mlpack::knn`).
+- [mlpack](https://cran.r-project.org/package=mlpack) (see
+  `mlpack::lsh()` and `mlpack::knn()`).
 
 The package can be used with the
 [reclin2](https://cran.r-project.org/package=reclin2) package via the
-`blocking::pair_ann` function.
+`pair_ann()` function.
 
 ## Installation
 
@@ -63,7 +63,6 @@ Load packages for the examples:
 ``` r
 library(blocking)
 library(reclin2)
-#> Loading required package: data.table
 ```
 
 Generate simple data with three groups (`df_example`) and reference data
@@ -98,7 +97,7 @@ df_base
 #> 3       other
 ```
 
-Deduplication using the `blocking` function. Output contains
+Deduplication using the `blocking()` function. Output contains
 information:
 
 - the method used (`nnd` refers to the NN descent algorithm),
@@ -140,7 +139,7 @@ blocking_result$result
 #> 6:     5     8     2 0.27831215
 ```
 
-Deduplication using the `pair_ann` function for integration with the
+Deduplication using the `pair_ann()` function for integration with the
 `reclin2` package. Use the pipeline with the `reclin2` package:
 
 ``` r
@@ -199,9 +198,9 @@ Packages that allow blocking:
 - [klsh](https://CRAN.R-project.org/package=klsh) – k-means locality
   sensitive hashing,
 - [reclin2](https://CRAN.R-project.org/package=reclin2) –
-  `pair_blocking`, `pair_minsim` functions,
-- [fastLink](https://CRAN.R-project.org/package=fastLink) – `blockData`
-  function.
+  `pair_blocking()`, `pair_minsim()` functions,
+- [fastLink](https://CRAN.R-project.org/package=fastLink) –
+  `blockData()` function.
 
 Other:
 

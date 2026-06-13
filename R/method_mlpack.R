@@ -8,15 +8,15 @@
 #'
 #' @param x deduplication or reference data,
 #' @param y query data,
-#' @param algo which algorithm should be used: \code{lsh} or \code{kd},
+#' @param algo which algorithm should be used: `lsh` or `kd`,
 #' @param k number of neighbours to return,
 #' @param verbose if TRUE, log messages to the console,
 #' @param seed seed for the pseudo-random numbers algorithm,
 #' @param path path to write the index,
-#' @param control controls for the \code{lsh} or \code{kd} algorithms.
+#' @param control controls for the `lsh` or `kd` algorithms.
 #'
 #' @description
-#' See details of \link[mlpack]{lsh} and \link[mlpack]{knn}.
+#' See details of \link[mlpack:lsh]{lsh()} and \link[mlpack:knn]{knn()}.
 #'
 #' @keywords internal
 method_mlpack <- function(x,
@@ -61,7 +61,4 @@ method_mlpack <- function(x,
                                  dist = result$distances[, k])
   l_df
 }
-
-
-
 

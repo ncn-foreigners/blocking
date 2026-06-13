@@ -31,7 +31,9 @@ expect_equal(
     colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo",
                  "nt", "ow", "py", "sk", "ty", "wa", "yp", "yt", "on", "th"),
     graph = NULL),
-    class = "blocking")
+    class = "blocking",
+    n_x = 3L,
+    n_y = 8L)
 )
 
 
@@ -59,7 +61,9 @@ expect_equal(
     colnames = c("al", "an", "ho", "ij", "ja", "ki", "ko", "ls", "mo", "ow",
                  "py", "sk", "ty", "wa", "yp", "yt", "nt", "on", "th"),
     graph = NULL),
-    class = "blocking")
+    class = "blocking",
+    n_x = 3L,
+    n_y = 8L)
 )
 
 
@@ -117,4 +121,3 @@ expect_stdout(
          distance = "euclidean",
          verbose = 2)
 )
-

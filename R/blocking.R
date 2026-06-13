@@ -23,16 +23,16 @@
 #' applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent}, \link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy} and \link[mlpack]{mlpack} packages,
 #' and creates blocks using graphs via \link[igraph]{igraph}.
 #'
-#' @param x reference data (a character vector or a matrix),
-#' @param y query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,
+#' @param x reference data (a character vector, a matrix, or a `data.frame`/`data.table` when `on` is supplied),
+#' @param y query data (a character vector, a matrix, or a `data.frame`/`data.table` when `on` is supplied), if not provided NULL by default and thus deduplication is performed,
 #' @param representation method of representing input data (possible \code{c("shingles", "custom_matrix", "vectors")}; default \code{"shingles"}),
 #' @param model a matrix containing word embeddings (e.g., GloVe), required only when \code{representation = "vectors"},
 #' @param deduplication whether deduplication should be applied (default TRUE as y is set to NULL),
-#' @param on variables for ANN search (currently not supported),
-#' @param on_blocking variables for blocking records before ANN search (currently not supported),
+#' @param on variables for ANN search when `x` and `y` are tabular inputs. Multiple variables are concatenated before the ANN search. Missing values are converted to `""`,
+#' @param on_blocking variables for exact deterministic blocking before ANN search. Requires `on`. Missing values are not supported,
 #' @param ann algorithm to be used for searching for ann (possible, \code{c("nnd", "hnsw", "annoy", "lsh", "kd")}, default \code{"nnd"} which corresponds to nearest neighbour descent method),
 #' @param distance distance metric (default \code{cosine}, more options are possible see details),
-#' @param ann_write writing an index to file. Two files will be created: 1) an index, 2) and text file with column names,
+#' @param ann_write writing an index to file. Two files will be created: 1) an index, 2) and text file with column names. Not supported when `on_blocking` is used,
 #' @param ann_colnames file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),
 #' @param true_blocks `data.frame` with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).
 #' This `data.frame` must contain three columns: `x`, `y`, and `block`.
@@ -127,6 +127,38 @@ blocking <- function(x,
                                             "annoy" = "angular",
                                             "lsh" = NULL,
                                             "kd" = NULL)
+
+  on_used <- !is.null(on)
+  on_blocking_used <- !is.null(on_blocking)
+  groups <- NULL
+
+  if (on_blocking_used) {
+    stopifnot("`ann_write` is not supported when `on_blocking` is used." =
+                is.null(ann_write))
+    stopifnot("`on` should be provided when `on_blocking` is used." =
+                on_used)
+  }
+
+  if (on_used) {
+    .blocking_validate_on(x = x,
+                          y = y,
+                          on = on)
+
+    x_table <- data.table::as.data.table(x)
+    y_table <- if (is.null(y)) NULL else data.table::as.data.table(y)
+
+    if (on_blocking_used) {
+      .blocking_validate_on_blocking(x = x_table,
+                                     y = y_table,
+                                     on_blocking = on_blocking)
+      groups <- .blocking_group_ids(x = x_table,
+                                    y = if (is.null(y_table)) x_table else y_table,
+                                    on_blocking = on_blocking)
+    }
+
+    x <- .blocking_ann_input(x_table, on)
+    y <- if (is.null(y_table)) NULL else .blocking_ann_input(y_table, on)
+  }
 
   stopifnot("Only character, dense or sparse (dgCMatrix) matrix x is supported." =
               is.character(x) | is.matrix(x) | inherits(x, "Matrix"))
@@ -285,56 +317,51 @@ blocking <- function(x,
 
   }
 
-  x_df <- switch(ann,
-                 "nnd" = method_nnd(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
-                                    y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
-                                    k = k,
-                                    distance = distance,
-                                    deduplication = deduplication,
-                                    seed = seed,
-                                    verbose = if (verbose == 2) TRUE else FALSE,
-                                    n_threads = n_threads,
-                                    control = control_ann),
-                 "hnsw" = method_hnsw(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
-                                      y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
+  ann_x <- if (representation %in% c("shingles", "custom_matrix")) {
+    x_dtm[, colnames_xy, drop = FALSE]
+  } else {
+    x_embeddings
+  }
+
+  ann_y <- if (representation %in% c("shingles", "custom_matrix")) {
+    y_dtm[, colnames_xy, drop = FALSE]
+  } else {
+    y_embeddings
+  }
+
+  if (on_blocking_used) {
+    x_df <- .blocking_run_grouped_ann(ann = ann,
+                                      x = ann_x,
+                                      y = ann_y,
+                                      x_blocking = groups$x,
+                                      y_blocking = groups$y,
                                       k = k,
                                       distance = distance,
+                                      deduplication = deduplication,
+                                      verbose = verbose,
                                       seed = seed,
-                                      verbose = if (verbose == 2) TRUE else FALSE,
                                       n_threads = n_threads,
-                                      path = ann_write,
-                                      control = control_ann),
-                 "lsh" = method_mlpack(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
-                                       y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
-                                       algo = "lsh",
-                                       k = k,
-                                       verbose = if (verbose == 2) TRUE else FALSE,
-                                       seed = seed,
-                                       path = ann_write,
-                                       control = control_ann),
-                 "kd" = method_mlpack(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
-                                      y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
-                                      algo = "kd",
-                                      k = k,
-                                      verbose = if (verbose == 2) TRUE else FALSE,
-                                      seed = seed,
-                                      path = ann_write,
-                                      control = control_ann),
-                 "annoy" = method_annoy(x = if (representation %in% c("shingles", "custom_matrix")) x_dtm[, colnames_xy] else x_embeddings,
-                                        y = if (representation %in% c("shingles", "custom_matrix")) y_dtm[, colnames_xy] else y_embeddings,
-                                        k = k,
-                                        distance  = distance,
-                                        verbose = if (verbose == 2) TRUE else FALSE,
-                                        seed = seed,
-                                        path = ann_write,
-                                        control = control_ann))
+                                      control = control_ann)
+  } else {
+    x_df <- .blocking_run_ann(ann = ann,
+                              x = ann_x,
+                              y = ann_y,
+                              k = k,
+                              distance = distance,
+                              deduplication = deduplication,
+                              verbose = verbose,
+                              seed = seed,
+                              n_threads = n_threads,
+                              path = ann_write,
+                              control = control_ann)
+  }
 
 
   if (verbose %in% 1:2) cat("===== creating graph =====\n")
 
   ## remove duplicated pairs
 
-  if (deduplication) {
+  if (deduplication && nrow(x_df) > 0L) {
     setDT(x_df)
     setorder(x_df, x)
     x_df[, "pair" := sapply(seq_len(.N), function(i) paste(sort(c(x[i], y[i])), collapse = "_"))]
@@ -414,4 +441,3 @@ blocking <- function(x,
    class = "blocking"
   )
 }
-

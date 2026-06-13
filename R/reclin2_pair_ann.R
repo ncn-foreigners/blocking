@@ -9,10 +9,11 @@
 #'
 #' @param x reference data (a data.frame or a data.table),
 #' @param y query data  (a data.frame or a data.table, default NULL),
-#' @param on a character with column name or a character vector with column names for the ANN search,
+#' @param on a character with column name or a character vector with column names for the ANN search. Multiple variables are concatenated by [blocking()],
 #' @param deduplication whether deduplication should be performed (default TRUE),
 #' @param keep_block whether to keep the block variable in the set,
 #' @param add_xy whether to add x and y,
+#' @param on_blocking a character with column name or a character vector with column names for exact blocking before ANN search. Requires `on`,
 #' @param ... arguments passed to [blocking] function.
 #'
 #'
@@ -50,6 +51,7 @@ pair_ann <- function(x,
                      deduplication = TRUE,
                      keep_block = TRUE,
                      add_xy = TRUE,
+                     on_blocking = NULL,
                      ...) {
 
   stopifnot("Only data.frame or data.table is supported" =
@@ -67,29 +69,18 @@ pair_ann <- function(x,
   x <- data.table::as.data.table(x)
   y <- data.table::as.data.table(y)
 
-  if (length(on) > 1) {
-    x[, "txt" := do.call(paste0, .SD), .SDcols = on]
-    y[, "txt" := do.call(paste0, .SD), .SDcols = on]
-    temp_on <- on
-    on <- "txt"
-  } else {
-    temp_on <- on
-  }
-
-  block_result  <- blocking::blocking(x = x[[on]],
-                                      y = if (deduplication) NULL else y[[on]],
+  block_result  <- blocking::blocking(x = x,
+                                      y = if (deduplication) NULL else y,
+                                      on = on,
+                                      on_blocking = on_blocking,
                                       deduplication = deduplication,
                                       ...)
 
-  a <- x[, c(on), with = FALSE]
-  a[, `:=`(".x", .I)]
+  a <- data.table::data.table(.x = seq_len(nrow(x)))
   a <- a[unique(block_result$result[, c("x", "block"), with = FALSE]), on = setNames("x", ".x")]
-  a[, `:=`((on), NULL)]
 
-  b <- y[, c(on), with = FALSE]
-  b[, `:=`(".y", .I)]
+  b <- data.table::data.table(.y = seq_len(nrow(y)))
   b <- b[unique(block_result$result[, c("y", "block"), with = FALSE]), on = setNames("y", ".y")]
-  b[, `:=`((on), NULL)]
 
   pairs <- merge(a, b,
                  by = "block",
@@ -101,7 +92,6 @@ pair_ann <- function(x,
 
   data.table::setkey(pairs, NULL)
   data.table::setattr(pairs, "class", c("pairs", class(pairs)))
-  on <- temp_on
   setattr(pairs, "blocking_on", on)
 
   if (!keep_block) {
@@ -120,4 +110,3 @@ pair_ann <- function(x,
 
   pairs
 }
-

@@ -14,3 +14,4 @@ misc
 ^\.claude$
 ^AGENTS\.md$
 ^papers$
+^additional_tests$

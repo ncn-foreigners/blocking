@@ -26,9 +26,9 @@ blocking(
 )
 }
 \arguments{
-\item{x}{reference data (a character vector or a matrix),}
+\item{x}{reference data (a character vector, a matrix, or a \code{data.frame}/\code{data.table} when \code{on} is supplied),}
 
-\item{y}{query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,}
+\item{y}{query data (a character vector, a matrix, or a \code{data.frame}/\code{data.table} when \code{on} is supplied), if not provided NULL by default and thus deduplication is performed,}
 
 \item{representation}{method of representing input data (possible \code{c("shingles", "custom_matrix", "vectors")}; default \code{"shingles"}),}
 
@@ -36,15 +36,15 @@ blocking(
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
-\item{on}{variables for ANN search (currently not supported),}
+\item{on}{variables for ANN search when \code{x} and \code{y} are tabular inputs. Multiple variables are concatenated before the ANN search. Missing values are converted to \code{""},}
 
-\item{on_blocking}{variables for blocking records before ANN search (currently not supported),}
+\item{on_blocking}{variables for exact deterministic blocking before ANN search. Requires \code{on}. Missing values are not supported,}
 
 \item{ann}{algorithm to be used for searching for ann (possible, \code{c("nnd", "hnsw", "annoy", "lsh", "kd")}, default \code{"nnd"} which corresponds to nearest neighbour descent method),}
 
 \item{distance}{distance metric (default \code{cosine}, more options are possible see details),}
 
-\item{ann_write}{writing an index to file. Two files will be created: 1) an index, 2) and text file with column names,}
+\item{ann_write}{writing an index to file. Two files will be created: 1) an index, 2) and text file with column names. Not supported when \code{on_blocking} is used,}
 
 \item{ann_colnames}{file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),}
 

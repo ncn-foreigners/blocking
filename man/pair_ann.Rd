@@ -11,6 +11,7 @@ pair_ann(
   deduplication = TRUE,
   keep_block = TRUE,
   add_xy = TRUE,
+  on_blocking = NULL,
   ...
 )
 }
@@ -19,13 +20,15 @@ pair_ann(
 
 \item{y}{query data  (a data.frame or a data.table, default NULL),}
 
-\item{on}{a character with column name or a character vector with column names for the ANN search,}
+\item{on}{a character with column name or a character vector with column names for the ANN search. Multiple variables are concatenated by \code{\link[=blocking]{blocking()}},}
 
 \item{deduplication}{whether deduplication should be performed (default TRUE),}
 
 \item{keep_block}{whether to keep the block variable in the set,}
 
 \item{add_xy}{whether to add x and y,}
+
+\item{on_blocking}{a character with column name or a character vector with column names for exact blocking before ANN search. Requires \code{on},}
 
 \item{...}{arguments passed to \link{blocking} function.}
 }

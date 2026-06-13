@@ -12,3 +12,5 @@ check
 misc
 ^\.positai$
 ^\.claude$
+^AGENTS\.md$
+^papers$

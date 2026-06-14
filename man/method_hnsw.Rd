@@ -24,7 +24,7 @@ method_hnsw(x, y, k, distance, verbose, n_threads, path, control, seed)
 \item{control}{controls for the HNSW algorithm.}
 }
 \description{
-See details of \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search}.
+See details of \link[RcppHNSW:hnsw_build]{hnsw_build()} and \link[RcppHNSW:hnsw_search]{hnsw_search()}.
 }
 \author{
 Maciej Beręsewicz

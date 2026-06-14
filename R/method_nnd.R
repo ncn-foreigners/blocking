@@ -16,7 +16,7 @@
 #' @param control controls for the NN descent algorithm.
 #'
 #' @description
-#' See details of \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query}.
+#' See details of \link[rnndescent:rnnd_build]{rnnd_build()} and \link[rnndescent:rnnd_query]{rnnd_query()}.
 #'
 #' @keywords internal
 method_nnd <- function(x,

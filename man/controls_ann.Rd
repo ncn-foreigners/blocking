@@ -19,15 +19,15 @@ controls_ann(
 
 \item{k_search}{number of neighbours to search,}
 
-\item{nnd}{parameters for \link[rnndescent]{rnnd_build} and \link[rnndescent]{rnnd_query} (should be inside \link{control_nnd} function),}
+\item{nnd}{parameters for \link[rnndescent:rnnd_build]{rnnd_build()} and \link[rnndescent:rnnd_query]{rnnd_query()} (should be inside \code{\link[=control_nnd]{control_nnd()}} function),}
 
-\item{hnsw}{parameters for \link[RcppHNSW]{hnsw_build} and \link[RcppHNSW]{hnsw_search} (should be inside \link{control_hnsw} function),}
+\item{hnsw}{parameters for \link[RcppHNSW:hnsw_build]{hnsw_build()} and \link[RcppHNSW:hnsw_search]{hnsw_search()} (should be inside \code{\link[=control_hnsw]{control_hnsw()}} function),}
 
-\item{lsh}{parameters for \link[mlpack]{lsh} function (should be inside \link{control_lsh} function),}
+\item{lsh}{parameters for \link[mlpack:lsh]{lsh()} function (should be inside \code{\link[=control_lsh]{control_lsh()}} function),}
 
-\item{kd}{kd parameters for \link[mlpack]{knn} function (should be inside \link{control_kd} function),}
+\item{kd}{kd parameters for \link[mlpack:knn]{knn()} function (should be inside \code{\link[=control_kd]{control_kd()}} function),}
 
-\item{annoy}{parameters for \link[RcppAnnoy]{RcppAnnoy} package (should be inside \link{control_annoy} function).}
+\item{annoy}{parameters for the \link[RcppAnnoy]{RcppAnnoy} package (should be inside \code{\link[=control_annoy]{control_annoy()}} function).}
 }
 \value{
 Returns a list with parameters.

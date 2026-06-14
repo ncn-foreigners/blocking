@@ -26,9 +26,9 @@ blocking(
 )
 }
 \arguments{
-\item{x}{reference data (a character vector or a matrix),}
+\item{x}{reference data (a character vector, a matrix, or a \code{data.frame}/\code{data.table} when \code{on} is supplied),}
 
-\item{y}{query data (a character vector or a matrix), if not provided NULL by default and thus deduplication is performed,}
+\item{y}{query data (a character vector, a matrix, or a \code{data.frame}/\code{data.table} when \code{on} is supplied), if not provided NULL by default and thus deduplication is performed,}
 
 \item{representation}{method of representing input data (possible \code{c("shingles", "custom_matrix", "vectors")}; default \code{"shingles"}),}
 
@@ -36,20 +36,21 @@ blocking(
 
 \item{deduplication}{whether deduplication should be applied (default TRUE as y is set to NULL),}
 
-\item{on}{variables for ANN search (currently not supported),}
+\item{on}{variables for ANN search when \code{x} and \code{y} are tabular inputs. Multiple variables are concatenated before the ANN search. Missing values are converted to \code{""},}
 
-\item{on_blocking}{variables for blocking records before ANN search (currently not supported),}
+\item{on_blocking}{variables for exact deterministic blocking before ANN search. Requires \code{on}. Missing values are not supported,}
 
 \item{ann}{algorithm to be used for searching for ann (possible, \code{c("nnd", "hnsw", "annoy", "lsh", "kd")}, default \code{"nnd"} which corresponds to nearest neighbour descent method),}
 
 \item{distance}{distance metric (default \code{cosine}, more options are possible see details),}
 
-\item{ann_write}{writing an index to file. Two files will be created: 1) an index, 2) and text file with column names,}
+\item{ann_write}{writing an index to file. Two files will be created: 1) an index, 2) and text file with column names. Not supported when \code{on_blocking} is used,}
 
 \item{ann_colnames}{file with column names if \code{x} or \code{y} are indices saved on the disk (currently not supported),}
 
-\item{true_blocks}{\code{data.frame} with true blocks to calculate evaluation metrics (standard metrics based on confusion matrix are returned).
-This \code{data.frame} must contain three columns: \code{x}, \code{y}, and \code{block}.}
+\item{true_blocks}{\code{data.frame} with true blocks to calculate pairwise block-level confusion metrics.
+For deduplication, it must contain columns \code{x} and \code{block}.
+For record linkage, it must contain columns \code{x}, \code{y}, and \code{block}.}
 
 \item{verbose}{whether log should be provided (0 = none, 1 = main, 2 = ANN algorithm verbose used),}
 
@@ -59,9 +60,9 @@ This \code{data.frame} must contain three columns: \code{x}, \code{y}, and \code
 
 \item{n_threads}{number of threads used for the ANN algorithms and adding data for index and query,}
 
-\item{control_txt}{list of controls for text data (passed only to \link[text2vec]{itoken_parallel} or \link[text2vec]{itoken}), used only when \code{representation = "shingles"},}
+\item{control_txt}{list of controls for text data (passed only to \link[text2vec:itoken_parallel]{itoken_parallel()} or \link[text2vec:itoken]{itoken()}), used only when \code{representation = "shingles"},}
 
-\item{control_ann}{list of controls for the ANN algorithms.}
+\item{control_ann}{list of controls for the ANN algorithms, usually from \code{\link[=controls_ann]{controls_ann()}}.}
 }
 \value{
 Returns a list containing:\cr
@@ -70,16 +71,17 @@ Returns a list containing:\cr
 \item{\code{method} -- name of the ANN algorithm used,}
 \item{\code{deduplication} -- information whether deduplication was applied,}
 \item{\code{representation} -- information whether shingles, a custom matrix, or vectors were used,}
-\item{\code{metrics} -- metrics for quality assessment, if \code{true_blocks} is provided,}
+\item{\code{metrics} -- pairwise block-level confusion metrics, if \code{true_blocks} is provided,}
 \item{\code{confusion} -- confusion matrix, if \code{true_blocks} is provided,}
 \item{\code{colnames} -- variable names (colnames) used for search,}
-\item{\code{graph} -- \code{igraph} class object.}
+\item{\code{graph} -- \link[igraph:igraph-package]{igraph} class object.}
 }
 }
 \description{
 Function creates shingles (strings with 2 characters, default) or vectors using a given model (e.g., GloVe),
-applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent}, \link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy} and \link[mlpack]{mlpack} packages,
-and creates blocks using graphs via \link[igraph]{igraph}.
+applies approximate nearest neighbour (ANN) algorithms via the \link[rnndescent]{rnndescent},
+\link[RcppHNSW]{RcppHNSW}, \link[RcppAnnoy]{RcppAnnoy}, and \link[mlpack]{mlpack} packages,
+and creates blocks using graphs via the \link[igraph]{igraph} package.
 }
 \examples{
 ## an example using RcppHNSW

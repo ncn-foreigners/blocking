@@ -1,4 +1,5 @@
 library(blocking)
+options(text2vec.mc.cores = 1L)
 library(reclin2)
 
 df_example <- data.frame(txt = c(

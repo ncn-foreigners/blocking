@@ -16,7 +16,7 @@ control_kd(
 )
 }
 \arguments{
-\item{algorithm}{Type of neighbor search: \code{'naive'}, \code{'single_tree'}, \code{'dual_tree'}, \code{'greedy'}.}
+\item{algorithm}{Type of neighbor search: \code{'naive'}, \code{'single_tree'}, \code{'dual_tree'}, or \code{'greedy'}.}
 
 \item{epsilon}{If specified, will do approximate nearest neighbor search with given relative error.}
 
@@ -30,7 +30,7 @@ control_kd(
 \item{tau}{Overlapping size (only valid for spill trees).}
 
 \item{tree_type}{Type of tree to use: \code{'kd'}, \code{'vp'}, \code{'rp'}, \code{'max-rp'}, \code{'ub'}, \code{'cover'}, \code{'r'}, \code{'r-star'},
-\code{'x'}, \code{'ball'}, \code{'hilbert-r'}, \code{'r-plus'}, \code{'r-plus-plus'}, \code{'spill'}, \code{'oct'}.}
+\code{'x'}, \code{'ball'}, \code{'hilbert-r'}, \code{'r-plus'}, \code{'r-plus-plus'}, \code{'spill'}, or \code{'oct'}.}
 
 \item{...}{Additional arguments.}
 }
@@ -38,5 +38,5 @@ control_kd(
 Returns a list with parameters.
 }
 \description{
-Controls for KD algorithm used in the package (see \link[mlpack]{knn} for details).
+Controls for KD algorithm used in the package (see \link[mlpack:knn]{knn()} for details).
 }

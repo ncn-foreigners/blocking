@@ -14,8 +14,10 @@
 #' @param blocking_result `data.frame` or `data.table` containing blocking results (required if `n` is not provided).
 #' It must contain a column named `y` storing the indices of the records in the query data set.
 #' @param n Integer vector of numbers of accepted pairs formed by each record in the query data set
-#' with records in the reference data set, based on blocking criteria (if `NULL`, derived from `blocking_result`).
-#' @param N Total number of records in the reference data set (if `NULL`, derived as `length(x)`).
+#' with records in the reference data set, based on blocking criteria.
+#' If `NULL`, derived from `blocking_result`; if supplied directly, `N` must also be supplied.
+#' @param N Total number of records in the reference data set.
+#' Required when `n` is supplied directly. If `n = NULL`, derived as `length(x)`.
 #' @param G Integer or vector of integers. Number of classes in the finite mixture model.
 #' If `G` is a vector, the optimal number of classes is selected from the provided values
 #' based on the Akaike Information Criterion (AIC).
@@ -141,7 +143,7 @@
 #'                      y = cis$txt)
 #'
 #'   est <- est_block_error(x = census$txt,
-#'                          y = census$txt,
+#'                          y = cis$txt,
 #'                          blocking_result = result$result,
 #'                          G = 1:5)
 #'

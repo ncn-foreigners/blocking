@@ -24,7 +24,7 @@ method_mlpack(x, y, algo = c("lsh", "kd"), k, verbose, seed, path, control)
 \item{control}{controls for the \code{lsh} or \code{kd} algorithms.}
 }
 \description{
-See details of \link[mlpack]{lsh} and \link[mlpack]{knn}.
+See details of \link[mlpack:lsh]{lsh()} and \link[mlpack:knn]{knn()}.
 }
 \author{
 Maciej Beręsewicz

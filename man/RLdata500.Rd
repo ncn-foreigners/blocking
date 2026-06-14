@@ -23,7 +23,7 @@ A \code{data.table} with 500 records. Each row represents one record, with the f
 RLdata500
 }
 \description{
-This data is taken from \pkg{RecordLinkage} R package developed by Murat Sariyar and Andreas Borg.
+This data is taken from the RecordLinkage R package developed by Murat Sariyar and Andreas Borg.
 The package is licensed under GPL-3 license.
 
 The \code{RLdata500} table contains artificial personal data.

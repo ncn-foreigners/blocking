@@ -10,3 +10,4 @@ vignettes/.*R
 vignettes/.*html
 .DS_Store
 .positai
+additional_tests/

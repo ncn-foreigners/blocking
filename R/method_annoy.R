@@ -16,7 +16,7 @@
 #' @param verbose if TRUE, log messages to the console,
 #' @param seed seed for the pseudo-random numbers algorithm,
 #' @param path path to write the index,
-#' @param control controls for \code{new} or \code{build} methods for \link[RcppAnnoy]{RcppAnnoy}.
+#' @param control controls for `new` or `build` methods for \link[RcppAnnoy]{RcppAnnoy}.
 #'
 #' @description
 #' See details of the \link[RcppAnnoy]{RcppAnnoy} package.

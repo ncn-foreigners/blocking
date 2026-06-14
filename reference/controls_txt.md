@@ -1,8 +1,9 @@
 # Controls for processing character data
 
-Controls for text data used in the `blocking` function (if
-`representation = shingles`), passed to
-[tokenize_character_shingles](https://docs.ropensci.org/tokenizers/reference/shingle-tokenizers.html).
+Controls for text data used in
+[`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md)
+(if `representation = "shingles"`), passed to
+[tokenize_character_shingles()](https://docs.ropensci.org/tokenizers/reference/shingle-tokenizers.html).
 
 ## Usage
 

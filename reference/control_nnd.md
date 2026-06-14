@@ -1,9 +1,9 @@
 # Controls for the NND algorithm
 
 Controls for NND algorithm used in the package (see
-[rnnd_build](https://jlmelville.github.io/rnndescent/reference/rnnd_build.html)
+[rnnd_build()](https://jlmelville.github.io/rnndescent/reference/rnnd_build.html)
 and
-[rnnd_query](https://jlmelville.github.io/rnndescent/reference/rnnd_query.html)
+[rnnd_query()](https://jlmelville.github.io/rnndescent/reference/rnnd_query.html)
 for details).
 
 ## Usage

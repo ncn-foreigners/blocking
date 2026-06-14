@@ -46,12 +46,13 @@ est_block_error(
 
   Integer vector of numbers of accepted pairs formed by each record in
   the query data set with records in the reference data set, based on
-  blocking criteria (if `NULL`, derived from `blocking_result`).
+  blocking criteria. If `NULL`, derived from `blocking_result`; if
+  supplied directly, `N` must also be supplied.
 
 - N:
 
-  Total number of records in the reference data set (if `NULL`, derived
-  as `length(x)`).
+  Total number of records in the reference data set. Required when `n`
+  is supplied directly. If `n = NULL`, derived as `length(x)`.
 
 - G:
 
@@ -231,7 +232,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
                      y = cis$txt)
 
   est <- est_block_error(x = census$txt,
-                         y = census$txt,
+                         y = cis$txt,
                          blocking_result = result$result,
                          G = 1:5)
 

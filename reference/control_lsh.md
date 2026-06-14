@@ -1,7 +1,7 @@
 # Controls for the LSH algorithm
 
 Controls for LSH algorithm used in the package (see
-[lsh](https://rdrr.io/pkg/mlpack/man/lsh.html) for details).
+[lsh()](https://rdrr.io/pkg/mlpack/man/lsh.html) for details).
 
 ## Usage
 

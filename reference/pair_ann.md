@@ -1,8 +1,10 @@
 # Integration with the reclin2 package
 
-Function for the integration with the reclin2 package. The function is
-based on [pair_minsim](https://rdrr.io/pkg/reclin2/man/pair_minsim.html)
-and reuses some of its source code.
+Function for the integration with the
+[reclin2](https://rdrr.io/pkg/reclin2/man/pair_minsim.html) package. The
+function is based on
+[pair_minsim()](https://rdrr.io/pkg/reclin2/man/pair_minsim.html) and
+reuses some of its source code.
 
 ## Usage
 
@@ -14,6 +16,7 @@ pair_ann(
   deduplication = TRUE,
   keep_block = TRUE,
   add_xy = TRUE,
+  on_blocking = NULL,
   ...
 )
 ```
@@ -31,7 +34,8 @@ pair_ann(
 - on:
 
   a character with column name or a character vector with column names
-  for the ANN search,
+  for the ANN search. Multiple variables are concatenated by
+  [`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md),
 
 - deduplication:
 
@@ -45,11 +49,15 @@ pair_ann(
 
   whether to add x and y,
 
+- on_blocking:
+
+  a character with column name or a character vector with column names
+  for exact blocking before ANN search. Requires `on`,
+
 - ...:
 
   arguments passed to
-  [blocking](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md)
-  function.
+  [`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md).
 
 ## Value
 
@@ -58,7 +66,7 @@ Returns a
 two columns `.x` and `.y`. Columns `.x` and `.y` are row numbers from
 data.frames x and y respectively. Returned `data.table` is also of a
 class `pairs` which allows for integration with the
-[compare_pairs](https://rdrr.io/pkg/reclin2/man/compare_pairs.html)
+[compare_pairs()](https://rdrr.io/pkg/reclin2/man/compare_pairs.html)
 function.
 
 ## Author

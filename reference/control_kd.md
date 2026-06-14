@@ -1,7 +1,7 @@
 # Controls for the k-d tree algorithm
 
 Controls for KD algorithm used in the package (see
-[knn](https://rdrr.io/pkg/mlpack/man/knn.html) for details).
+[knn()](https://rdrr.io/pkg/mlpack/man/knn.html) for details).
 
 ## Usage
 
@@ -22,7 +22,7 @@ control_kd(
 
 - algorithm:
 
-  Type of neighbor search: `'naive'`, `'single_tree'`, `'dual_tree'`,
+  Type of neighbor search: `'naive'`, `'single_tree'`, `'dual_tree'`, or
   `'greedy'`.
 
 - epsilon:
@@ -52,7 +52,7 @@ control_kd(
 
   Type of tree to use: `'kd'`, `'vp'`, `'rp'`, `'max-rp'`, `'ub'`,
   `'cover'`, `'r'`, `'r-star'`, `'x'`, `'ball'`, `'hilbert-r'`,
-  `'r-plus'`, `'r-plus-plus'`, `'spill'`, `'oct'`.
+  `'r-plus'`, `'r-plus-plus'`, `'spill'`, or `'oct'`.
 
 - ...:
 

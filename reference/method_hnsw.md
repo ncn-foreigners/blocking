@@ -1,8 +1,8 @@
 # An internal function to use HNSW algorithm via the RcppHNSW package.
 
 See details of
-[hnsw_build](https://rdrr.io/pkg/RcppHNSW/man/hnsw_build.html) and
-[hnsw_search](https://rdrr.io/pkg/RcppHNSW/man/hnsw_search.html).
+[hnsw_build()](https://rdrr.io/pkg/RcppHNSW/man/hnsw_build.html) and
+[hnsw_search()](https://rdrr.io/pkg/RcppHNSW/man/hnsw_search.html).
 
 ## Usage
 

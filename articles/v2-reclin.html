@@ -8,8 +8,8 @@
 <title>Blocking records for record linkage • blocking</title>
 <!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Blocking records for record linkage">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
@@ -189,16 +189,16 @@ the CENSUS dataset.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result1</span><span class="op">$</span><span class="va">result</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         x     y block       dist</span></span>
 <span><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;num&gt;      &lt;num&gt;</span></span>
-<span><span class="co">#&gt;  1:     1 12088  8344 0.04520786</span></span>
-<span><span class="co">#&gt;  2:     2 12156  8382 0.26164961</span></span>
-<span><span class="co">#&gt;  3:     3  7243  5759 0.04604095</span></span>
-<span><span class="co">#&gt;  4:     3 10643  5759 0.37306446</span></span>
-<span><span class="co">#&gt;  5:     4  8422  6457 0.35876358</span></span>
-<span><span class="co">#&gt;  6:     6  9442  7042 0.31899476</span></span>
-<span><span class="co">#&gt;  7:     6 10195  7042 0.04166669</span></span>
+<span><span class="co">#&gt;  1:     1 12088  8341 0.04520786</span></span>
+<span><span class="co">#&gt;  2:     2 12156  8379 0.26164961</span></span>
+<span><span class="co">#&gt;  3:     3  7243  5758 0.04604095</span></span>
+<span><span class="co">#&gt;  4:     3 10643  5758 0.37306446</span></span>
+<span><span class="co">#&gt;  5:     4  8422  6453 0.35876358</span></span>
+<span><span class="co">#&gt;  6:     6  9442  7033 0.31899476</span></span>
+<span><span class="co">#&gt;  7:     6 10195  7033 0.04166669</span></span>
 <span><span class="co">#&gt;  8:     7   745   725 0.16333997</span></span>
-<span><span class="co">#&gt;  9:     8  3072  2770 0.25784391</span></span>
-<span><span class="co">#&gt; 10:     8 10717  2770 0.12358326</span></span></code></pre></div>
+<span><span class="co">#&gt;  9:     8  3072  2772 0.25784391</span></span>
+<span><span class="co">#&gt; 10:     8 10717  2772 0.12358326</span></span></code></pre></div>
 <p>Let’s take a look at the first pair. Obviously there is a typo in the
 <code>pername1</code> but all the other variables are the same, so it
 appears to be a match.</p>
@@ -247,19 +247,19 @@ can use this information to evaluate our approach.</p>
 <code class="sourceCode R"><span><span class="va">result2</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 8441.</span></span>
+<span><span class="co">#&gt; Number of blocks: 8437.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1053.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 0.9999.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;    2    3    4    5    6    7    8    9 </span></span>
-<span><span class="co">#&gt; 5575 2084  609  140   25    6    1    1 </span></span>
+<span><span class="co">#&gt; 5559 2100  608  137   26    5    1    1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard, in %):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
-<span><span class="co">#&gt;     99.5326     99.8159      0.0000      0.4674     99.9999    100.0000 </span></span>
+<span><span class="co">#&gt;     99.5326     99.7992      0.0000      0.4674     99.9999    100.0000 </span></span>
 <span><span class="co">#&gt;    f1_score </span></span>
-<span><span class="co">#&gt;     99.6740</span></span></code></pre></div>
+<span><span class="co">#&gt;     99.6657</span></span></code></pre></div>
 <p>It seems that the default parameters of the NND method result in an
 FNR of 0.47%. We can see if decreasing the <code>epsilon</code>
 parameter as suggested in the <a href="https://jlmelville.github.io/rnndescent/articles/nearest-neighbor-descent.html" class="external-link">Nearest
@@ -280,13 +280,13 @@ decreased the FNR to 0.17%.</p>
 <code class="sourceCode R"><span><span class="va">result3</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Blocking based on the nnd method.</span></span>
-<span><span class="co">#&gt; Number of blocks: 8448.</span></span>
+<span><span class="co">#&gt; Number of blocks: 8447.</span></span>
 <span><span class="co">#&gt; Number of columns used for blocking: 1053.</span></span>
 <span><span class="co">#&gt; Reduction ratio: 0.9999.</span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Distribution of the size of the blocks:</span></span>
 <span><span class="co">#&gt;    2    3    4    5    6    7    8    9 </span></span>
-<span><span class="co">#&gt; 5587 2082  604  142   26    5    1    1 </span></span>
+<span><span class="co">#&gt; 5579 2091  606  138   26    5    1    1 </span></span>
 <span><span class="co">#&gt; ========================================================</span></span>
 <span><span class="co">#&gt; Evaluation metrics (standard, in %):</span></span>
 <span><span class="co">#&gt;      recall   precision         fpr         fnr    accuracy specificity </span></span>
@@ -329,7 +329,7 @@ overlap between neighbours is given by</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no tuning"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result2</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span>,</span>
 <span>  <span class="st">"with tuning"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">result3</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="va">result4</span><span class="op">$</span><span class="va">result</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   no tuning with tuning </span></span>
-<span><span class="co">#&gt;    98.76483    99.17926</span></span></code></pre></div>
+<span><span class="co">#&gt;    98.92735    99.31741</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

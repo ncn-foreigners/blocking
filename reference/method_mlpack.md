@@ -1,7 +1,7 @@
 # An internal function to use the LSH and KD-tree algorithm via the [mlpack](https://rdrr.io/pkg/mlpack/man/mlpack.html) package.
 
-See details of [lsh](https://rdrr.io/pkg/mlpack/man/lsh.html) and
-[knn](https://rdrr.io/pkg/mlpack/man/knn.html).
+See details of [lsh()](https://rdrr.io/pkg/mlpack/man/lsh.html) and
+[knn()](https://rdrr.io/pkg/mlpack/man/knn.html).
 
 ## Usage
 

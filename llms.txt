@@ -17,12 +17,12 @@ algorithms:
   does not support sparse matrices),
 - [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy),
 - [mlpack](https://cran.r-project.org/package=mlpack) (see
-  [`mlpack::lsh`](https://rdrr.io/pkg/mlpack/man/lsh.html) and
-  [`mlpack::knn`](https://rdrr.io/pkg/mlpack/man/knn.html)).
+  [`mlpack::lsh()`](https://rdrr.io/pkg/mlpack/man/lsh.html) and
+  [`mlpack::knn()`](https://rdrr.io/pkg/mlpack/man/knn.html)).
 
 The package can be used with the
 [reclin2](https://cran.r-project.org/package=reclin2) package via the
-[`blocking::pair_ann`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/pair_ann.md)
+[`pair_ann()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/pair_ann.md)
 function.
 
 ## Installation
@@ -50,7 +50,6 @@ Load packages for the examples:
 
 library(blocking)
 library(reclin2)
-#> Loading required package: data.table
 ```
 
 Generate simple data with three groups (`df_example`) and reference data
@@ -86,8 +85,9 @@ df_base
 #> 3       other
 ```
 
-Deduplication using the `blocking` function. Output contains
-information:
+Deduplication using the
+[`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md)
+function. Output contains information:
 
 - the method used (`nnd` refers to the NN descent algorithm),
 - number of blocks created (here 2 blocks),
@@ -130,8 +130,10 @@ blocking_result$result
 #> 6:     5     8     2 0.27831215
 ```
 
-Deduplication using the `pair_ann` function for integration with the
-`reclin2` package. Use the pipeline with the `reclin2` package:
+Deduplication using the
+[`pair_ann()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/pair_ann.md)
+function for integration with the `reclin2` package. Use the pipeline
+with the `reclin2` package:
 
 ``` r
 
@@ -191,9 +193,11 @@ Packages that allow blocking:
 - [klsh](https://CRAN.R-project.org/package=klsh) – k-means locality
   sensitive hashing,
 - [reclin2](https://CRAN.R-project.org/package=reclin2) –
-  `pair_blocking`, `pair_minsim` functions,
-- [fastLink](https://CRAN.R-project.org/package=fastLink) – `blockData`
-  function.
+  [`pair_blocking()`](https://rdrr.io/pkg/reclin2/man/pair_blocking.html),
+  [`pair_minsim()`](https://rdrr.io/pkg/reclin2/man/pair_minsim.html)
+  functions,
+- [fastLink](https://CRAN.R-project.org/package=fastLink) –
+  `blockData()` function.
 
 Other:
 

@@ -5,10 +5,11 @@ vectors using a given model (e.g., GloVe), applies approximate nearest
 neighbour (ANN) algorithms via the
 [rnndescent](https://jlmelville.github.io/rnndescent/reference/rnndescent-package.html),
 [RcppHNSW](https://rdrr.io/pkg/RcppHNSW/man/RcppHnsw-package.html),
-[RcppAnnoy](https://rdrr.io/pkg/RcppAnnoy/man/RcppAnnoy-package.html)
+[RcppAnnoy](https://rdrr.io/pkg/RcppAnnoy/man/RcppAnnoy-package.html),
 and [mlpack](https://rdrr.io/pkg/mlpack/man/mlpack.html) packages, and
-creates blocks using graphs via
-[igraph](https://r.igraph.org/reference/aaa-igraph-package.html).
+creates blocks using graphs via the
+[igraph](https://r.igraph.org/reference/aaa-igraph-package.html)
+package.
 
 ## Usage
 
@@ -39,12 +40,14 @@ blocking(
 
 - x:
 
-  reference data (a character vector or a matrix),
+  reference data (a character vector, a matrix, or a
+  `data.frame`/`data.table` when `on` is supplied),
 
 - y:
 
-  query data (a character vector or a matrix), if not provided NULL by
-  default and thus deduplication is performed,
+  query data (a character vector, a matrix, or a
+  `data.frame`/`data.table` when `on` is supplied), if not provided NULL
+  by default and thus deduplication is performed,
 
 - representation:
 
@@ -63,12 +66,14 @@ blocking(
 
 - on:
 
-  variables for ANN search (currently not supported),
+  variables for ANN search when `x` and `y` are tabular inputs. Multiple
+  variables are concatenated before the ANN search. Missing values are
+  converted to `""`,
 
 - on_blocking:
 
-  variables for blocking records before ANN search (currently not
-  supported),
+  variables for exact deterministic blocking before ANN search. Requires
+  `on`. Missing values are not supported,
 
 - ann:
 
@@ -84,7 +89,8 @@ blocking(
 - ann_write:
 
   writing an index to file. Two files will be created: 1) an index, 2)
-  and text file with column names,
+  and text file with column names. Not supported when `on_blocking` is
+  used,
 
 - ann_colnames:
 
@@ -93,9 +99,10 @@ blocking(
 
 - true_blocks:
 
-  `data.frame` with true blocks to calculate evaluation metrics
-  (standard metrics based on confusion matrix are returned). This
-  `data.frame` must contain three columns: `x`, `y`, and `block`.
+  `data.frame` with true blocks to calculate pairwise block-level
+  confusion metrics. For deduplication, it must contain columns `x` and
+  `block`. For record linkage, it must contain columns `x`, `y`, and
+  `block`.
 
 - verbose:
 
@@ -118,13 +125,14 @@ blocking(
 - control_txt:
 
   list of controls for text data (passed only to
-  [itoken_parallel](https://rdrr.io/pkg/text2vec/man/itoken.html) or
-  [itoken](https://rdrr.io/pkg/text2vec/man/itoken.html)), used only
+  [itoken_parallel()](https://rdrr.io/pkg/text2vec/man/itoken.html) or
+  [itoken()](https://rdrr.io/pkg/text2vec/man/itoken.html)), used only
   when `representation = "shingles"`,
 
 - control_ann:
 
-  list of controls for the ANN algorithms.
+  list of controls for the ANN algorithms, usually from
+  [`controls_ann()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/controls_ann.md).
 
 ## Value
 
@@ -140,14 +148,16 @@ Returns a list containing:
 - `representation` – information whether shingles, a custom matrix, or
   vectors were used,
 
-- `metrics` – metrics for quality assessment, if `true_blocks` is
-  provided,
+- `metrics` – pairwise block-level confusion metrics, if `true_blocks`
+  is provided,
 
 - `confusion` – confusion matrix, if `true_blocks` is provided,
 
 - `colnames` – variable names (colnames) used for search,
 
-- `graph` – `igraph` class object.
+- `graph` –
+  [igraph](https://r.igraph.org/reference/aaa-igraph-package.html) class
+  object.
 
 ## Author
 

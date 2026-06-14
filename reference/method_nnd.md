@@ -1,9 +1,9 @@
 # An internal function to use the NN descent algorithm via the [rnndescent](https://jlmelville.github.io/rnndescent/reference/rnndescent-package.html) package.
 
 See details of
-[rnnd_build](https://jlmelville.github.io/rnndescent/reference/rnnd_build.html)
+[rnnd_build()](https://jlmelville.github.io/rnndescent/reference/rnnd_build.html)
 and
-[rnnd_query](https://jlmelville.github.io/rnndescent/reference/rnnd_query.html).
+[rnnd_query()](https://jlmelville.github.io/rnndescent/reference/rnnd_query.html).
 
 ## Usage
 

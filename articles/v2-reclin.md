@@ -145,16 +145,16 @@ Example pairs.
 head(result1$result, n = 10)
 #>         x     y block       dist
 #>     <int> <int> <num>      <num>
-#>  1:     1 12088  8344 0.04520786
-#>  2:     2 12156  8382 0.26164961
-#>  3:     3  7243  5759 0.04604095
-#>  4:     3 10643  5759 0.37306446
-#>  5:     4  8422  6457 0.35876358
-#>  6:     6  9442  7042 0.31899476
-#>  7:     6 10195  7042 0.04166669
+#>  1:     1 12088  8341 0.04520786
+#>  2:     2 12156  8379 0.26164961
+#>  3:     3  7243  5758 0.04604095
+#>  4:     3 10643  5758 0.37306446
+#>  5:     4  8422  6453 0.35876358
+#>  6:     6  9442  7033 0.31899476
+#>  7:     6 10195  7033 0.04166669
 #>  8:     7   745   725 0.16333997
-#>  9:     8  3072  2770 0.25784391
-#> 10:     8 10717  2770 0.12358326
+#>  9:     8  3072  2772 0.25784391
+#> 10:     8 10717  2772 0.12358326
 ```
 
 Let’s take a look at the first pair. Obviously there is a typo in the
@@ -217,19 +217,19 @@ Let’s see how our approach handled this problem.
 result2
 #> ========================================================
 #> Blocking based on the nnd method.
-#> Number of blocks: 8441.
+#> Number of blocks: 8437.
 #> Number of columns used for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
 #>    2    3    4    5    6    7    8    9 
-#> 5575 2084  609  140   25    6    1    1 
+#> 5559 2100  608  137   26    5    1    1 
 #> ========================================================
 #> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
-#>     99.5326     99.8159      0.0000      0.4674     99.9999    100.0000 
+#>     99.5326     99.7992      0.0000      0.4674     99.9999    100.0000 
 #>    f1_score 
-#>     99.6740
+#>     99.6657
 ```
 
 It seems that the default parameters of the NND method result in an FNR
@@ -259,13 +259,13 @@ FNR to 0.17%.
 result3
 #> ========================================================
 #> Blocking based on the nnd method.
-#> Number of blocks: 8448.
+#> Number of blocks: 8447.
 #> Number of columns used for blocking: 1053.
 #> Reduction ratio: 0.9999.
 #> ========================================================
 #> Distribution of the size of the blocks:
 #>    2    3    4    5    6    7    8    9 
-#> 5587 2082  604  142   26    5    1    1 
+#> 5579 2091  606  138   26    5    1    1 
 #> ========================================================
 #> Evaluation metrics (standard, in %):
 #>      recall   precision         fpr         fnr    accuracy specificity 
@@ -318,5 +318,5 @@ between neighbours is given by
 c("no tuning" = mean(result2$result[order(y)]$x == result4$result[order(y)]$x)*100,
   "with tuning" = mean(result3$result[order(y)]$x == result4$result[order(y)]$x)*100)
 #>   no tuning with tuning 
-#>    98.76483    99.17926
+#>    98.92735    99.31741
 ```

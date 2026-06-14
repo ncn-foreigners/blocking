@@ -2,6 +2,11 @@
 
 ## version 1.0.3
 
+- Added support for the `on` and `on_blocking` arguments in the
+  [`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md)
+  and
+  [`pair_ann()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/pair_ann.md)
+  functions.
 - Fixed errors in the evaluation functions.
 
 ## version 1.0.2

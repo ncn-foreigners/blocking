@@ -61,7 +61,8 @@ head(RLdata500)
 #> 6:        1  juergenfranke19290704
 ```
 
-In the next step we use the newly created column in the `blocking`
+In the next step we use the newly created column in the
+[`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md)
 function. If we specify verbose, we get information about the progress.
 
 ``` r
@@ -74,23 +75,23 @@ df_blocks <- blocking(x = RLdata500$txt, ann = "nnd", verbose = 1, graph = TRUE,
 
 Results are as follows:
 
-- based on `rnndescent` we have created 133 blocks,
+- based on `rnndescent` we have created 134 blocks,
 - 429 2-character shingles have been created for the blocking,
-- we have 45 blocks of 2 elements, 33 blocks of 3 elements, …, 1 block
-  of 17 elements.
+- we have 44 blocks of 2 elements, 35 blocks of 3 elements, …, 1 block
+  of 15 elements.
 
 ``` r
 
 df_blocks
 #> ========================================================
 #> Blocking based on the nnd method.
-#> Number of blocks: 133.
+#> Number of blocks: 134.
 #> Number of columns used for blocking: 429.
-#> Reduction ratio: 0.9919.
+#> Reduction ratio: 0.9921.
 #> ========================================================
 #> Distribution of the size of the blocks:
-#>  2  3  4  5  6  7  8  9 11 17 
-#> 45 33 21 14  7  4  4  3  1  1
+#>  2  3  4  5  6  7  8  9 11 12 15 
+#> 44 35 23 12  8  5  2  2  1  1  1
 ```
 
 Structure of the object is as follows:
@@ -101,7 +102,7 @@ Structure of the object is as follows:
 - `representation` – whether shingles, a custom matrix, or vectors were
   used,
 - `metrics` – standard metrics and based on the
-  [`igraph::compare`](https://r.igraph.org/reference/compare.html)
+  [`igraph::compare()`](https://r.igraph.org/reference/compare.html)
   methods for comparing graphs (here NULL),
 - `confusion` – confusion matrix (here NULL),
 - `colnames` – column names used for the comparison,
@@ -111,8 +112,8 @@ Structure of the object is as follows:
 
 str(df_blocks,1)
 #> List of 8
-#>  $ result        :Classes 'data.table' and 'data.frame': 367 obs. of  4 variables:
-#>   ..- attr(*, ".internal.selfref")=<pointer: 0x561fba382ef0> 
+#>  $ result        :Classes 'data.table' and 'data.frame': 366 obs. of  4 variables:
+#>   ..- attr(*, ".internal.selfref")=<pointer: 0x55a9c765fee0> 
 #>  $ method        : chr "nnd"
 #>  $ deduplication : logi TRUE
 #>  $ representation: chr "shingles"
@@ -121,6 +122,8 @@ str(df_blocks,1)
 #>  $ colnames      : chr [1:429] "86" "ap" "av" "bf" ...
 #>  $ graph         :Class 'igraph'  hidden list of 10
 #>  - attr(*, "class")= chr "blocking"
+#>  - attr(*, "n_x")= int 500
+#>  - attr(*, "n_y")= int 500
 ```
 
 Plot connections.
@@ -146,7 +149,7 @@ The resulting `data.table` has four columns:
 head(df_blocks$result)
 #>        x     y block       dist
 #>    <int> <int> <num>      <num>
-#> 1:     1    64    34 0.47379869
+#> 1:     1    64    33 0.47379869
 #> 2:     2    43     1 0.08074528
 #> 3:     2   486     1 0.41023219
 #> 4:     3   450    89 0.43263352
@@ -164,12 +167,12 @@ df_block_melted_rec_block <- unique(df_block_melted[, .(rec_id=value, block)])
 head(df_block_melted_rec_block)
 #>    rec_id block
 #>     <int> <num>
-#> 1:      1    34
+#> 1:      1    33
 #> 2:      2     1
 #> 3:      3    89
 #> 4:      4    12
 #> 5:      5     2
-#> 6:      6    34
+#> 6:      6    33
 ```
 
 We add block information to the final dataset.
@@ -188,12 +191,12 @@ head(RLdata500)
 #> 6:  JUERGEN            FRANKE           1929     07     04      6    142
 #>    id_count                    txt block_id
 #>       <int>                 <char>    <num>
-#> 1:        1   carstenmeier19490722       34
+#> 1:        1   carstenmeier19490722       33
 #> 2:        2      gerdbauer19680727        1
 #> 3:        1 roberthartmann19300430       89
 #> 4:        1    stefanwolff19570902       12
 #> 5:        1    ralfkrueger19660113        2
-#> 6:        1  juergenfranke19290704       34
+#> 6:        1  juergenfranke19290704       33
 ```
 
 We can check in how many blocks the same entities (`ent_id`) are

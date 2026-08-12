@@ -1,0 +1,15 @@
+bibentry(bibtype = "Article",
+  title        = "{blocking}: An {R} Package for Blocking of Records for Record Linkage and Deduplication",
+  author       = c(person(given = "Maciej",
+                          family = "Ber\\k{e}sewicz",
+                          email = "maciej.beresewicz@ue.poznan.pl"),
+                   person(given = "Adam",
+                          family = "Struzik")),
+  journal      = "The R Journal",
+  year         = "2026",
+  volume       = "18",
+  number       = "2",
+  pages        = "162--175",
+  doi          = "10.32614/RJ-2026-029",
+  header       = "To cite blocking in publications use:"
+)

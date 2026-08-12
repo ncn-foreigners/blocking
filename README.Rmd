@@ -9,7 +9,7 @@ output: github_document
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/blocking)](https://cran.r-project.org/package=blocking)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/blocking)](https://cran.r-project.org/package=blocking)
 [![Mentioned in Awesome Official Statistics](https://awesome.re/mentioned-badge.svg)](https://github.com/SNStatComp/awesome-official-statistics-software)
-
+[![DOI](https://img.shields.io/badge/DOI-10.32614%2FRJ--2026--029-blue)](https://doi.org/10.32614/RJ-2026-029)
 
 <!-- badges: end -->
   
@@ -139,3 +139,28 @@ Other:
 ## Funding
 
 Work on this package is supported by the National Science Centre, OPUS 20 grant no. 2020/39/B/HS4/00941.
+
+## How to cite
+
+Please cite the package using the following reference
+
+```
+Beręsewicz, M., & Struzik, A. (2026). blocking: An R package for blocking of records for record linkage and deduplication. The R Journal, 18(2), 162–175. https://doi.org/10.32614/RJ-2026-029
+```
+
+Bibtex entry for this publication
+
+```latex
+@article{RJ-2026-029,
+  author = {Beręsewicz, Maciej and Struzik, Adam},
+  title = {The R Journal: blocking: An R Package for Blocking of Records for Record Linkage and Deduplication},
+  journal = {The R Journal},
+  year = {2026},
+  note = {https://doi.org/10.32614/RJ-2026-029},
+  doi = {10.32614/RJ-2026-029},
+  volume = {18},
+  issue = {2},
+  issn = {2073-4859},
+  pages = {162-175}
+}
+```

@@ -1,5 +1,7 @@
 # development
 
++ Added a `CITATION` file pointing to the [R Journal publication](https://doi.org/10.32614/RJ-2026-029)
+    
 # version 1.0.3
 
 + Added support for the `on` and `on_blocking` arguments

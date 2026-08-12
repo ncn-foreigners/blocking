@@ -2,6 +2,8 @@
 
 ## version 1.0.3
 
+CRAN release: 2026-06-30
+
 - Added support for the `on` and `on_blocking` arguments in the
   [`blocking()`](https://ncn-foreigners.ue.poznan.pl/blocking/reference/blocking.md)
   and

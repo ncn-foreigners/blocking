@@ -10,16 +10,20 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/ncn-foreigners/blocking/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/ncn-foreigners/blocking/blob/main/inst/CITATION)
 
-Beręsewicz M, Struzik A (2026). *blocking: Various Blocking Methods for
-Entity Resolution*. R package version 1.0.3,
-<https://github.com/ncn-foreigners/blocking>.
+Beręsewicz M, Struzik A (2026). “blocking: An R Package for Blocking of
+Records for Record Linkage and Deduplication.” *The R Journal*,
+**18**(2), 162–175.
+[doi:10.32614/RJ-2026-029](https://doi.org/10.32614/RJ-2026-029).
 
-    @Manual{,
-      title = {blocking: Various Blocking Methods for Entity Resolution},
-      author = {Maciej Beręsewicz and Adam Struzik},
+    @Article{,
+      title = {{blocking}: An {R} Package for Blocking of Records for Record Linkage and Deduplication},
+      author = {Maciej Ber\k{e}sewicz and Adam Struzik},
+      journal = {The R Journal},
       year = {2026},
-      note = {R package version 1.0.3},
-      url = {https://github.com/ncn-foreigners/blocking},
+      volume = {18},
+      number = {2},
+      pages = {162--175},
+      doi = {10.32614/RJ-2026-029},
     }

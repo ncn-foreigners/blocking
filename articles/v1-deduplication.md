@@ -113,7 +113,7 @@ Structure of the object is as follows:
 str(df_blocks,1)
 #> List of 8
 #>  $ result        :Classes 'data.table' and 'data.frame': 366 obs. of  4 variables:
-#>   ..- attr(*, ".internal.selfref")=<pointer: 0x5596eeb55f20> 
+#>   ..- attr(*, ".internal.selfref")=<pointer: 0x5652e0214f20> 
 #>  $ method        : chr "nnd"
 #>  $ deduplication : logi TRUE
 #>  $ representation: chr "shingles"

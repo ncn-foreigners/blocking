@@ -145,7 +145,7 @@ Work on this package is supported by the National Science Centre, OPUS 20 grant 
 Please cite the package using the following reference
 
 ```
-Beręsewicz, M., & Struzik, A. (2026). blocking: An R package for blocking of records for record linkage and deduplication. The R Journal, 18(2), 162–175. https://doi.org/10.32614/RJ-2026-029
+Beręsewicz, M. & Struzik, A. (2026). blocking: An R package for blocking of records for record linkage and deduplication. The R Journal, 18(2), 162–175. https://doi.org/10.32614/RJ-2026-029
 ```
 
 Bibtex entry for this publication
